@@ -45,6 +45,24 @@ abstract class AbstractRadiusCheck extends AbstractContractCheck
     abstract protected function findings(TariffComparison $comparison): array;
 
     /**
+     * What it says when the accounts were read and none fails it.
+     *
+     * @return string
+     */
+    abstract protected function nothingFound(): string;
+
+    /**
+     * @return string
+     */
+    #[Override]
+    public function emptyMessage(): string
+    {
+        return $this->comparison->unreachable()
+            ? '⚠ ' . __d('radius', 'The RADIUS database could not be read, so this was not checked.')
+            : $this->nothingFound();
+    }
+
+    /**
      * @return string|null
      */
     #[Override]

@@ -243,6 +243,24 @@ class TariffChecksTest extends TestCase
     }
 
     /**
+     * With the accounts read and nothing wrong, each check says what it found.
+     *
+     * @return void
+     * @link \Radius\Check\AbstractRadiusCheck::emptyMessage()
+     */
+    public function testNothingFoundIsSaidOnlyOfAccountsThatWereRead(): void
+    {
+        $this->assertStringContainsString(
+            'Every active RADIUS account',
+            (new RadiusGroupMismatchCheck($this->contracts()))->emptyMessage(),
+        );
+        $this->assertStringContainsString(
+            'Every active RADIUS account',
+            (new RadiusAccountWithoutTariffCheck($this->contracts()))->emptyMessage(),
+        );
+    }
+
+    /**
      * A RADIUS database that cannot be reached gives no findings and a warning, so the pages
      * asking about it still draw.
      *
@@ -266,6 +284,11 @@ class TariffChecksTest extends TestCase
         try {
             $this->assertSame([], $this->findings(new RadiusGroupMismatchCheck($this->contracts())));
             $this->assertSame([], $this->findings(new RadiusAccountWithoutTariffCheck($this->contracts())));
+
+            // nothing was found because nothing was read, which is not the same as all being well
+            foreach ([new RadiusGroupMismatchCheck($this->contracts()), new RadiusAccountWithoutTariffCheck($this->contracts())] as $check) {
+                $this->assertStringContainsString('could not be read', $check->emptyMessage());
+            }
 
             /** @var \Cake\Log\Engine\ArrayLog $log */
             $log = Log::engine('radius_down');

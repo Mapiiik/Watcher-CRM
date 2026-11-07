@@ -34,7 +34,7 @@ class RadiusAccountWithoutTariffCheck extends AbstractRadiusCheck
      * @return string
      */
     #[Override]
-    public function emptyMessage(): string
+    protected function nothingFound(): string
     {
         return __d('radius', 'Every active RADIUS account has a tariff naming its group.');
     }

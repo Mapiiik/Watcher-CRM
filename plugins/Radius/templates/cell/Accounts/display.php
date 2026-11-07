@@ -3,11 +3,16 @@ use Cake\Routing\Router;
 
 /**
  * @var \App\View\AppView $this
- * @var \Cake\ORM\ResultSet<int, \Radius\Model\Entity\Account> $accounts
+ * @var \Cake\ORM\ResultSet<int, \Radius\Model\Entity\Account>|null $accounts Null where the database did not answer.
  * @var bool $show_contracts
  */
 ?>
-<?php if (is_object($accounts) && !$accounts->isEmpty()) : ?>
+<?php if ($accounts === null) : ?>
+    <?= $this->Html->tag('span', '⚠', [
+        'class' => 'warning-text',
+        'title' => __d('radius', 'Data from the RADIUS database could not be loaded.'),
+    ]) ?>
+<?php elseif (!$accounts->isEmpty()) : ?>
 <div class="table-responsive">
     <table>
         <tr>

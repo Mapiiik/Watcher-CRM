@@ -4,10 +4,14 @@ declare(strict_types=1);
 namespace Radius\Test\TestCase\View\Cell;
 
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Database\Connection;
+use Cake\Database\Driver\Postgres;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Radius\Model\Table\AccountsTable;
 use Radius\View\Cell\AccountsCell;
 
 /**
@@ -23,6 +27,7 @@ class AccountsCellTest extends TestCase
 {
     use ControllerTestTrait;
     use IntegrationTestTrait;
+    use LocatorAwareTrait;
 
     /**
      * Customer the fixture RADIUS account belongs to.
@@ -102,6 +107,34 @@ class AccountsCellTest extends TestCase
 
         $username = $this->getTableLocator()->get('Radius.Accounts')->find()->firstOrFail()->get('username');
         $this->assertResponseContains(h($username));
+    }
+
+    /**
+     * A RADIUS database that does not answer shows, and does not pass for a customer with no
+     * accounts.
+     *
+     * @return void
+     * @link \Radius\View\Cell\AccountsCell::display()
+     */
+    public function testADatabaseThatDoesNotAnswerIsMarked(): void
+    {
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('Data from the RADIUS database could not be loaded.');
+
+        $this->fetchTable(AccountsTable::class)->setConnection(new Connection([
+            'driver' => Postgres::class,
+            'host' => '127.0.0.1',
+            'port' => 1,
+            'database' => 'radius',
+            'username' => 'radius',
+            'password' => 'radius',
+        ]));
+
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('Data from the RADIUS database could not be loaded.');
     }
 
     /**

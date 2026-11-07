@@ -16,7 +16,7 @@ use Radius\Updater\ExpectedUserGroups;
  *
  * Read once and shared by the checks reporting on it, since each of them needs every active
  * account and the tariffs behind them. A RADIUS database that cannot be reached gives no
- * findings rather than an error, so the pages asking about it still draw.
+ * findings rather than an error, so the pages asking about it still draw, and says so.
  */
 class TariffComparison
 {
@@ -28,6 +28,11 @@ class TariffComparison
      * @var list<\Radius\Model\Entity\Account>|null
      */
     private ?array $accounts = null;
+
+    /**
+     * Whether the RADIUS database could not be reached.
+     */
+    private bool $unreachable = false;
 
     /**
      * @var array<string, string>|null
@@ -53,6 +58,18 @@ class TariffComparison
         ?ExpectedUserGroups $expected_user_groups = null,
     ) {
         $this->expected_user_groups = $expected_user_groups ?? new ExpectedUserGroups();
+    }
+
+    /**
+     * Whether nothing could be held against the tariffs, as the RADIUS database did not answer.
+     *
+     * @return bool
+     */
+    public function unreachable(): bool
+    {
+        $this->accounts();
+
+        return $this->unreachable;
     }
 
     /**
@@ -154,6 +171,7 @@ class TariffComparison
         } catch (MissingConnectionException $e) {
             Log::warning('The RADIUS accounts could not be held against the tariffs. (' . $e->getMessage() . ')');
             $accounts = [];
+            $this->unreachable = true;
         }
 
         return $this->accounts = $accounts;

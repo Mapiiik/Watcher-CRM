@@ -34,7 +34,7 @@ class RadiusGroupMismatchCheck extends AbstractRadiusCheck
      * @return string
      */
     #[Override]
-    public function emptyMessage(): string
+    protected function nothingFound(): string
     {
         return __d('radius', 'Every active RADIUS account is in the group its tariff names.');
     }
