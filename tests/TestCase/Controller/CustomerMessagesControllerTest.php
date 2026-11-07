@@ -16,6 +16,7 @@ use App\Model\Enum\ServiceCriticalityLevel;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Text;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -576,6 +577,54 @@ class CustomerMessagesControllerTest extends TestCase
         $this->get('/customer-messages/add-bulk?step=done');
         $this->assertResponseOk();
         $this->assertResponseContains('A planned outage');
+    }
+
+    /**
+     * A second click comes with the state the first one has not cleared yet, and queues nothing
+     * more. A batch that was refused is still there to be sent.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::addBulk()
+     */
+    public function testASecondClickQueuesTheBatchOnlyOnce(): void
+    {
+        $wizard = [
+            'CustomerMessages.bulkWizard' => [
+                'purpose' => CustomerMessagePurpose::Outages->value,
+                // the lock outlives the test, so every run is a batch of its own
+                'batch' => Text::uuid(),
+                'filters' => [],
+                'ignore_customer_consent' => true,
+                'ignore_contact_use' => true,
+            ],
+        ];
+        $message = [
+            'type' => CustomerMessageType::EmailSupport->value,
+            'subject' => 'A planned outage',
+            'body' => 'Tonight, for an hour.',
+            'body_format' => CustomerMessageBodyFormat::Plaintext->value,
+            'send_to' => [self::CUSTOMER_WITH_CONTRACT],
+        ];
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('CustomerMessages');
+        $this->session($wizard);
+        $this->post('/customer-messages/add-bulk?step=compose', ['type' => ''] + $message);
+        $this->assertResponseOk();
+        $this->assertSame($before, $this->idsIn('CustomerMessages'));
+
+        $this->session($wizard);
+        $this->post('/customer-messages/add-bulk?step=compose', $message);
+        $this->assertRedirectContains('step=done');
+        $sent = $this->idsIn('CustomerMessages');
+        $this->assertCount(count($before) + 1, $sent);
+
+        $this->session($wizard);
+        $this->post('/customer-messages/add-bulk?step=compose', $message);
+        $this->assertRedirectContains('step=done');
+        $this->assertSame($sent, $this->idsIn('CustomerMessages'));
     }
 
     /**

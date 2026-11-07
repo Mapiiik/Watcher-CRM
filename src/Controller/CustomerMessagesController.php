@@ -15,9 +15,11 @@ use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessagePurpose;
 use App\Model\Enum\CustomerMessageType;
 use App\NMS\ApiClient as NMSApiClient;
+use Cake\Cache\Cache;
 use Cake\Http\Response;
 use Cake\Http\Session;
 use Cake\Log\Log;
+use Cake\Utility\Text;
 use Settings\Utility\Settings;
 use Throwable;
 
@@ -37,6 +39,13 @@ class CustomerMessagesController extends AppController
      * @var string
      */
     private const BULK_WIZARD_STATE_KEY = 'CustomerMessages.bulkWizard';
+
+    /**
+     * What a batch being sent is locked under, in the cache.
+     *
+     * @var string
+     */
+    private const BULK_BATCH_LOCK = 'customer_messages_bulk_batch_';
 
     /**
      * Session key holding the one-shot bulk send result (for the done step).
@@ -154,7 +163,7 @@ class CustomerMessagesController extends AppController
             return $this->redirect(['action' => 'addBulk']);
         }
 
-        /** @var array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state */
+        /** @var array{purpose?: int, batch?: string, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state */
         $state = (array)$session->read(self::BULK_WIZARD_STATE_KEY, []);
         $purpose = isset($state['purpose']) ? CustomerMessagePurpose::tryFrom($state['purpose']) : null;
 
@@ -217,7 +226,7 @@ class CustomerMessagesController extends AppController
      * step failed and the caller should re-render it with validation errors.
      *
      * @param string $step Submitted step name.
-     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Current state.
+     * @param array{purpose?: int, batch?: string, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Current state.
      * @param \App\Model\Enum\CustomerMessagePurpose|null $purpose Selected purpose (from state).
      * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @param \Cake\Http\Session $session Session instance.
@@ -242,6 +251,7 @@ class CustomerMessagesController extends AppController
             // straight to the compose step without submitting the filter form
             $session->write(self::BULK_WIZARD_STATE_KEY, [
                 'purpose' => $selected->value,
+                'batch' => Text::uuid(),
                 'filters' => $registry->defaultsForPurpose($selected),
             ]);
 
@@ -270,7 +280,26 @@ class CustomerMessagesController extends AppController
         }
 
         if ($step === 'compose') {
-            if ($this->saveBulkMessages($purpose, $state, $registry)) {
+            // saving a batch takes a while, and a second click comes with the same state as the
+            // first, which clears it only at the end
+            $lock = self::BULK_BATCH_LOCK . ($state['batch'] ?? Text::uuid());
+            if (!Cache::add($lock, true)) {
+                $this->Flash->warning(__('These messages are already being sent.'));
+
+                return $this->redirect(['action' => 'addBulk', '?' => ['step' => 'done']]);
+            }
+
+            $saved = false;
+            try {
+                $saved = $this->saveBulkMessages($purpose, $state, $registry);
+            } finally {
+                // a batch that went out stays locked, for a click still on its way
+                if (!$saved) {
+                    Cache::delete($lock);
+                }
+            }
+
+            if ($saved) {
                 $session->delete(self::BULK_WIZARD_STATE_KEY);
 
                 // the summary is shown on the done step (read from the session)
@@ -291,7 +320,7 @@ class CustomerMessagesController extends AppController
      * as `customerMessage` so validation errors are shown on re-render.
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
-     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
+     * @param array{purpose?: int, batch?: string, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
      * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @return bool True when messages were saved.
      */
@@ -531,7 +560,7 @@ class CustomerMessagesController extends AppController
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
      * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
-     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
+     * @param array{purpose?: int, batch?: string, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
      * @return void
      */
     private function prepareBulkFilterStep(
@@ -565,7 +594,7 @@ class CustomerMessagesController extends AppController
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
      * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
-     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
+     * @param array{purpose?: int, batch?: string, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
      * @return void
      */
     private function prepareBulkComposeStep(
