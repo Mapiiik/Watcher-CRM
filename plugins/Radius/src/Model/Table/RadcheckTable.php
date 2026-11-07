@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace Radius\Model\Table;
 
 use App\Model\Table\AppTable;
+use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
+use Radius\Model\Entity\Radcheck;
 
 /**
  * Radcheck Model
@@ -44,9 +46,6 @@ class RadcheckTable extends AppTable
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        // a check may be a password, and the attribute says which it is only in some entries
-        $this->getBehavior('AuditLog')->setConfig('sensitive', ['value']);
-
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
@@ -55,6 +54,44 @@ class RadcheckTable extends AppTable
             'foreignKey' => 'username',
             'bindingKey' => 'username',
         ]);
+    }
+
+    /**
+     * Keeps a password out of the audit log.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event The event.
+     * @param \Radius\Model\Entity\Radcheck $check The check being saved.
+     * @return void
+     */
+    public function beforeSave(EventInterface $event, Radcheck $check): void
+    {
+        $this->hideIfPassword($check);
+    }
+
+    /**
+     * Keeps a password out of the audit log.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event The event.
+     * @param \Radius\Model\Entity\Radcheck $check The check being deleted.
+     * @return void
+     */
+    public function beforeDelete(EventInterface $event, Radcheck $check): void
+    {
+        $this->hideIfPassword($check);
+    }
+
+    /**
+     * Says what the audit log hides of this check. Only a password: Auth-Type and the rest say what
+     * happened to the account. What does not say what it is counts as a password.
+     *
+     * @param \Radius\Model\Entity\Radcheck $check The check.
+     * @return void
+     */
+    private function hideIfPassword(Radcheck $check): void
+    {
+        $readable = $check->has('attribute') && $check->attribute !== 'Cleartext-Password';
+
+        $this->getBehavior('AuditLog')->setConfig('sensitive', $readable ? [] : ['value'], false);
     }
 
     /**

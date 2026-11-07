@@ -395,8 +395,41 @@ class AccountsControllerTest extends TestCase
 
         $this->assertSame('****', $rows[0]['value']);
         $this->assertSame('Reject', $rows[1]['value']);
-        $this->assertSame(['value'], $this->fetchTable('Radius.Radcheck')->getBehavior('AuditLog')->getConfig('sensitive'));
         $this->assertSame(['password'], $this->fetchTable('Radius.Accounts')->getBehavior('AuditLog')->getConfig('sensitive'));
+    }
+
+    /**
+     * Only a password is hidden in the audit log. Auth-Type and the rest say what happened to the
+     * account, so they have to stay readable, when a check is written and when it is deleted.
+     *
+     * @return void
+     * @link \Radius\Model\Table\RadcheckTable::beforeSave()
+     */
+    public function testTheAuditLogHidesAPasswordAndNothingElse(): void
+    {
+        $checks = $this->fetchTable('Radius.Radcheck');
+        $check = fn(int $id, string $attribute, string $value) => $checks->saveOrFail($checks->newEntity(
+            ['id' => $id, 'username' => 'audit-test', 'attribute' => $attribute, 'op' => ':=', 'value' => $value],
+            ['validate' => false, 'accessibleFields' => ['*' => true]],
+        ), ['checkRules' => false]);
+        $logs = $this->getTableLocator()->get('AuditStash.AuditLogs');
+        $logs->deleteAll(['1 = 1']);
+        $logged = function (string $column) use ($logs): ?string {
+            $data = $logs->find()->firstOrFail()->get($column);
+            $logs->deleteAll(['1 = 1']);
+
+            return (is_string($data) ? json_decode($data, true) : $data)['value'] ?? null;
+        };
+
+        $password = $check(9001, 'Cleartext-Password', 'The password');
+        $this->assertSame('****', $logged('changed'));
+        $reject = $check(9002, 'Auth-Type', 'Reject');
+        $this->assertSame('Reject', $logged('changed'));
+
+        $checks->deleteOrFail($password);
+        $this->assertSame('****', $logged('original'));
+        $checks->deleteOrFail($reject);
+        $this->assertSame('Reject', $logged('original'));
     }
 
     /**
