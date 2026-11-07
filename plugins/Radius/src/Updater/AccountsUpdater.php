@@ -71,6 +71,10 @@ class AccountsUpdater
     /**
      * Update related records method
      *
+     * An account whose replies or groups changed is disconnected, as what the access server was told
+     * at the sign-in holds until the next one. Its password is asked for only then, so that alone
+     * ends nothing.
+     *
      * @param string|null $id Account id.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      * @psalm-suppress PossiblyUnusedReturnValue
@@ -85,18 +89,61 @@ class AccountsUpdater
         ]);
 
         // autogenerate related records
+        $changelog = new ChangeLog();
         $account->radcheck = $this->autoRadcheckData($account);
-        $account->radreply = $this->autoRadreplyData($account);
-        $account->radusergroup = $this->autoRadusergroupData($account);
+        $this->autoDataHandler('radreply', 'autoRadreplyData', $account, $changelog);
+        $this->autoDataHandler('radusergroup', 'autoRadusergroupData', $account, $changelog);
 
         if ($this->Accounts->save($account)) {
             $this->Messages->success(__d('radius', 'The RADIUS account has been updated.'));
+
+            if ($changelog->hasChange($account->username)) {
+                $this->disconnect($account);
+            }
 
             return true;
         }
         $this->Messages->error(__d('radius', 'The RADIUS account could not be updated. Please, try again.'));
 
         return false;
+    }
+
+    /**
+     * Ends what is running on the account and says what came of it.
+     *
+     * @param \Radius\Model\Entity\Account $account RADIUS account entity
+     * @return void
+     */
+    private function disconnect(Account $account): void
+    {
+        $sessions = $this->openSessions($account);
+
+        if ($sessions === []) {
+            $this->Messages->info(__d('radius', 'No active RADIUS session for {0} found.', $account->username));
+
+            return;
+        }
+
+        $radiusRequestSender = new RadiusRequestSender($this->Messages);
+        foreach ($sessions as $session) {
+            $radiusRequestSender->sendDisconnectRequest($session);
+        }
+    }
+
+    /**
+     * The sessions that may still be running on an account.
+     *
+     * @param \Radius\Model\Entity\Account $account RADIUS account entity
+     * @return array<int, \Radius\Model\Entity\Radacct>
+     */
+    private function openSessions(Account $account): array
+    {
+        /** @var array<int, \Radius\Model\Entity\Radacct> */
+        return $this->Accounts->Radacct
+            ->find('open')
+            ->where(['Radacct.username' => $account->username])
+            ->all()
+            ->toArray();
     }
 
     /**
@@ -186,12 +233,7 @@ class AccountsUpdater
 
                     // Send RADIUS disconnect request for modified
                     if ($options['reconnect_modified_accounts'] == true) {
-                        /** @var array<int, \Radius\Model\Entity\Radacct> $radaccts */
-                        $radaccts = $this->Accounts->Radacct
-                            ->find('open')
-                            ->where(['Radacct.username' => $account->username])
-                            ->all()
-                            ->toArray();
+                        $radaccts = $this->openSessions($account);
 
                         if (empty($radaccts)) {
                             $this->Messages->warning(__d(

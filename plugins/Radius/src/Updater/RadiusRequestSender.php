@@ -20,10 +20,12 @@ class RadiusRequestSender
 
     /**
      * Constructor
+     *
+     * @param \App\Messages\Messages|null $messages Where to say what came of it, if not in messages of its own.
      */
-    public function __construct()
+    public function __construct(?Messages $messages = null)
     {
-        $this->Messages = new Messages();
+        $this->Messages = $messages ?? new Messages();
     }
 
     /**

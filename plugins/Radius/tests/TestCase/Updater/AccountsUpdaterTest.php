@@ -63,6 +63,13 @@ class AccountsUpdaterTest extends TestCase
     private const USERNAME = 'subscriber';
 
     /**
+     * That account.
+     *
+     * @var string
+     */
+    private const ACCOUNT_ID = 'ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -337,6 +344,112 @@ class AccountsUpdaterTest extends TestCase
         $replies = (new AccountsUpdater())->autoRadreplyData($account);
 
         $this->assertSame([['Framed-IP-Address', '=', '192.0.2.200']], $this->rows($replies));
+    }
+
+    /**
+     * New replies reach a running session only by its signing in again, so updating the account
+     * disconnects it, and the operator is told.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::updateRelatedRecords()
+     */
+    public function testUpdatingAnAccountWhoseRepliesChangedDisconnectsIt(): void
+    {
+        $this->clearRepliesAndGroups();
+        $this->openSession();
+        $sent = $this->agentAnswers('live', ['success' => true, 'result' => 'Disconnect-ACK']);
+        $this->holdAddress('192.0.2.7');
+
+        $updater = new AccountsUpdater();
+        $this->assertTrue($updater->updateRelatedRecords(self::ACCOUNT_ID));
+
+        $this->assertCount(1, $sent);
+        $this->assertStringContainsString('has been disconnected', $this->said($updater));
+    }
+
+    /**
+     * New groups are told at the sign-in as well.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::updateRelatedRecords()
+     */
+    public function testUpdatingAnAccountWhoseGroupChangedDisconnectsIt(): void
+    {
+        $this->clearRepliesAndGroups();
+        $this->billed(self::CONTRACT_ID, self::CUSTOMER_ID, $this->tariff('slow'), Date::today()->subYears(1));
+        (new AccountsUpdater())->updateRelatedRecords(self::ACCOUNT_ID);
+
+        $this->overridden(self::CONTRACT_ID, $this->tariff('fast'), Date::today(), Date::today());
+        $this->openSession();
+        $sent = $this->agentAnswers('live', ['success' => true, 'result' => 'Disconnect-ACK']);
+
+        (new AccountsUpdater())->updateRelatedRecords(self::ACCOUNT_ID);
+
+        $this->assertCount(1, $sent);
+    }
+
+    /**
+     * An update that finds nothing new leaves a running session alone, and so does a new password,
+     * which is asked for only at the next sign-in.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::updateRelatedRecords()
+     */
+    public function testUpdatingAnAccountOtherwiseLeavesItsSessionAlone(): void
+    {
+        $this->clearRepliesAndGroups();
+        $this->holdAddress('192.0.2.7');
+        (new AccountsUpdater())->updateRelatedRecords(self::ACCOUNT_ID);
+
+        $this->openSession();
+        $sent = $this->agentAnswers('live', ['success' => true, 'result' => 'Disconnect-ACK']);
+
+        (new AccountsUpdater())->updateRelatedRecords(self::ACCOUNT_ID);
+        $this->assertCount(0, $sent);
+
+        $this->fetchTable('Radius.Accounts')->updateAll(['password' => 'another'], ['id' => self::ACCOUNT_ID]);
+        (new AccountsUpdater())->updateRelatedRecords(self::ACCOUNT_ID);
+        $this->assertCount(0, $sent);
+    }
+
+    /**
+     * With nothing running there is nobody to disconnect, and the update says so.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::updateRelatedRecords()
+     */
+    public function testUpdatingAnAccountWithNothingRunningSaysSo(): void
+    {
+        $this->clearRepliesAndGroups();
+        $this->holdAddress('192.0.2.7');
+
+        $updater = new AccountsUpdater();
+        $this->assertTrue($updater->updateRelatedRecords(self::ACCOUNT_ID));
+
+        $this->assertStringContainsString('No active RADIUS session', $this->said($updater));
+    }
+
+    /**
+     * Take away the replies and groups of the fixtures, which set their ids without moving the
+     * sequences on, so that an update can write its own.
+     *
+     * @return void
+     */
+    private function clearRepliesAndGroups(): void
+    {
+        $this->fetchTable('Radius.Radreply')->deleteAll(['1 = 1']);
+        $this->fetchTable('Radius.Radusergroup')->deleteAll(['1 = 1']);
+    }
+
+    /**
+     * Everything the updater has to say, in one text.
+     *
+     * @param \Radius\Updater\AccountsUpdater $updater The updater.
+     * @return string
+     */
+    private function said(AccountsUpdater $updater): string
+    {
+        return (string)json_encode($updater->Messages->getMessages());
     }
 
     /**
