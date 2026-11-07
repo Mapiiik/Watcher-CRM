@@ -84,15 +84,7 @@ class LabelsController extends AppController
         $label = $this->Labels->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
             $label = $this->Labels->patchEntity($label, $this->getRequest()->getData());
-            // check if not bad SQL
-            if ($this->isBadSQL($this->getRequest()->getData('dynamic_sql'))) {
-                // bad SQL - set error
-                $label->setError(
-                    'dynamic_sql',
-                    __('An expression for data modification was detected in the SQL query, which is forbidden.'),
-                );
-            } elseif ($this->Labels->save($label)) {
-                // good SQL - proceed
+            if ($this->Labels->save($label)) {
                 $this->Flash->success(__('The label has been saved.'));
 
                 return $this->afterAddRedirect(['action' => 'view', $label->id]);
@@ -117,15 +109,7 @@ class LabelsController extends AppController
         $label = $this->Labels->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $label = $this->Labels->patchEntity($label, $this->getRequest()->getData());
-            // check if not bad SQL
-            if ($this->isBadSQL($this->getRequest()->getData('dynamic_sql'))) {
-                // bad SQL - set error
-                $label->setError(
-                    'dynamic_sql',
-                    __('An expression for data modification was detected in the SQL query, which is forbidden.'),
-                );
-            } elseif ($this->Labels->save($label)) {
-                // good SQL - proceed
+            if ($this->Labels->save($label)) {
                 $this->Flash->success(__('The label has been saved.'));
 
                 return $this->afterEditRedirect(['action' => 'view', $label->id]);
@@ -157,33 +141,6 @@ class LabelsController extends AppController
         }
 
         return $this->afterDeleteRedirect(['action' => 'index']);
-    }
-
-    /**
-     * Is bad SQL method
-     *
-     * Checks if SQL does not contain expressions for data modification
-     *
-     * @param string|null $sql SQL string to be checked.
-     * @return bool Return false if SQL OK, true if SQL contains expressions for data modification.
-     */
-    public function isBadSQL(?string $sql): bool
-    {
-        if ($sql === null || $sql === '') {
-            return false;
-        }
-
-        $not_modifications = (
-            stripos($sql, 'insert') === false
-            && stripos($sql, 'update') === false
-            && stripos($sql, 'delete') === false
-            && stripos($sql, 'alter') === false
-            && stripos($sql, 'drop') === false
-            && stripos($sql, 'truncate') === false
-            && stripos($sql, 'set') === false
-        );
-
-        return !$not_modifications;
     }
 
     /**

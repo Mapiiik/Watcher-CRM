@@ -11,6 +11,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
@@ -78,12 +79,7 @@ class UpdateCustomerLabelsCommand extends Command
                     // add customer labels (or update modified time) for IDs found in custom SQL query (for dynamic labels)
                     if (!empty($label->dynamic_sql)) {
                         try {
-                            /** @var \Cake\Database\Connection $connection */
-                            $connection = ConnectionManager::get('default');
-
-                            $dynamicSqlResults = $connection
-                                ->execute($label->dynamic_sql)
-                                ->fetchAll(PDO::FETCH_ASSOC);
+                            $dynamicSqlResults = $this->selected($label->dynamic_sql);
                         } catch (PDOException $e) {
                             Log::error(
                                 'The dynamic SQL query could not be processed for label.' . PHP_EOL
@@ -221,5 +217,24 @@ class UpdateCustomerLabelsCommand extends Command
 
             return static::CODE_ERROR;
         }
+    }
+
+    /**
+     * What the query of a label selects. It runs in a transaction that cannot write, so a query
+     * that tries to is refused by the database, whatever its words are.
+     *
+     * @param string $sql The query.
+     * @return array<array<string, mixed>>
+     */
+    private function selected(string $sql): array
+    {
+        /** @var \Cake\Database\Connection $connection */
+        $connection = ConnectionManager::get('default');
+
+        return $connection->transactional(function (Connection $connection) use ($sql): array {
+            $connection->execute('SET TRANSACTION READ ONLY');
+
+            return $connection->execute($sql)->fetchAll(PDO::FETCH_ASSOC);
+        });
     }
 }

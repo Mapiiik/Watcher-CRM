@@ -155,6 +155,31 @@ class LabelsControllerTest extends TestCase
     }
 
     /**
+     * The words of a query do not decide: `manual_coordinate_setting` has `set` in it.
+     *
+     * @return void
+     * @link \App\Controller\LabelsController::add()
+     */
+    public function testAQueryIsNotJudgedByItsWords(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/labels/add', [
+            'name' => 'Placed by hand',
+            'caption' => 'Placed by hand',
+            'color' => '#336699',
+            'validity' => '30',
+            'dynamic' => '1',
+            'dynamic_sql' => 'SELECT customer_id FROM addresses WHERE manual_coordinate_setting IS NOT NULL',
+        ]);
+
+        $this->assertRedirect();
+        $this->assertTrue($this->getTableLocator()->get('Labels')->exists(['name' => 'Placed by hand']));
+    }
+
+    /**
      * A label that leaves the dynamic switch empty is not stored, and the operator is given the
      * form back rather than a redirect that would suggest it went through.
      *

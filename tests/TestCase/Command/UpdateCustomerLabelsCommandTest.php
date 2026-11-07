@@ -150,6 +150,47 @@ class UpdateCustomerLabelsCommandTest extends TestCase
      * @return void
      * @link \App\Command\UpdateCustomerLabelsCommand::execute()
      */
+    public function testExecuteRefusesAQueryThatWrites(): void
+    {
+        $this->withConfigure(['Report.errorEmails' => ['labels@example.com']]);
+        $customers = $this->getTableLocator()->get('Customers');
+        $label = $this->dynamicLabel(
+            "UPDATE customers SET note = 'written by a label' RETURNING id AS customer_id",
+        );
+
+        $this->exec('update_customer_labels ' . $label);
+
+        $this->assertExitError();
+        $this->assertFalse($customers->exists(['note' => 'written by a label']));
+    }
+
+    /**
+     * A query is judged by what it does, not by its words: a column may have `set` in its name.
+     *
+     * @return void
+     * @link \App\Command\UpdateCustomerLabelsCommand::execute()
+     */
+    public function testExecuteTakesAQueryWhoseWordsSoundLikeWriting(): void
+    {
+        $label = $this->dynamicLabel(
+            "SELECT id AS customer_id, 'update' AS offset_note FROM customers WHERE id = '" . self::CUSTOMER_ID . "'",
+        );
+
+        $this->exec('update_customer_labels ' . $label);
+
+        $this->assertExitSuccess();
+        $this->assertTrue($this->getTableLocator()->get('CustomerLabels')->exists([
+            'label_id' => $label,
+            'customer_id' => self::CUSTOMER_ID,
+        ]));
+    }
+
+    /**
+     * A query that will not run stops the run and tells somebody.
+     *
+     * @return void
+     * @link \App\Command\UpdateCustomerLabelsCommand::execute()
+     */
     public function testExecuteStopsOnALabelWhoseQueryWillNotRun(): void
     {
         $this->withConfigure(['Report.errorEmails' => ['labels@example.com']]);
