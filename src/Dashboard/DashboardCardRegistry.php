@@ -51,22 +51,6 @@ final class DashboardCardRegistry implements CardRegistryInterface
     use LocatorAwareTrait;
 
     /**
-     * Everybody in the office, as against the accounts other systems sign in with.
-     *
-     * @var list<string>
-     */
-    public const WHOLE_OFFICE = [
-        'user',
-        'customer-service-technician',
-        'network-technician',
-        'network-manager',
-        'sales-representative',
-        'sales-manager',
-        'bookkeeper',
-        'manager',
-    ];
-
-    /**
      * @var array<string, callable(): \Dashboard\Card\DashboardCardInterface>
      */
     private array $factories = [];

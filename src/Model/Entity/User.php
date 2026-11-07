@@ -14,6 +14,22 @@ use Override;
 class User extends AccessUser
 {
     /**
+     * The roles of the people in the office, as against the accounts other systems sign in with.
+     *
+     * @var list<string>
+     */
+    public const OFFICE_ROLES = [
+        'user',
+        'customer-service-technician',
+        'network-technician',
+        'network-manager',
+        'sales-representative',
+        'sales-manager',
+        'bookkeeper',
+        'manager',
+    ];
+
+    /**
      * What the forms of an account set, which here also say whether tasks can be given to it.
      *
      * @return array<string, bool>

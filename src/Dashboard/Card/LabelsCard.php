@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Dashboard\Card;
 
-use App\Dashboard\DashboardCardRegistry;
 use App\Model\Entity\Label;
+use App\Model\Entity\User;
 use App\Model\Table\LabelsTable;
 use Override;
 
@@ -49,7 +49,7 @@ class LabelsCard extends AbstractCustomerListingCard
     #[Override]
     public function roles(): array
     {
-        return DashboardCardRegistry::WHOLE_OFFICE;
+        return User::OFFICE_ROLES;
     }
 
     /**
