@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Enum\IpNetworkTypeOfUse;
+use App\Model\Validation\NetworkValidation;
 use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -86,6 +87,10 @@ class IpNetworksTable extends AppTable
 
         $validator
             ->scalar('ip_network')
+            ->add('ip_network', 'cidr', [
+                'rule' => NetworkValidation::cidr(...),
+                'message' => __('This is not the address of a network.'),
+            ])
             ->requirePresence('ip_network', 'create')
             ->notEmptyString('ip_network')
             ->add('ip_network', 'unique', [
