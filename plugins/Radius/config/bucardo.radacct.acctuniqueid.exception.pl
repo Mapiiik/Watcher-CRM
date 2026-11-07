@@ -64,7 +64,8 @@ unless ($dbh) {
     return;
 }
 
-# Retrieve the index expression and predicate.
+# Retrieve the index expression and predicate. The handle is a DBIx::Safe one, which takes one
+# argument more before the values than DBI does: with a single undef the query fails.
 my ($expr, $pred) = $dbh->selectrow_array(q{
     SELECT string_agg(expr, ', '), pred FROM (
         SELECT pg_catalog.pg_get_indexdef( ci.oid, s.i + 1, false) AS expr,
@@ -81,7 +82,7 @@ my ($expr, $pred) = $dbh->selectrow_array(q{
          ORDER BY s.i
     ) AS tab
     GROUP BY pred
-}, undef, $relation, $index);
+}, undef, undef, $relation, $index);
 
 unless ($expr) {
     # Should not happen, but just to be safe.
