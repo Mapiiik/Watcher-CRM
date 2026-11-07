@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Dashboard\Card;
 
+use App\Dashboard\DashboardCardRegistry;
 use App\NMS\ApiClient as NMSApiClient;
 use App\NMS\Links;
 use Cake\Collection\CollectionInterface;
@@ -43,23 +44,12 @@ class PowerOutagesCard extends AbstractDashboardCard
     }
 
     /**
-     * The whole office, as against the accounts other systems sign in with.
-     *
      * @return list<string>
      */
     #[Override]
     public function roles(): array
     {
-        return [
-            'user',
-            'customer-service-technician',
-            'network-technician',
-            'network-manager',
-            'sales-representative',
-            'sales-manager',
-            'bookkeeper',
-            'manager',
-        ];
+        return DashboardCardRegistry::WHOLE_OFFICE;
     }
 
     /**

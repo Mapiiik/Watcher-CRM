@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Dashboard\Card;
 
+use App\Dashboard\DashboardCardRegistry;
 use App\Model\Entity\Label;
 use App\Model\Table\LabelsTable;
 use Override;
@@ -43,23 +44,12 @@ class LabelsCard extends AbstractCustomerListingCard
     }
 
     /**
-     * The whole office, as against the accounts other systems sign in with.
-     *
      * @return list<string>
      */
     #[Override]
     public function roles(): array
     {
-        return [
-            'user',
-            'customer-service-technician',
-            'network-technician',
-            'network-manager',
-            'sales-representative',
-            'sales-manager',
-            'bookkeeper',
-            'manager',
-        ];
+        return DashboardCardRegistry::WHOLE_OFFICE;
     }
 
     /**
