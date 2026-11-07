@@ -7,6 +7,8 @@
  * @var array<string, string> $landingPages
  */
 
+use Cake\I18n\I18n;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -32,6 +34,7 @@
                 <?php
                 echo $this->Form->control('user_settings.language', [
                     'label' => __d('app_users', 'Language'),
+                    'default' => I18n::getDefaultLocale(),
                     'options' => [
                         'cs_CZ' => 'Čeština',
                         'en_US' => 'English',

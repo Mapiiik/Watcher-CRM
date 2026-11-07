@@ -7,6 +7,7 @@ use App\Controller\HomeController;
 use App\Model\Enum\LandingPage;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Http\ServerRequest;
+use Cake\I18n\I18n;
 use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -214,5 +215,23 @@ class HomeControllerTest extends TestCase
 
         $this->assertRedirect();
         $this->assertArrayNotHasKey('UI', $_SESSION['Config'] ?? []);
+    }
+
+    /**
+     * Somebody who has chosen no language sees the one they get, not the first of the list, which
+     * saving the form would otherwise choose for them.
+     *
+     * @return void
+     */
+    public function testTheSettingsShowTheLanguageSomebodyGets(): void
+    {
+        $user = $this->getTableLocator()->get('Users')->find()->firstOrFail();
+        $user->set('user_settings', null);
+        $this->session(['Auth' => $user]);
+
+        $this->get('/users/user-settings');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<option value="' . I18n::getDefaultLocale() . '" selected="selected">');
     }
 }
