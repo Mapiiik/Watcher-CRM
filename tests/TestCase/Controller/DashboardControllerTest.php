@@ -17,6 +17,7 @@ use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Settings\Utility\Settings;
 
 /**
  * App\Controller\DashboardController Test Case
@@ -621,6 +622,46 @@ class DashboardControllerTest extends TestCase
         $contracts->updateAll(['vip' => true], ['id' => $reachable]);
 
         $this->assertContains($reachable, $this->beyondBlocking(), 'VIP is passed over');
+    }
+
+    /**
+     * Television has no address and the nightly run still switches it off at the provider, so it is
+     * not beyond blocking. VIP television is, and so is all of it with the provider's blocking off.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\ManualShutoffDebtorsCard::data()
+     */
+    public function testTelevisionIsNotBeyondBlocking(): void
+    {
+        $invoices = $this->getTableLocator()->get('Bookkeeping.Invoices');
+        $invoices->saveOrFail($invoices->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'number' => '9/TEST/2026',
+            'creation_date' => Date::today()->subDays(400),
+            'due_date' => Date::today()->subDays(365),
+            'total' => 100000.0,
+            'debt' => 100000.0,
+            'accounting_identifier' => 'test-television',
+        ]));
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $contracts->updateAll(['vip' => false], []);
+        $television = '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90';
+        Settings::set('bookkeeping.debtors.blocking.enabled', true);
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.enabled', true);
+        Settings::set(
+            'bookkeeping.debtors.blocking.services.sledovani_tv.service_type_ids',
+            [(string)$contracts->get($television)->service_type_id],
+        );
+
+        $this->login();
+        $this->assertNotContains($television, $this->beyondBlocking(), 'the nightly run switches it off');
+
+        $contracts->updateAll(['vip' => true], ['id' => $television]);
+        $this->assertContains($television, $this->beyondBlocking(), 'VIP is passed over');
+
+        $contracts->updateAll(['vip' => false], ['id' => $television]);
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.enabled', false);
+        $this->assertContains($television, $this->beyondBlocking(), 'nothing switches it off');
     }
 
     /**

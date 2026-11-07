@@ -7,6 +7,7 @@ use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\IpNetworkTypeOfUse;
 use App\Model\Table\ContractsTable;
 use Override;
+use Settings\Utility\Settings;
 
 /**
  * Running services of debtors that the automatic blocking cannot reach.
@@ -19,7 +20,8 @@ use Override;
  * same place.
  *
  * The service type is deliberately not asked. What decides this is what is assigned to the
- * contract, not what the type says it usually carries.
+ * contract, not what the type says it usually carries. Television is the one exception: it has
+ * no address to write, and the nightly run switches it off at the provider all the same.
  */
 class ManualShutoffDebtorsCard extends AbstractDebtorCard
 {
@@ -94,6 +96,7 @@ class ManualShutoffDebtorsCard extends AbstractDebtorCard
                     'Contracts.vip' => true,
                 ],
             ])
+            ->where($this->notSwitchedOffAtTheProvider())
             ->orderBy(['Contracts.nid' => 'DESC']);
 
         $total = $query->count();
@@ -102,5 +105,24 @@ class ManualShutoffDebtorsCard extends AbstractDebtorCard
             'contracts' => $query->limit($this->maximumRows())->all(),
             'total' => $total,
         ];
+    }
+
+    /**
+     * Leaves out television the nightly run switches off itself. VIP television stays, as the run
+     * passes it over like any other VIP contract.
+     *
+     * @return array<string, mixed>
+     */
+    private function notSwitchedOffAtTheProvider(): array
+    {
+        $television = (array)Settings::get(
+            'bookkeeping.debtors.blocking.services.sledovani_tv.service_type_ids',
+            [],
+        );
+        if ($television === [] || !$this->processor()->isDebtorBlockingEnabled('sledovani_tv')) {
+            return [];
+        }
+
+        return ['OR' => ['Contracts.service_type_id NOT IN' => $television, 'Contracts.vip' => true]];
     }
 }
