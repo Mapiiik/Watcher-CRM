@@ -76,8 +76,8 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
-     * The customers are handed to the role the network management system signs in with. The
-     * customer portal asks only about the customers signed in to it, and is not handed them all.
+     * The customers are handed to the role `api`. The network management system with a role of its
+     * own and the customer portal ask for less, and are not handed them all.
      *
      * @return void
      * @link \App\Controller\Api\CustomersController::index()
@@ -90,7 +90,7 @@ class CustomersControllerTest extends TestCase
         $this->get('/api/customers.json');
         $this->assertResponseOk();
 
-        foreach (['customer-portal', 'customer-identification'] as $role) {
+        foreach (['watcher-nms', 'customer-portal', 'customer-identification'] as $role) {
             $this->login($role);
             $this->get('/api/customers.json');
             $this->assertResponseCode(403, 'The ' . $role . ' role was handed the customers.');

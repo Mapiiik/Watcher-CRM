@@ -53,6 +53,11 @@ class ApiPermissionsTest extends TestCase
             'Tasks::search',
             'Tasks::view',
         ],
+        'watcher-nms' => [
+            'AccessPoints::references',
+            'Customers::customerPoints',
+            'Tasks::search',
+        ],
         'customer-portal' => [
             'CustomerPortal::access',
             'CustomerPortal::accessRequest',
@@ -111,6 +116,25 @@ class ApiPermissionsTest extends TestCase
     }
 
     /**
+     * Invoices leave through the customer portal, one customer at a time. A key of the network
+     * management system opens none of them, it has no use for them.
+     *
+     * @return void
+     */
+    public function testTheNetworkManagementSystemDownloadsNoInvoice(): void
+    {
+        $request = new ServerRequest(['params' => [
+            'prefix' => null,
+            'plugin' => 'Bookkeeping',
+            'controller' => 'Invoices',
+            'action' => 'download',
+            'pass' => [],
+        ]]);
+
+        $this->assertFalse($this->rbac()->checkPermissions(['id' => 'anybody', 'role' => 'watcher-nms'], $request));
+    }
+
+    /**
      * The actions under the prefix a role is let into, in a fixed order.
      *
      * A rule deciding by what the request carries is taken as a yes, since it is the reach that is
@@ -121,14 +145,7 @@ class ApiPermissionsTest extends TestCase
      */
     private function reachedBy(string $role): array
     {
-        /** @var list<array<string, mixed>> $rules */
-        $rules = (new PhpConfig())->read('permissions')['CakeDC/Auth.permissions'];
-        foreach ($rules as $index => $rule) {
-            if (is_callable($rule['allowed'] ?? null)) {
-                $rules[$index]['allowed'] = true;
-            }
-        }
-        $rbac = new Rbac(['permissions' => $rules, 'log' => false]);
+        $rbac = $this->rbac();
 
         $reached = [];
         foreach ($this->actions() as [$prefix, $controller, $action]) {
@@ -147,6 +164,24 @@ class ApiPermissionsTest extends TestCase
         sort($reached);
 
         return $reached;
+    }
+
+    /**
+     * The permissions of the application.
+     *
+     * @return \CakeDC\Auth\Rbac\Rbac
+     */
+    private function rbac(): Rbac
+    {
+        /** @var list<array<string, mixed>> $rules */
+        $rules = (new PhpConfig())->read('permissions')['CakeDC/Auth.permissions'];
+        foreach ($rules as $index => $rule) {
+            if (is_callable($rule['allowed'] ?? null)) {
+                $rules[$index]['allowed'] = true;
+            }
+        }
+
+        return new Rbac(['permissions' => $rules, 'log' => false]);
     }
 
     /**

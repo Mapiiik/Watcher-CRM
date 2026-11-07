@@ -198,6 +198,47 @@ $permissions = [
                 'search',
             ],
         ],
+        //the network management system, with a role of its own: what it keeps up to date from
+        //here and nothing else. `api` above stays for whoever signs in with it
+        [
+            'role' => [
+                'watcher-nms',
+            ],
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
+                'AccessPoints',
+            ],
+            'action' => [
+                'references',
+            ],
+        ],
+        [
+            'role' => [
+                'watcher-nms',
+            ],
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
+                'Customers',
+            ],
+            'action' => [
+                'customerPoints',
+            ],
+        ],
+        [
+            'role' => [
+                'watcher-nms',
+            ],
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
+                'Tasks',
+            ],
+            'action' => [
+                'search',
+            ],
+        ],
         //the customer portal, which may ask only about the customers signed in to it
         [
             'role' => [

@@ -43,6 +43,7 @@ class User extends AccessUser
             'manager' => __('Manager'),
             'admin' => __('Admin'),
             'api' => __('API'),
+            'watcher-nms' => __('Watcher NMS'),
             'customer-portal' => __('Customer Portal'),
             'customer-identification' => __('Customer Identification'),
         ];
