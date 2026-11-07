@@ -227,10 +227,10 @@ class RadacctTable extends AppTable
     /**
      * The octets moved in a period, both ways, by the contract of the account.
      *
-     * A session is counted in the share of it that falls in the period. Where it has no stop, the
-     * last interim update is where it is known to have got to - the NAS does not send every stop,
-     * so an open session is not necessarily one still running. The result is an estimate for that
-     * reason, and good enough for the totals the regulator asks for.
+     * A session is counted in the share of it that falls in the period. It got as far as the last
+     * sign of life it gave - the NAS does not send every stop, and some stop times are older than
+     * the session itself, so an open session is not necessarily one still running. The result is
+     * an estimate for that reason, and good enough for the totals the regulator asks for.
      *
      * @param \DateTimeInterface $from Start of the period.
      * @param \DateTimeInterface $to End of the period, exclusive.
@@ -243,12 +243,12 @@ class RadacctTable extends AppTable
                 SELECT a.contract_id,
                     COALESCE(r.acctinputoctets, 0) + COALESCE(r.acctoutputoctets, 0) AS octets,
                     r.acctstarttime AS started,
-                    GREATEST(COALESCE(r.acctstoptime, r.acctupdatetime, r.acctstarttime), r.acctstarttime) AS ended
+                    GREATEST(r.acctstoptime, r.acctupdatetime, r.acctstarttime) AS ended
                 FROM radacct r
                 JOIN accounts a ON a.username = r.username
                 WHERE a.contract_id IS NOT NULL
                     AND r.acctstarttime < :to
-                    AND COALESCE(r.acctstoptime, r.acctupdatetime, r.acctstarttime) >= :from
+                    AND GREATEST(r.acctstoptime, r.acctupdatetime, r.acctstarttime) >= :from
             )
             SELECT contract_id, SUM(
                 CASE WHEN ended = started THEN octets

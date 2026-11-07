@@ -83,8 +83,8 @@ class RadacctTableTest extends TestCase
     }
 
     /**
-     * A session is counted in the share of it that falls in the period, an open one up to its last
-     * update, and one outside the period not at all.
+     * A session is counted in the share of it that falls in the period, an open one or one with an
+     * old stop time up to its last update, and one outside the period not at all.
      *
      * @return void
      * @link \Radius\Model\Table\RadacctTable::octetsByContract()
@@ -115,13 +115,15 @@ class RadacctTableTest extends TestCase
         $session(13, '2026-03-29 00:00:00+00', '2026-04-02 00:00:00+00', null, 2000);
         // after the period
         $session(14, '2026-07-02 00:00:00+00', null, '2026-07-03 00:00:00+00', 9999);
+        // a stop time from before the period and the start, last heard of after it, half of it inside
+        $session(15, '2026-06-30 00:00:00+00', '2026-07-02 00:00:00+00', '2026-02-01 00:00:00+00', 300);
 
         $octets = $this->Radacct->octetsByContract(
             new DateTimeImmutable('2026-04-01 00:00:00+00'),
             new DateTimeImmutable('2026-07-01 00:00:00+00'),
         );
 
-        $this->assertEqualsWithDelta(1000 + 1000 + 1000, array_sum($octets), 0.01);
+        $this->assertEqualsWithDelta(1000 + 1000 + 1000 + 300, array_sum($octets), 0.01);
     }
 
     /**
