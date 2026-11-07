@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Radius\Model\Table;
 
 use App\Model\Table\AppTable;
+use Cake\Database\Expression\QueryExpression;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use DateTimeInterface;
@@ -196,6 +198,30 @@ class RadacctTable extends AppTable
         $rules->add($rules->isUnique(['acctuniqueid']), ['errorField' => 'acctuniqueid']);
 
         return $rules;
+    }
+
+    /**
+     * The sessions that may still be running: those with no stop time, and the latest of an
+     * account whose stop time is older than its start. FreeRADIUS leaves that when a start lands
+     * on the row of an earlier session, and such a session runs on without another word in the
+     * accounting. One followed by a later session is over.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Radius\Model\Entity\Radacct> $query The query.
+     * @return \Cake\ORM\Query\SelectQuery<\Radius\Model\Entity\Radacct>
+     */
+    public function findOpen(SelectQuery $query): SelectQuery
+    {
+        $session = $query->getRepository()->getAlias();
+
+        return $query->where(fn(QueryExpression $exp): QueryExpression => $exp->or([
+            $session . '.acctstoptime IS' => null,
+            sprintf(
+                '%1$s.acctstoptime < %1$s.acctstarttime AND NOT EXISTS ('
+                . 'SELECT 1 FROM radacct later'
+                . ' WHERE later.username = %1$s.username AND later.acctstarttime > %1$s.acctstarttime)',
+                $session,
+            ),
+        ]));
     }
 
     /**

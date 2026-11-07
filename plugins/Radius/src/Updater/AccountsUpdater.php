@@ -188,11 +188,8 @@ class AccountsUpdater
                     if ($options['reconnect_modified_accounts'] == true) {
                         /** @var array<int, \Radius\Model\Entity\Radacct> $radaccts */
                         $radaccts = $this->Accounts->Radacct
-                            ->find()
-                            ->where([
-                                'Radacct.username' => $account->username,
-                                'Radacct.acctstoptime IS' => null,
-                            ])
+                            ->find('open')
+                            ->where(['Radacct.username' => $account->username])
                             ->all()
                             ->toArray();
 

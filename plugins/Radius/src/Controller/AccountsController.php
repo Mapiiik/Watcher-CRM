@@ -385,13 +385,7 @@ class AccountsController extends AppController
     public function disconnectRequest(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
-        $account = $this->Accounts->get($id, contain: [
-            'Radacct' => [
-                'conditions' => [
-                    'Radacct.acctstoptime IS' => null,
-                ],
-            ],
-        ]);
+        $account = $this->Accounts->get($id, contain: ['Radacct' => ['finder' => 'open']]);
 
         if (empty($account->radacct)) {
             $this->Flash->warning(__d(
@@ -427,13 +421,7 @@ class AccountsController extends AppController
      */
     private function endOpenSessions(string $id): void
     {
-        $account = $this->Accounts->get($id, contain: [
-            'Radacct' => [
-                'conditions' => [
-                    'Radacct.acctstoptime IS' => null,
-                ],
-            ],
-        ]);
+        $account = $this->Accounts->get($id, contain: ['Radacct' => ['finder' => 'open']]);
 
         $radiusRequestSender = new RadiusRequestSender();
         foreach ($account->radacct as $session) {

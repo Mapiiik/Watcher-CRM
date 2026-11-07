@@ -125,6 +125,45 @@ class RadacctTableTest extends TestCase
     }
 
     /**
+     * A session with no stop time is open, and so is the latest one whose stop time is older than its
+     * start. A session ended properly is not, nor one like that with a later session after it.
+     *
+     * @return void
+     * @link \Radius\Model\Table\RadacctTable::findOpen()
+     */
+    public function testWhatMayStillBeRunning(): void
+    {
+        $connection = $this->Radacct->getConnection();
+        $session = function (string $id, string $username, string $start, ?string $stop) use ($connection): void {
+            $connection->insert('radacct', [
+                'radacctid' => crc32($id),
+                'acctsessionid' => $id,
+                'acctuniqueid' => $id,
+                'username' => $username,
+                'nasipaddress' => '10.10.10.1',
+                'acctstarttime' => $start,
+                'acctupdatetime' => $start,
+                'acctstoptime' => $stop,
+            ]);
+        };
+        $session('running', 'first', '2026-04-10 00:00:00+00', null);
+        $session('ended', 'first', '2026-04-01 00:00:00+00', '2026-04-02 00:00:00+00');
+        $session('stop-before-start', 'second', '2026-04-10 00:00:00+00', '2026-03-01 00:00:00+00');
+        $session('earlier', 'second', '2026-02-01 00:00:00+00', '2026-02-02 00:00:00+00');
+        $session('over-since', 'third', '2026-04-10 00:00:00+00', '2026-03-01 00:00:00+00');
+        $session('after-it', 'third', '2026-04-20 00:00:00+00', '2026-04-21 00:00:00+00');
+
+        $open = $this->Radacct->find('open')
+            ->where(['username IN' => ['first', 'second', 'third']])
+            ->all()
+            ->extract('acctsessionid')
+            ->toList();
+        sort($open);
+
+        $this->assertSame(['running', 'stop-before-start'], $open);
+    }
+
+    /**
      * The table lives in the radius server's own database rather than ours, so it has to name that
      * connection - on the default one the table is simply not there.
      *

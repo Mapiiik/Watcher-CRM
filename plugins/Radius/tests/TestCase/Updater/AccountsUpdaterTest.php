@@ -219,6 +219,25 @@ class AccountsUpdaterTest extends TestCase
     }
 
     /**
+     * The nightly update reaches a session whose row kept the stop time of an earlier one.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::updateRelatedRecordsForAllAccounts()
+     */
+    public function testASessionWhoseStopTimeIsOlderThanItsStartIsReached(): void
+    {
+        $this->fetchTable(RadacctTable::class)->updateAll(
+            ['acctstarttime' => '2026-04-10 00:00:00', 'acctstoptime' => '2026-03-01 00:00:00'],
+            ['acctsessionid' => 'live'],
+        );
+        $sent = $this->agentAnswers('live', ['success' => true, 'result' => 'Disconnect-ACK']);
+
+        $this->reconnect();
+
+        $this->assertCount(1, $sent);
+    }
+
+    /**
      * An account that may connect is checked by its password and nothing turns it away.
      *
      * @return void

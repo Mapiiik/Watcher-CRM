@@ -337,6 +337,69 @@ class AccountsControllerTest extends TestCase
     }
 
     /**
+     * A session whose row kept the stop time of an earlier one is running all the same, and is
+     * ended with the account.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::endOpenSessions()
+     */
+    public function testDeactivatingEndsASessionWhoseStopTimeIsOlderThanItsStart(): void
+    {
+        Configure::write('Agent.url', 'https://agent.example.com');
+        Configure::write('Agent.token', 'agent-token');
+        $this->fetchTable('Radius.Radacct')->updateAll(
+            ['acctstarttime' => '2026-04-10 00:00:00', 'acctstoptime' => '2026-03-01 00:00:00'],
+            ['1 = 1'],
+        );
+        $this->mockClientPost(
+            'https://agent.example.com/api/radius/disconnect',
+            $this->newClientResponse(200, ['Content-Type: application/json'], (string)json_encode([
+                'success' => true,
+                'result' => 'Disconnect-ACK',
+            ])),
+        );
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/edit/' . self::ACCOUNT_ID, ['active' => 0]);
+
+        $this->assertRedirect();
+        $this->assertStringContainsString('has been disconnected', $this->messagesLeft());
+    }
+
+    /**
+     * Disconnecting by hand reaches such a session too.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::disconnectRequest()
+     */
+    public function testDisconnectingReachesASessionWhoseStopTimeIsOlderThanItsStart(): void
+    {
+        Configure::write('Agent.url', 'https://agent.example.com');
+        Configure::write('Agent.token', 'agent-token');
+        $this->fetchTable('Radius.Radacct')->updateAll(
+            ['acctstarttime' => '2026-04-10 00:00:00', 'acctstoptime' => '2026-03-01 00:00:00'],
+            ['1 = 1'],
+        );
+        $this->mockClientPost(
+            'https://agent.example.com/api/radius/disconnect',
+            $this->newClientResponse(200, ['Content-Type: application/json'], (string)json_encode([
+                'success' => true,
+                'result' => 'Disconnect-ACK',
+            ])),
+        );
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/disconnect-request/' . self::ACCOUNT_ID);
+
+        $this->assertRedirect();
+        $this->assertStringContainsString('has been disconnected', $this->messagesLeft());
+    }
+
+    /**
      * An account that stays active keeps its session, saving it disconnects nothing.
      *
      * @return void
