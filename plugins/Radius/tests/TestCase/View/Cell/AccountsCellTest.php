@@ -10,6 +10,7 @@ use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Radius\Model\Table\AccountsTable;
 use Radius\View\Cell\AccountsCell;
@@ -107,6 +108,31 @@ class AccountsCellTest extends TestCase
 
         $username = $this->getTableLocator()->get('Radius.Accounts')->find()->firstOrFail()->get('username');
         $this->assertResponseContains(h($username));
+    }
+
+    /**
+     * The password belongs to whoever may open the account. The card is also on the page of the
+     * customer, which more people may open, and neither the value nor its column are shown there.
+     *
+     * @param string $role Who is looking.
+     * @param bool $shown Whether they see the password.
+     * @return void
+     * @link \Radius\View\Cell\AccountsCell::display()
+     */
+    #[TestWith(['admin', true])]
+    #[TestWith(['customer-service-technician', true])]
+    #[TestWith(['user', false])]
+    public function testThePasswordIsShownToWhoeverMayOpenTheAccount(string $role, bool $shown): void
+    {
+        $this->getTableLocator()->get('Radius.Accounts')->updateAll(['password' => 'a-password-of-the-account'], ['1 = 1']);
+
+        $this->login($role);
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__d('radius', 'Username'));
+        $this->assertSame($shown, str_contains($this->_getBodyAsString(), 'a-password-of-the-account'));
+        $this->assertSame($shown, str_contains($this->_getBodyAsString(), '<th>' . __d('radius', 'Password') . '</th>'));
     }
 
     /**

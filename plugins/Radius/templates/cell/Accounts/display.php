@@ -6,6 +6,13 @@ use Cake\Routing\Router;
  * @var \Cake\ORM\ResultSet<int, \Radius\Model\Entity\Account>|null $accounts Null where the database did not answer.
  * @var bool $show_contracts
  */
+
+// the card is on pages open to more people than the account itself is
+$show_passwords = $this->AuthLink->isAuthorized([
+    'plugin' => 'Radius',
+    'controller' => 'Accounts',
+    'action' => 'view',
+]);
 ?>
 <?php if ($accounts === null) : ?>
     <?= $this->Html->tag('span', '⚠', [
@@ -20,7 +27,9 @@ use Cake\Routing\Router;
             <th><?= __d('radius', 'Contract') ?></th>
             <?php endif; ?>
             <th><?= __d('radius', 'Username') ?></th>
+            <?php if ($show_passwords) : ?>
             <th><?= __d('radius', 'Password') ?></th>
+            <?php endif; ?>
             <th><?= __d('radius', 'Active') ?></th>
             <th><?= __d('radius', 'IP Addresses') ?></th>
             <th><?= __d('radius', 'RADIUS User Groups') ?></th>
@@ -48,7 +57,9 @@ use Cake\Routing\Router;
                 ) : '' ?></td>
             <?php endif; ?>
             <td><?= h($account->username) ?></td>
+            <?php if ($show_passwords) : ?>
             <td><?= h($account->password) ?></td>
+            <?php endif; ?>
             <td><?= $account->active ? __d('radius', 'Yes') : __d('radius', 'No'); ?></td>
             <td><?php
             foreach ($account->radreply as $radreply) {
