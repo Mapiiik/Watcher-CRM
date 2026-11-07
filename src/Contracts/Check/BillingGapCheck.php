@@ -5,6 +5,7 @@ namespace App\Contracts\Check;
 
 use App\Check\CheckScope;
 use App\Model\Table\BillingsTable;
+use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 
@@ -174,7 +175,8 @@ class BillingGapCheck extends AbstractContractCheck
             ->select($this->billings)
             ->select($this->billings->Contracts)
             ->select($this->billings->Services)
-            ->contain(['Contracts' => ['Customers'], 'Services'])
+            // apart, as the join of the running contracts leaves the customer out of this query
+            ->contain(['Contracts' => ['Customers' => ['strategy' => Association::STRATEGY_SELECT]], 'Services'])
             ->where([
                 'Billings.billing_until IS NOT' => null,
                 $query->expr(self::RESUMES_LATER),

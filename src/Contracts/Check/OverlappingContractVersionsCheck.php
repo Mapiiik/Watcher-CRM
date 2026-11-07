@@ -5,6 +5,7 @@ namespace App\Contracts\Check;
 
 use App\Check\CheckScope;
 use App\Model\Table\ContractVersionsTable;
+use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 
@@ -109,7 +110,8 @@ class OverlappingContractVersionsCheck extends AbstractContractCheck
             ->select(['overlaps_from' => $query->expr(self::OVERLAPS_FROM)])
             ->select($this->versions)
             ->select($this->versions->Contracts)
-            ->contain(['Contracts' => ['Customers']])
+            // apart, as the join of the running contracts leaves the customer out of this query
+            ->contain(['Contracts' => ['Customers' => ['strategy' => Association::STRATEGY_SELECT]]])
             ->where([
                 $this->knownDate($query, 'ContractVersions.valid_from'),
                 $query->expr(self::RUNS_INTO_ANOTHER),

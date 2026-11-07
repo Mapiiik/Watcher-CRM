@@ -5,6 +5,7 @@ namespace App\Contracts\Check;
 
 use App\Check\CheckScope;
 use App\Model\Table\ContractVersionsTable;
+use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 
@@ -150,7 +151,8 @@ class ContractVersionGapCheck extends AbstractContractCheck
             ->select(['resumes_on' => $query->expr(self::RESUMES_ON)])
             ->select($this->versions)
             ->select($this->versions->Contracts)
-            ->contain(['Contracts' => ['Customers']])
+            // apart, as the join of the running contracts leaves the customer out of this query
+            ->contain(['Contracts' => ['Customers' => ['strategy' => Association::STRATEGY_SELECT]]])
             ->where([
                 'ContractVersions.valid_until IS NOT' => null,
                 $this->knownDate($query, 'ContractVersions.valid_from'),

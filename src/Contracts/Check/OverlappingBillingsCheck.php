@@ -5,6 +5,7 @@ namespace App\Contracts\Check;
 
 use App\Check\CheckScope;
 use App\Model\Table\BillingsTable;
+use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 
@@ -149,7 +150,8 @@ class OverlappingBillingsCheck extends AbstractContractCheck
             ->select($this->billings)
             ->select($this->billings->Contracts)
             ->select($this->billings->Services)
-            ->contain(['Contracts' => ['Customers'], 'Services'])
+            // apart, as the join of the running contracts leaves the customer out of this query
+            ->contain(['Contracts' => ['Customers' => ['strategy' => Association::STRATEGY_SELECT]], 'Services'])
             ->where([$query->expr(self::RUNS_INTO_ANOTHER)])
             ->orderBy(['Billings.billing_from' => 'ASC']);
 
