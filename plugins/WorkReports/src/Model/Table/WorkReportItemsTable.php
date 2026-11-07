@@ -260,6 +260,7 @@ class WorkReportItemsTable extends AppTable
         $validator
             ->decimal('invoice_hours')
             ->greaterThan('invoice_hours', 0)
+            ->lessThanOrEqual('invoice_hours', 9999.99)
             ->allowEmptyString('invoice_hours');
 
         $validator
@@ -269,6 +270,7 @@ class WorkReportItemsTable extends AppTable
         $validator
             ->decimal('rate_multiplier')
             ->greaterThan('rate_multiplier', 0)
+            ->lessThanOrEqual('rate_multiplier', 99.99)
             ->notEmptyString('rate_multiplier');
 
         $validator

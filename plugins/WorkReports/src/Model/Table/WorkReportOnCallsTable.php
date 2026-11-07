@@ -81,6 +81,7 @@ class WorkReportOnCallsTable extends AppTable
         $validator
             ->decimal('hours')
             ->greaterThanOrEqual('hours', 0)
+            ->lessThanOrEqual('hours', 999.99)
             ->notEmptyString('hours');
 
         return $validator;

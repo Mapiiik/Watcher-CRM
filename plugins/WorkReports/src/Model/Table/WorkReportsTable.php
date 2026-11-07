@@ -107,6 +107,7 @@ class WorkReportsTable extends AppTable
         $validator
             ->decimal('workload')
             ->greaterThan('workload', 0)
+            ->lessThanOrEqual('workload', 9.999)
             ->notEmptyString('workload');
 
         $validator
