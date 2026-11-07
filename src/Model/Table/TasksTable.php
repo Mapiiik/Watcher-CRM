@@ -40,6 +40,13 @@ use Tasks\Model\Table\TasksTable as TasksTasksTable;
 class TasksTable extends TasksTasksTable
 {
     /**
+     * How many tasks the card of a task state or a task type lists. The rest is in the listing.
+     *
+     * @var int
+     */
+    public const SHOWN_ON_A_CARD = 100;
+
+    /**
      * Initialize method
      *
      * @param array<string, mixed> $config The configuration for the Table.

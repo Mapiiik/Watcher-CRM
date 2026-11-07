@@ -66,6 +66,7 @@
                 <?= $this->element('Tasks/related', [
                     'tasks' => $taskState->tasks,
                     'task_type_column' => true,
+                    'listing' => ['task_state_ids' => [$taskState->id]],
                 ]) ?>
             </div>
         </div>

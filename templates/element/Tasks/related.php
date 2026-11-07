@@ -3,13 +3,17 @@
  * The tasks filed under a task state or a task type, as they are listed beside it.
  *
  * Whichever of the two the card is about is left out of the table: it would say the same thing
- * on every row.
+ * on every row. A card lists only so many, so it also leads to the listing of all of them.
  *
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Task> $tasks
+ * @var array<\App\Model\Entity\Task> $tasks
  * @var bool|null $task_type_column
  * @var bool|null $task_state_column
+ * @var array<string, mixed> $listing What the listing of the tasks is narrowed to.
  */
+
+use App\Model\Table\TasksTable;
+
 ?>
 <?php if (!empty($tasks)) : ?>
 <div class="table-responsive">
@@ -116,4 +120,22 @@
         <?php endforeach; ?>
     </table>
 </div>
+    <?php if (count($tasks) >= TasksTable::SHOWN_ON_A_CARD) : ?>
+    <p><?= __d('app_tasks', 'Only the first {0} are shown.', TasksTable::SHOWN_ON_A_CARD) ?></p>
+    <?php endif; ?>
+    <?= $this->AuthLink->link(__('List Tasks'), [
+        'controller' => 'Tasks',
+        'action' => 'index',
+        // the listing keeps its filter between visits, so the whole of it is said here
+        '?' => $listing + [
+            'user_id' => '',
+            'pressing' => 0,
+            'stale' => 0,
+            'show_completed' => 1,
+            'task_type_ids' => '',
+            'task_state_ids' => '',
+            'access_point_id' => '',
+            'search' => '',
+        ],
+    ], ['class' => 'button']) ?>
 <?php endif; ?>

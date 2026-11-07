@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\TaskTypesController;
+use App\Model\Table\TasksTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -105,6 +106,47 @@ class TaskTypesControllerTest extends TestCase
         // by identifier rather than by number: a task is numbered from one, and a page carries
         // plenty of small numbers that say nothing about tasks
         $this->assertResponseContains($task->id);
+    }
+
+    /**
+     * A type gathers tasks for years, so its card lists only so many and leads to the listing of
+     * all of them.
+     *
+     * @return void
+     * @link \App\Controller\TaskTypesController::viewContain()
+     */
+    public function testViewListsOnlySoManyTasksAndLeadsToAllOfThem(): void
+    {
+        $tasks = $this->getTableLocator()->get('Tasks');
+        /** @var \App\Model\Entity\Task $task */
+        $task = $tasks->find()->firstOrFail();
+        $tasks->getConnection()->execute(
+            'INSERT INTO tasks (task_type_id, task_state_id, subject, text, priority)
+                SELECT task_type_id, task_state_id, subject, text, priority
+                FROM tasks, generate_series(1, ?)',
+            [TasksTable::SHOWN_ON_A_CARD],
+        );
+
+        $this->login();
+        $this->get('/task-types/view/' . $task->task_type_id);
+        $this->assertResponseOk();
+
+        /** @var \App\Model\Entity\TaskType $type */
+        $type = $this->viewVariable('taskType');
+        $this->assertCount(TasksTable::SHOWN_ON_A_CARD, $type->tasks);
+        $this->assertResponseContains('Only the first ' . TasksTable::SHOWN_ON_A_CARD . ' are shown.');
+
+        preg_match('/href="([^"]*task_type_ids[^"]*)"/', $this->_getBodyAsString(), $link);
+        $listing = html_entity_decode($link[1] ?? '');
+        $this->assertNotSame('', $listing);
+
+        $this->session(['Config.Tasks.filter' => ['task_state_ids' => ['6ca9ad0a-7fd2-4b4a-8c0e-1d0f5f4d7e11']]]);
+        $this->get($listing);
+        $this->assertResponseOk();
+
+        /** @var \Cake\Datasource\Paging\PaginatedInterface<int, \App\Model\Entity\Task> $listed */
+        $listed = $this->viewVariable('tasks');
+        $this->assertSame(TasksTable::SHOWN_ON_A_CARD + 1, $listed->totalCount());
     }
 
     /**

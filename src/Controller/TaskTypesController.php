@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Table\TasksTable;
+use Cake\ORM\Query\SelectQuery;
 use Tasks\Controller\Trait\TaskTypesControllerTrait;
 
 /**
@@ -23,7 +25,14 @@ class TaskTypesController extends AppController
     protected function viewContain(): array
     {
         return [
-            'Tasks' => ['Customers', 'TaskStates', 'Users', 'Collaborators'],
+            'Tasks' => [
+                // a state or a type gathers tasks for years, so the card takes only so many
+                'queryBuilder' => fn(SelectQuery $query): SelectQuery => $query->limit(TasksTable::SHOWN_ON_A_CARD),
+                'Customers',
+                'TaskStates',
+                'Users',
+                'Collaborators',
+            ],
             'ContractStates',
             'CustomerStates',
             'Creators',

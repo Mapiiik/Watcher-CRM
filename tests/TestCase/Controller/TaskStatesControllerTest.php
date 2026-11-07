@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\TaskStatesController;
+use App\Model\Table\TasksTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -105,6 +106,76 @@ class TaskStatesControllerTest extends TestCase
         // by identifier rather than by number: a task is numbered from one, and a page carries
         // plenty of small numbers that say nothing about tasks
         $this->assertResponseContains($task->id);
+    }
+
+    /**
+     * A state gathers tasks for years, so its card lists only so many and says so. The listing it
+     * leads to holds all of them, finished ones and those of other people included, whatever
+     * filter it was left with.
+     *
+     * @return void
+     * @link \App\Controller\TaskStatesController::viewContain()
+     */
+    public function testViewListsOnlySoManyTasksAndLeadsToAllOfThem(): void
+    {
+        $tasks = $this->getTableLocator()->get('Tasks');
+        /** @var \App\Model\Entity\Task $task */
+        $task = $tasks->find()->firstOrFail();
+        $tasks->getConnection()->execute(
+            'INSERT INTO tasks (task_type_id, task_state_id, subject, text, priority)
+                SELECT task_type_id, task_state_id, subject, text, priority
+                FROM tasks, generate_series(1, ?)',
+            [TasksTable::SHOWN_ON_A_CARD],
+        );
+        $tasks->updateAll(['user_id' => null], ['1 = 1']);
+
+        $users = $this->getTableLocator()->get('Users');
+        $users->updateAll(['role' => 'admin'], ['1 = 1']);
+        $this->session(['Auth' => $users->find()->firstOrFail()]);
+
+        $this->get('/task-states/view/' . $task->task_state_id);
+        $this->assertResponseOk();
+
+        /** @var \App\Model\Entity\TaskState $state */
+        $state = $this->viewVariable('taskState');
+        $this->assertCount(TasksTable::SHOWN_ON_A_CARD, $state->tasks);
+        $this->assertResponseContains('Only the first ' . TasksTable::SHOWN_ON_A_CARD . ' are shown.');
+
+        preg_match('/href="([^"]*task_state_ids[^"]*)"/', $this->_getBodyAsString(), $link);
+        $listing = html_entity_decode($link[1] ?? '');
+        $this->assertNotSame('', $listing);
+
+        $this->session(['Config.Tasks.filter' => [
+            'search' => 'Nothing like this',
+            'pressing' => 1,
+            'stale' => 1,
+            'task_type_ids' => ['6ca9ad0a-7fd2-4b4a-8c0e-1d0f5f4d7e11'],
+            'access_point_id' => 'c2a1f4b8-3e6d-4f7a-9b21-5d8e0c6a7f33',
+        ]]);
+        $this->get($listing);
+        $this->assertResponseOk();
+
+        /** @var \Cake\Datasource\Paging\PaginatedInterface<int, \App\Model\Entity\Task> $listed */
+        $listed = $this->viewVariable('tasks');
+        $this->assertSame(TasksTable::SHOWN_ON_A_CARD + 1, $listed->totalCount());
+    }
+
+    /**
+     * A state with fewer tasks than a card holds does not say they were cut.
+     *
+     * @return void
+     * @link \App\Controller\TaskStatesController::viewContain()
+     */
+    public function testViewOfAFewTasksDoesNotSayTheyWereCut(): void
+    {
+        /** @var \App\Model\Entity\Task $task */
+        $task = $this->getTableLocator()->get('Tasks')->find()->firstOrFail();
+
+        $this->login();
+        $this->get('/task-states/view/' . $task->task_state_id);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('Only the first');
     }
 
     /**
