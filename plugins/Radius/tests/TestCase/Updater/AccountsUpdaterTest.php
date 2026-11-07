@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace Radius\Test\TestCase\Updater;
 
+use App\Model\Enum\IpAddressTypeOfUse;
+use App\Model\Enum\IpNetworkTypeOfUse;
 use App\Model\Table\BillingsTable;
+use App\Model\Table\IpAddressesTable;
+use App\Model\Table\IpNetworksTable;
 use App\Model\Table\ServiceOverridesTable;
 use ArrayObject;
 use Cake\Core\Configure;
@@ -14,6 +18,8 @@ use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Http\Message\RequestInterface;
 use Radius\Model\Entity\Account;
+use Radius\Model\Entity\Radcheck;
+use Radius\Model\Entity\Radreply;
 use Radius\Model\Entity\Radusergroup;
 use Radius\Model\Table\RadacctTable;
 use Radius\Test\Traits\TariffsTestTrait;
@@ -75,6 +81,8 @@ class AccountsUpdaterTest extends TestCase
         'app.Services',
         'app.Billings',
         'app.ServiceOverrides',
+        'app.IpAddresses',
+        'app.IpNetworks',
         'plugin.Radius.Accounts',
         'plugin.Radius.Radcheck',
         'plugin.Radius.Radreply',
@@ -208,6 +216,156 @@ class AccountsUpdaterTest extends TestCase
         $groups = (new AccountsUpdater())->autoRadusergroupData($account);
 
         $this->assertSame(['kept'], array_map(fn(Radusergroup $group): string => $group->groupname, $groups));
+    }
+
+    /**
+     * An account that may connect is checked by its password and nothing turns it away.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::autoRadcheckData()
+     */
+    public function testAnActiveAccountIsCheckedByItsPassword(): void
+    {
+        $account = new Account(['username' => 'test', 'password' => 'the password', 'active' => true]);
+
+        $this->assertSame(
+            [['Cleartext-Password', ':=', 'the password']],
+            $this->rows((new AccountsUpdater())->autoRadcheckData($account)),
+        );
+    }
+
+    /**
+     * An account switched off keeps its password and is turned away whatever it types.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::autoRadcheckData()
+     */
+    public function testAnAccountSwitchedOffIsRejected(): void
+    {
+        $account = new Account(['username' => 'test', 'password' => 'the password', 'active' => false]);
+
+        $this->assertSame(
+            [['Cleartext-Password', ':=', 'the password'], ['Auth-Type', ':=', 'Reject']],
+            $this->rows((new AccountsUpdater())->autoRadcheckData($account)),
+        );
+    }
+
+    /**
+     * What the nightly update writes is what FreeRADIUS reads: switching an account off reaches the
+     * table of checks, and switching it back on takes the rejection away again.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::updateRelatedRecordsForAllAccounts()
+     */
+    public function testTheNightlyUpdateWritesTheRejectionAndTakesItAway(): void
+    {
+        $accounts = $this->fetchTable('Radius.Accounts');
+        $checks = $this->fetchTable('Radius.Radcheck');
+        $rejections = ['username' => self::USERNAME, 'attribute' => 'Auth-Type', 'value' => 'Reject'];
+
+        $accounts->updateAll(['active' => false], ['1 = 1']);
+        (new AccountsUpdater())->updateRelatedRecordsForAllAccounts(['state' => 'inactive', 'radcheck' => true]);
+        $this->assertSame(1, $checks->find()->where($rejections)->count());
+
+        $accounts->updateAll(['active' => true], ['1 = 1']);
+        (new AccountsUpdater())->updateRelatedRecordsForAllAccounts(['radcheck' => true]);
+        $this->assertSame(0, $checks->find()->where($rejections)->count());
+    }
+
+    /**
+     * The replies carry what the contract holds for RADIUS, whatever is there for other uses stays
+     * out. Each kind of address has an attribute of its own, and an IPv6 network two.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::autoRadreplyData()
+     */
+    public function testTheRepliesAreTheRadiusAddressesOfTheContract(): void
+    {
+        foreach (['192.0.2.7', '2001:db8::7'] as $address) {
+            $this->holdAddress($address);
+        }
+        foreach (['198.51.100.0/29', '2001:db8:1::/64'] as $network) {
+            $this->holdNetwork($network);
+        }
+
+        $replies = (new AccountsUpdater())->autoRadreplyData($this->account());
+
+        $this->assertEqualsCanonicalizing([
+            ['Framed-IP-Address', '=', '192.0.2.7'],
+            ['Framed-IPv6-Address', '=', '2001:db8::7'],
+            ['Framed-Route', '=', '198.51.100.0/29'],
+            ['Framed-IPv6-Prefix', '=', '2001:db8:1::/64'],
+            ['Delegated-IPv6-Prefix', '=', '2001:db8:1::/64'],
+        ], $this->rows($replies));
+    }
+
+    /**
+     * A contract with no address for RADIUS leaves the replies as they are.
+     *
+     * @return void
+     * @link \Radius\Updater\AccountsUpdater::autoRadreplyData()
+     */
+    public function testWithoutAnAddressTheCurrentRepliesAreKept(): void
+    {
+        $account = $this->account();
+        $account->radreply = [new Radreply([
+            'username' => 'test',
+            'attribute' => 'Framed-IP-Address',
+            'op' => '=',
+            'value' => '192.0.2.200',
+        ])];
+
+        $replies = (new AccountsUpdater())->autoRadreplyData($account);
+
+        $this->assertSame([['Framed-IP-Address', '=', '192.0.2.200']], $this->rows($replies));
+    }
+
+    /**
+     * Give the contract an address for RADIUS.
+     *
+     * @param string $address The address.
+     * @return void
+     */
+    private function holdAddress(string $address): void
+    {
+        $table = $this->fetchTable(IpAddressesTable::class);
+        $table->saveOrFail($table->newEntity([
+            'ip_address' => $address,
+            'type_of_use' => IpAddressTypeOfUse::CustomerRADIUS,
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+        ], ['validate' => false, 'accessibleFields' => ['*' => true]]), ['checkRules' => false]);
+    }
+
+    /**
+     * Give the contract a network for RADIUS.
+     *
+     * @param string $network The network.
+     * @return void
+     */
+    private function holdNetwork(string $network): void
+    {
+        $table = $this->fetchTable(IpNetworksTable::class);
+        $table->saveOrFail($table->newEntity([
+            'ip_network' => $network,
+            'type_of_use' => IpNetworkTypeOfUse::CustomerRADIUS,
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+        ], ['validate' => false, 'accessibleFields' => ['*' => true]]), ['checkRules' => false]);
+    }
+
+    /**
+     * What checks or replies say, for comparing.
+     *
+     * @param array<\Radius\Model\Entity\Radcheck|\Radius\Model\Entity\Radreply> $rows The rows.
+     * @return list<array{string, string, string}>
+     */
+    private function rows(array $rows): array
+    {
+        return array_values(array_map(
+            fn(Radcheck|Radreply $row): array => [$row->attribute, $row->op, $row->value],
+            $rows,
+        ));
     }
 
     /**
