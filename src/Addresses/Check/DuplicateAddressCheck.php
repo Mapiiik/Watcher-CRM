@@ -23,7 +23,8 @@ use Override;
  * registration number points at a different building than a house number that reads alike.
  *
  * Rows are compared with the case and the surrounding spaces taken off, because that is how
- * they get typed twice in the first place.
+ * they get typed twice in the first place. A village without streets gets written with its name
+ * for a street as well as with no street at all, and both say the same.
  */
 class DuplicateAddressCheck extends AbstractAddressCheck
 {
@@ -134,7 +135,9 @@ class DuplicateAddressCheck extends AbstractAddressCheck
             ->groupBy(array_merge(
                 [new IdentifierExpression('Customers.id')],
                 array_values($keys),
-                array_map(fn(string $part): ExpressionInterface => $this->normalised($query, $part), $parts),
+                array_map(fn(string $part): ExpressionInterface => $part === 'street'
+                    ? $this->normalisedStreet($query)
+                    : $this->normalised($query, $part), $parts),
                 [$this->pinned($query, 'gps_x'), $this->pinned($query, 'gps_y')],
             ))
             ->having([$query->expr()->gt($query->func()->count('*'), 1, 'integer')])
@@ -159,6 +162,21 @@ class DuplicateAddressCheck extends AbstractAddressCheck
     private function normalised(SelectQuery $query, string $field): ExpressionInterface
     {
         return $query->expr(sprintf("LOWER(TRIM(COALESCE(Addresses.%s, '')))", $field));
+    }
+
+    /**
+     * The street as {@see self::normalised()} reads it, with the name of the city read as none.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query The query
+     *   the expression belongs to.
+     * @return \Cake\Database\ExpressionInterface
+     */
+    private function normalisedStreet(SelectQuery $query): ExpressionInterface
+    {
+        return $query->expr(
+            "COALESCE(NULLIF(LOWER(TRIM(COALESCE(Addresses.street, ''))),"
+            . " LOWER(TRIM(COALESCE(Addresses.city, '')))), '')",
+        );
     }
 
     /**

@@ -121,6 +121,22 @@ class DuplicateAddressCheckTest extends TestCase
                 ['entrance' => 'A', 'unit' => '7'] + $place,
                 false,
             ],
+            // a village without streets is written both ways, and it is one place
+            'the city for a street and no street at all' => [
+                ['street' => 'Jablonec nad Jizerou', 'city' => 'Jablonec nad Jizerou'] + $place,
+                ['street' => null, 'city' => 'Jablonec nad Jizerou'] + $place,
+                true,
+            ],
+            'the city for a street, spelled another way' => [
+                ['street' => ' JABLONEC NAD JIZEROU', 'city' => 'Jablonec nad Jizerou'] + $place,
+                ['street' => '', 'city' => 'Jablonec nad Jizerou'] + $place,
+                true,
+            ],
+            'a street and no street at all' => [
+                ['street' => 'Nová', 'city' => 'Jablonec nad Jizerou'] + $place,
+                ['street' => null, 'city' => 'Jablonec nad Jizerou'] + $place,
+                false,
+            ],
             'no entrance either time, left out one way or the other' => [
                 ['entrance' => null, 'unit' => null] + $place,
                 ['entrance' => '', 'unit' => ''] + $place,
