@@ -113,6 +113,31 @@ class InvoicesControllerTest extends TestCase
     }
 
     /**
+     * A number written by hand that the year already holds comes back beside its field.
+     *
+     * @return void
+     * @link \Bookkeeping\Controller\InvoicesController::add()
+     */
+    public function testANumberTheYearHoldsIsToldBesideItsField(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/bookkeeping/invoices/add', [
+            'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
+            'number' => '123/TEST/2026',
+            'creation_date' => '2021-03-01',
+            'due_date' => '2021-03-15',
+            'total' => 100,
+            'debt' => 100,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('An invoice of the same year already has this number.');
+    }
+
+    /**
      * The form of an existing record renders.
      *
      * @return void

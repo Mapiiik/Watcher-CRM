@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Model\Table;
 
+use Bookkeeping\Model\Entity\Invoice;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -143,6 +144,27 @@ class InvoicesTable extends Table
             ['accounting_identifier'],
             'Accounting identifier must be unique',
         ));
+
+        // the year is a generated column, so it is worked out here from the day of the invoice
+        $rules->add(
+            function (Invoice $invoice): bool {
+                if (!$invoice->isDirty('number') && !$invoice->isDirty('creation_date')) {
+                    return true;
+                }
+
+                $conditions = ['number' => $invoice->number, 'creation_year' => $invoice->creation_date->year];
+                if (!$invoice->isNew()) {
+                    $conditions['id !='] = $invoice->id;
+                }
+
+                return !$this->exists($conditions);
+            },
+            'numberOnceAYear',
+            [
+                'errorField' => 'number',
+                'message' => __d('bookkeeping', 'An invoice of the same year already has this number.'),
+            ],
+        );
 
         return $rules;
     }

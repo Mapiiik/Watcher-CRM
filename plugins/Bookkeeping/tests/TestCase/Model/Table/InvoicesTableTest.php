@@ -5,6 +5,7 @@ namespace Bookkeeping\Test\TestCase\Model\Table;
 
 use App\Test\Traits\TableTestTrait;
 use Bookkeeping\Model\Table\InvoicesTable;
+use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use Override;
 
@@ -83,5 +84,77 @@ class InvoicesTableTest extends TestCase
     public function testBuildRules(): void
     {
         $this->assertDanglingReferencesAreRefused($this->Invoices);
+    }
+
+    /**
+     * A number is taken once a year, so the same one is refused in that year and free in another.
+     *
+     * @return void
+     * @link \Bookkeeping\Model\Table\InvoicesTable::buildRules()
+     */
+    public function testANumberIsTakenOnceAYear(): void
+    {
+        $taken = $this->Invoices->newEntity($this->invoiceOf('2021-03-01'));
+
+        $this->assertFalse($this->Invoices->save($taken));
+        $this->assertArrayHasKey('numberOnceAYear', $taken->getError('number'));
+
+        $this->Invoices->saveOrFail($this->Invoices->newEntity($this->invoiceOf('2022-03-01')));
+    }
+
+    /**
+     * An invoice does not stand in its own way, but it cannot be moved into a year that holds its
+     * number on another invoice.
+     *
+     * @return void
+     * @link \Bookkeeping\Model\Table\InvoicesTable::buildRules()
+     */
+    public function testAnInvoiceIsNotMovedOntoATakenNumber(): void
+    {
+        $invoice = $this->Invoices->find()->where(['number' => '123/TEST/2026'])->firstOrFail();
+        $invoice->set('creation_date', new Date('2021-06-01'));
+        $this->Invoices->saveOrFail($invoice);
+
+        $other = $this->Invoices->newEntity($this->invoiceOf('2022-03-01'));
+        $this->Invoices->saveOrFail($other);
+
+        $other->creation_date = new Date('2021-03-01');
+        $this->assertFalse($this->Invoices->save($other));
+        $this->assertArrayHasKey('numberOnceAYear', $other->getError('number'));
+    }
+
+    /**
+     * Saving what has nothing to do with the number does not ask about it. Sending an invoice is
+     * such a save.
+     *
+     * @return void
+     * @link \Bookkeeping\Model\Table\InvoicesTable::buildRules()
+     */
+    public function testASaveOfSomethingElseDoesNotAskAboutTheNumber(): void
+    {
+        $invoice = $this->Invoices->find()->select(['id', 'send_by_email'])->firstOrFail();
+        $invoice->set('send_by_email', false);
+
+        $this->Invoices->saveOrFail($invoice);
+
+        $this->assertFalse($this->Invoices->find()->firstOrFail()->get('send_by_email'));
+    }
+
+    /**
+     * An invoice under the number of the fixture.
+     *
+     * @param string $date The day it was created.
+     * @return array<string, mixed>
+     */
+    private function invoiceOf(string $date): array
+    {
+        return [
+            'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
+            'number' => '123/TEST/2026',
+            'creation_date' => $date,
+            'due_date' => $date,
+            'total' => 100,
+            'debt' => 100,
+        ];
     }
 }
