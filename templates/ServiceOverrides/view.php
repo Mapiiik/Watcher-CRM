@@ -13,18 +13,20 @@
                 ['action' => 'edit', $serviceOverride->id],
                 ['class' => 'side-nav-item'],
             ) ?>
-            <?= $this->AuthLink
-                ->postLink(
-                    __('Revoke Service Override'),
-                    ['action' => 'revoke', $serviceOverride->id],
-                    [
-                        'confirm' => __(
-                            'Are you sure you want to revoke service override {0}?',
-                            $serviceOverride->id,
-                        ),
-                        'class' => 'side-nav-item',
-                    ],
-                ) ?>
+            <?php if ($serviceOverride->revoked === null) : ?>
+                <?= $this->AuthLink
+                    ->postLink(
+                        __('Revoke Service Override'),
+                        ['action' => 'revoke', $serviceOverride->id],
+                        [
+                            'confirm' => __(
+                                'Are you sure you want to revoke service override {0}?',
+                                $serviceOverride->id,
+                            ),
+                            'class' => 'side-nav-item',
+                        ],
+                    ) ?>
+            <?php endif; ?>
             <?= $this->AuthLink->postLink(
                 __('Delete Service Override'),
                 ['action' => 'delete', $serviceOverride->id],
@@ -47,17 +49,19 @@
     </aside>
     <div class="column column-90">
         <div class="serviceOverrides view content">
-            <?= $this->AuthLink->postLink(
-                __('Revoke Service Override'),
-                ['action' => 'revoke', $serviceOverride->id],
-                [
-                    'confirm' => __(
-                        'Are you sure you want to revoke service override {0}?',
-                        $serviceOverride->id,
-                    ),
-                    'class' => 'button float-right',
-                ],
-            ) ?>
+            <?php if ($serviceOverride->revoked === null) : ?>
+                <?= $this->AuthLink->postLink(
+                    __('Revoke Service Override'),
+                    ['action' => 'revoke', $serviceOverride->id],
+                    [
+                        'confirm' => __(
+                            'Are you sure you want to revoke service override {0}?',
+                            $serviceOverride->id,
+                        ),
+                        'class' => 'button float-right',
+                    ],
+                ) ?>
+            <?php endif; ?>
             <?php
             // An override is known by the service it overrides. Which contract that is comes from
             // the bar across the top, so the line under the name is how long it applies - and

@@ -12,18 +12,20 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink
-                ->postLink(
-                    __('Revoke'),
-                    ['action' => 'revoke', $serviceOverride->id],
-                    [
-                        'confirm' => __(
-                            'Are you sure you want to revoke service override {0}?',
-                            $serviceOverride->id,
-                        ),
-                        'class' => 'side-nav-item',
-                    ],
-                ) ?>
+            <?php if (!$isRevoked) : ?>
+                <?= $this->AuthLink
+                    ->postLink(
+                        __('Revoke'),
+                        ['action' => 'revoke', $serviceOverride->id],
+                        [
+                            'confirm' => __(
+                                'Are you sure you want to revoke service override {0}?',
+                                $serviceOverride->id,
+                            ),
+                            'class' => 'side-nav-item',
+                        ],
+                    ) ?>
+            <?php endif; ?>
             <?= $this->AuthLink->postLink(
                 __('Delete'),
                 ['action' => 'delete', $serviceOverride->id],

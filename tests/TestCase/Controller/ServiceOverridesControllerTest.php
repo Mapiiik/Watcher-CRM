@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\ServiceOverridesController;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -98,6 +99,44 @@ class ServiceOverridesControllerTest extends TestCase
         $this->get('/service-overrides/view/' . $this->firstId('ServiceOverrides'));
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * Revoking is offered, wherever it is offered, only on what has not been revoked yet.
+     *
+     * @return void
+     * @link \App\Controller\ServiceOverridesController::revoke()
+     */
+    public function testRevokingIsOfferedOnlyOnWhatIsNotRevoked(): void
+    {
+        $overrides = $this->getTableLocator()->get('ServiceOverrides');
+        $override = $overrides->find()->firstOrFail();
+        $override->patch(['revoked' => null, 'revoked_by' => null]);
+        $overrides->saveOrFail($override);
+
+        $id = $override->get('id');
+        $pages = [
+            '/service-overrides/view/' . $id,
+            '/service-overrides/edit/' . $id,
+            '/service-overrides?include_revoked=1&include_past=1',
+        ];
+
+        $this->login();
+
+        foreach ($pages as $page) {
+            $this->get($page);
+            $this->assertResponseOk();
+            $this->assertResponseContains('/service-overrides/revoke/' . $id);
+        }
+
+        $override->set('revoked', DateTime::now());
+        $overrides->saveOrFail($override);
+
+        foreach ($pages as $page) {
+            $this->get($page);
+            $this->assertResponseOk();
+            $this->assertResponseNotContains('/service-overrides/revoke/' . $id);
+        }
     }
 
     /**

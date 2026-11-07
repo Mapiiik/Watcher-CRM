@@ -101,16 +101,18 @@
                             ['action' => 'edit', $serviceOverride->id],
                             ['class' => 'win-link'],
                         ) ?>
-                        <?= $this->AuthLink->postLink(
-                            __('Revoke'),
-                            ['action' => 'revoke', $serviceOverride->id],
-                            [
-                                'confirm' => __(
-                                    'Are you sure you want to revoke service override {0}?',
-                                    $serviceOverride->id,
-                                ),
-                            ],
-                        ) ?>
+                        <?php if ($serviceOverride->revoked === null) : ?>
+                            <?= $this->AuthLink->postLink(
+                                __('Revoke'),
+                                ['action' => 'revoke', $serviceOverride->id],
+                                [
+                                    'confirm' => __(
+                                        'Are you sure you want to revoke service override {0}?',
+                                        $serviceOverride->id,
+                                    ),
+                                ],
+                            ) ?>
+                        <?php endif; ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
                             ['action' => 'delete', $serviceOverride->id],
