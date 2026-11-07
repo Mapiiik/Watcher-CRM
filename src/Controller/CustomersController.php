@@ -459,12 +459,12 @@ class CustomersController extends AppController
         if ($this->getRequest()->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
 
-            if ($this->getRequest()->getData('refresh') == 'refresh' || $customer->hasErrors()) {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
 
                 // perform a lookup to pre-fill the customer fields based on the selected register entry
                 $this->patchFromBusinessRegister($customer);
-            } else {
+            } elseif (!$customer->hasErrors()) {
                 if ($this->Customers->save($customer)) {
                     $this->Flash->success(__('The customer has been saved.'));
 
@@ -513,12 +513,12 @@ class CustomersController extends AppController
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
 
-            if ($this->getRequest()->getData('refresh') == 'refresh' || $customer->hasErrors()) {
+            if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
 
                 // perform a lookup to pre-fill the customer fields based on the selected register entry
                 $this->patchFromBusinessRegister($customer);
-            } else {
+            } elseif (!$customer->hasErrors()) {
                 if ($this->Customers->save($customer)) {
                     $this->Flash->success(__('The customer has been saved.'));
 

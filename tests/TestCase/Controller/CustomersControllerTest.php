@@ -940,6 +940,44 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * A form sent to be saved and refused is not filled in again from the company it still carries,
+     * which would take away what the operator wrote on it.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     * @link \App\Controller\CustomersController::edit()
+     */
+    public function testARefusedFormKeepsWhatWasWrittenOnIt(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '27496139',
+                'name' => 'NETAIR, s.r.o.',
+                'company' => 'NETAIR, s.r.o.',
+                'identity_number' => '27496139',
+            ],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        foreach (['/customers/add', '/customers/edit/' . self::CUSTOMER_ID] as $url) {
+            $this->post($url, [
+                'business_register_source' => 'stub',
+                'business_register_search' => 'stub|27496139',
+                'company' => 'NETAIR, s.r.o.',
+                'date_of_birth' => '1980-05-17',
+                'bank_code' => '123456',
+            ]);
+
+            $this->assertResponseOk();
+            $this->assertResponseContains('value="1980-05-17"');
+        }
+    }
+
+    /**
      * The page asks no register of its own: the notes are fetched once it is already up, so a
      * register taking its time - VIES has taken six seconds over a personal VAT number - is no
      * longer six seconds of the customer's detail not being there.

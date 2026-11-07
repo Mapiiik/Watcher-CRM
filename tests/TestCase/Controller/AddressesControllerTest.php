@@ -251,6 +251,37 @@ class AddressesControllerTest extends TestCase
     }
 
     /**
+     * A form sent to be saved and refused does not go to the address registry for what it carries,
+     * which would write over what the operator typed.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::add()
+     * @link \App\Controller\AddressesController::edit()
+     */
+    public function testARefusedFormDoesNotAskTheAddressRegistry(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $urls = ['/customers/' . self::CUSTOMER_ID . '/addresses/add', '/addresses/edit/' . $this->firstId('Addresses')];
+
+        foreach ($urls as $url) {
+            $this->post($url, [
+                'type' => 0,
+                'number_type' => '',
+                'country_id' => $this->firstId('Countries'),
+                'street' => 'Typed by hand',
+                'address_registry_search' => 'unknown|1',
+            ]);
+
+            $this->assertResponseOk();
+            $this->assertResponseContains('value="Typed by hand"');
+            $this->assertResponseNotContains('Could not retrieve address');
+        }
+    }
+
+    /**
      * Gives the fixture customer an identification number to be looked up by.
      *
      * @param string $identityNumber The number to give them.

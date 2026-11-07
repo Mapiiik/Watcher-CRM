@@ -128,11 +128,7 @@ class AddressesController extends AppController
                 true,
             );
 
-            if (
-                $this->getRequest()->getData('refresh') == 'refresh'
-                || $registeredSeatAsked
-                || $address->hasErrors()
-            ) {
+            if ($this->getRequest()->getData('refresh') == 'refresh' || $registeredSeatAsked) {
                 // only refresh
 
                 // perform a lookup to pre-fill the address fields based on the selected address registry entry,
@@ -154,7 +150,7 @@ class AddressesController extends AppController
                         ));
                     }
                 }
-            } else {
+            } elseif (!$address->hasErrors()) {
                 // update national address registry data
                 $address->patch($this->findNationalAddressRegistryData($address));
 
@@ -221,11 +217,7 @@ class AddressesController extends AppController
                 true,
             );
 
-            if (
-                $this->getRequest()->getData('refresh') == 'refresh'
-                || $registeredSeatAsked
-                || $address->hasErrors()
-            ) {
+            if ($this->getRequest()->getData('refresh') == 'refresh' || $registeredSeatAsked) {
                 // only refresh
 
                 // perform a lookup to pre-fill the address fields based on the selected address registry entry,
@@ -247,7 +239,7 @@ class AddressesController extends AppController
                         ));
                     }
                 }
-            } else {
+            } elseif (!$address->hasErrors()) {
                 // update national address registry data
                 $address->patch($this->findNationalAddressRegistryData($address));
 
