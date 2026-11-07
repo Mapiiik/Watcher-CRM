@@ -7,6 +7,7 @@ use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
+use BackedEnum;
 use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -116,7 +117,14 @@ class CustomerMessagesTable extends AppTable
 
         $validator
             ->requirePresence('body_format', 'create')
-            ->notEmptyString('body_format');
+            ->notEmptyString('body_format')
+            ->add('body_format', 'plainTextSms', [
+                // the run that sends SMS takes nothing else, so the message would wait for ever
+                'rule' => fn(mixed $format, array $context): bool => $this->enumValue($context['data']['type'] ?? null)
+                    !== CustomerMessageType::Sms->value
+                    || $this->enumValue($format) === CustomerMessageBodyFormat::Plaintext->value,
+                'message' => __('An SMS can only be sent as plain text.'),
+            ]);
 
         $validator
             ->requirePresence('delivery_status', 'create')
@@ -132,6 +140,21 @@ class CustomerMessagesTable extends AppTable
             ->allowEmptyString('identifier');
 
         return $validator;
+    }
+
+    /**
+     * The number an enum field stands for, as a form sends it or as the code hands it over.
+     *
+     * @param mixed $value Value of the field.
+     * @return int|null
+     */
+    private function enumValue(mixed $value): ?int
+    {
+        if ($value instanceof BackedEnum) {
+            return (int)$value->value;
+        }
+
+        return is_numeric($value) ? (int)$value : null;
     }
 
     /**

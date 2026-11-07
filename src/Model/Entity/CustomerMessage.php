@@ -56,9 +56,22 @@ class CustomerMessage extends AppEntity
     ];
 
     /**
+     * Whether the text can only be one telephone number, which has 15 digits at the most.
+     *
+     * @param string $text Text between two separators.
+     * @return bool
+     */
+    private function isOnePhoneNumber(string $text): bool
+    {
+        return preg_match('/^ *\+?[\d ]+$/', $text) === 1
+            && strlen(str_replace([' ', '+'], '', $text)) <= 15;
+    }
+
+    /**
      * Convert recipients to array if string
      *
-     * Allowed separators: " ,;" (space, comma, semicolon)
+     * Allowed separators: " ,;" (space, comma, semicolon). Digits in groups that fit into a single
+     * telephone number are that number, not several recipients.
      *
      * @param array<\App\Model\Entity\Email|\App\Model\Entity\Phone|string>|string $recipientsInput Recipients input
      * @return array<string>
@@ -68,7 +81,10 @@ class CustomerMessage extends AppEntity
         $inputCopy = $recipientsInput;
 
         if (is_string($inputCopy)) {
-            $inputCopy = explode(' ', str_replace([',', ';'], ' ', $inputCopy));
+            $inputCopy = array_merge(...array_map(
+                fn(string $part): array => $this->isOnePhoneNumber($part) ? [$part] : explode(' ', $part),
+                explode(',', str_replace(';', ',', $inputCopy)),
+            ));
         }
 
         if (is_array($inputCopy)) {

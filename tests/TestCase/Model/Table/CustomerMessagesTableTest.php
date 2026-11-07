@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Model\Enum\CustomerMessageBodyFormat;
+use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * App\Model\Table\CustomerMessagesTable Test Case
@@ -83,5 +86,44 @@ class CustomerMessagesTableTest extends TestCase
     public function testBuildRules(): void
     {
         $this->assertDanglingReferencesAreRefused($this->CustomerMessages);
+    }
+
+    /**
+     * @return array<string, array{mixed, mixed, bool}>
+     */
+    public static function bodyFormatProvider(): array
+    {
+        $sms = CustomerMessageType::Sms;
+        $email = CustomerMessageType::Email;
+        $plain = CustomerMessageBodyFormat::Plaintext;
+        $html = CustomerMessageBodyFormat::Html;
+
+        return [
+            'an SMS in HTML from a form' => [(string)$sms->value, (string)$html->value, true],
+            'an SMS in plain text from a form' => [(string)$sms->value, (string)$plain->value, false],
+            'an e-mail in HTML from a form' => [(string)$email->value, (string)$html->value, false],
+            'an SMS in HTML from the code' => [$sms, $html, true],
+            'an SMS in plain text from the code' => [$sms, $plain, false],
+            'an e-mail in HTML from the code' => [$email, $html, false],
+            'no type' => [null, (string)$html->value, false],
+        ];
+    }
+
+    /**
+     * Only plain text is sent as an SMS, whichever way the values arrive. Other messages may be
+     * in HTML.
+     *
+     * @param mixed $type The type of the message.
+     * @param mixed $format The format of its body.
+     * @param bool $refused Whether the format is refused.
+     * @return void
+     * @link \App\Model\Table\CustomerMessagesTable::validationDefault()
+     */
+    #[DataProvider('bodyFormatProvider')]
+    public function testAnSmsIsPlainText(mixed $type, mixed $format, bool $refused): void
+    {
+        $errors = $this->CustomerMessages->getValidator()->validate(['type' => $type, 'body_format' => $format]);
+
+        $this->assertSame($refused, isset($errors['body_format']['plainTextSms']));
     }
 }

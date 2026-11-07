@@ -579,6 +579,42 @@ class CustomerMessagesControllerTest extends TestCase
     }
 
     /**
+     * The run that sends SMS takes plain text only, so one in HTML would be reported as queued and
+     * never go. It comes back beside the field, once and not for every customer.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::addBulk()
+     */
+    public function testTheWizardRefusesAnSmsInHtml(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('CustomerMessages');
+        $this->session([
+            'CustomerMessages.bulkWizard' => [
+                'purpose' => CustomerMessagePurpose::Outages->value,
+                'filters' => [],
+                'ignore_customer_consent' => true,
+                'ignore_contact_use' => true,
+            ],
+        ]);
+        $this->post('/customer-messages/add-bulk?step=compose', [
+            'type' => CustomerMessageType::Sms->value,
+            'subject' => 'A planned outage',
+            'body' => '<p>Tonight, for an hour.</p>',
+            'body_format' => CustomerMessageBodyFormat::Html->value,
+            'send_to' => [self::CUSTOMER_WITH_CONTRACT],
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('An SMS can only be sent as plain text.');
+        $this->assertNull($this->viewVariable('saveFailures'));
+        $this->assertSame($before, $this->idsIn('CustomerMessages'));
+    }
+
+    /**
      * The summary e-mail body must carry everything the send is judged by: the
      * filters, every recipient with the addresses it went to, and the text.
      *

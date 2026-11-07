@@ -328,6 +328,13 @@ class CustomerMessagesController extends AppController
             return false;
         }
 
+        // the same for every customer, so it is said once beside the field
+        if ($customerMessage->getError('body_format') !== []) {
+            $this->Flash->error(__('The customer messages could not be saved. Please, try again.'));
+
+            return false;
+        }
+
         // per-contract opt-out from the preview: each checked row submits the
         // customer id into send_to[], so a customer is included as soon as at
         // least one of its rows stayed checked (duplicate ids are harmless).
