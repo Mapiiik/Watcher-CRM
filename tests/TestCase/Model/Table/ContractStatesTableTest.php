@@ -79,6 +79,18 @@ class ContractStatesTableTest extends TestCase
     }
 
     /**
+     * The colour of a state ends up in a style attribute, so only a colour gets in.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractStatesTable::validationDefault()
+     */
+    public function testOnlyAColorIsStored(): void
+    {
+        $this->assertSame([], $this->ContractStates->newEntity(['color' => '#c8e6c9'])->getError('color'));
+        $this->assertNotSame([], $this->ContractStates->newEntity(['color' => '"><img'])->getError('color'));
+    }
+
+    /**
      * The rules refuse a record whose references point nowhere - see the trait for why that is
      * the question worth asking here.
      *

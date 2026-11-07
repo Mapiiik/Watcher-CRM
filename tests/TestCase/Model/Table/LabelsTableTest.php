@@ -75,6 +75,18 @@ class LabelsTableTest extends TestCase
     }
 
     /**
+     * The colour of a label ends up in a style attribute, so only a colour gets in.
+     *
+     * @return void
+     * @link \App\Model\Table\LabelsTable::validationDefault()
+     */
+    public function testOnlyAColorIsStored(): void
+    {
+        $this->assertSame([], $this->Labels->newEntity(['color' => '#ffcdd2'])->getError('color'));
+        $this->assertNotSame([], $this->Labels->newEntity(['color' => '"><img'])->getError('color'));
+    }
+
+    /**
      * The rules refuse a record whose references point nowhere - see the trait for why that is
      * the question worth asking here.
      *

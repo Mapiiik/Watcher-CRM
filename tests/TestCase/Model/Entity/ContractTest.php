@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Model\Entity;
 
 use App\Model\Entity\Address;
 use App\Model\Entity\Contract;
+use App\Model\Entity\ContractState;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\ServiceType;
 use Cake\I18n\Date;
@@ -18,6 +19,23 @@ use RuntimeException;
 #[CoversClass(Contract::class)]
 class ContractTest extends TestCase
 {
+    /**
+     * A contract is drawn in the colour of its state, and in nothing else.
+     *
+     * @return void
+     * @link \App\Model\Entity\Contract::_getStyle()
+     */
+    public function testAContractIsDrawnInTheColorOfItsState(): void
+    {
+        $inState = fn(string $color): string => (new Contract([
+            'contract_state' => new ContractState(['color' => $color]),
+        ]))->get('style');
+
+        $this->assertStringContainsString('background-color: #', $inState('#c8e6c9'));
+        $this->assertSame('', $inState('"><img'));
+        $this->assertSame('', (new Contract())->get('style'));
+    }
+
     /**
      * Named in running text, the contract is what it is and where it is, with its number after it.
      * Asked before anything has been loaded, there is nothing to say but the number.

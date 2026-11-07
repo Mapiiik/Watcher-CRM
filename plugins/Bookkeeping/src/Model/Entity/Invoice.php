@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Model\Entity;
 
-use App\Colors\ColorThemeSelector;
 use App\Model\Entity\AppEntity;
-use Cake\Core\Configure;
 use Cake\I18n\Date;
+use Tasks\Model\Entity\Trait\ColoredStyleTrait;
 
 /**
  * Invoice Entity
@@ -31,6 +30,8 @@ use Cake\I18n\Date;
  */
 class Invoice extends AppEntity
 {
+    use ColoredStyleTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -76,14 +77,7 @@ class Invoice extends AppEntity
         }
 
         if (isset($this->debt) && $this->debt->isPositive() && $this->due_date < $now) {
-            $theme = Configure::read('UI.theme');
-            $theme = is_string($theme) ? $theme : null;
-
-            $backgroundColor = ColorThemeSelector::forTheme(
-                '#ffc0c0',
-                $theme,
-            );
-            $style = 'background-color: ' . $backgroundColor . '; color: red;';
+            $style = $this->backgroundStyle('#ffc0c0') . ' color: red;';
         }
 
         return $style;

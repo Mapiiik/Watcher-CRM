@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\Colors\ColorThemeSelector;
 use App\Http\Answer;
 use App\NMS\ApiClient as NMSApiClient;
-use Cake\Core\Configure;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
 use RuntimeException;
+use Tasks\Model\Entity\Trait\ColoredStyleTrait;
 
 /**
  * Contract Entity
@@ -85,6 +84,8 @@ use RuntimeException;
  */
 class Contract extends AppEntity
 {
+    use ColoredStyleTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -248,20 +249,7 @@ class Contract extends AppEntity
      */
     protected function _getStyle(): string
     {
-        if (!isset($this->contract_state->color)) {
-            // no dynamic style
-            return '';
-        }
-
-        $theme = Configure::read('UI.theme');
-        $theme = is_string($theme) ? $theme : null;
-
-        $backgroundColor = ColorThemeSelector::forTheme(
-            $this->contract_state->color,
-            $theme,
-        );
-
-        return 'background-color: ' . $backgroundColor . ';';
+        return $this->backgroundStyle($this->contract_state->color ?? null);
     }
 
     /**

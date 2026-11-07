@@ -7,6 +7,7 @@ use App\Model\Table\AppTable;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
+use WorkReports\Model\Entity\WorkLabel;
 
 /**
  * WorkLabels Model
@@ -65,6 +66,7 @@ class WorkLabelsTable extends AppTable
         $validator
             ->scalar('color')
             ->maxLength('color', 7)
+            ->regex('color', WorkLabel::COLOR_PATTERN)
             ->notEmptyString('color');
 
         $validator

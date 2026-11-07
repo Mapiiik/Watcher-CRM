@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace WorkReports\Model\Entity;
 
-use App\Colors\ColorThemeSelector;
-use App\Colors\ColorTransformer;
 use App\Model\Entity\AppEntity;
-use Cake\Core\Configure;
+use Tasks\Model\Entity\Trait\ColoredStyleTrait;
 
 /**
  * WorkLabel Entity
@@ -19,6 +17,8 @@ use Cake\Core\Configure;
  */
 class WorkLabel extends AppEntity
 {
+    use ColoredStyleTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -38,12 +38,6 @@ class WorkLabel extends AppEntity
      */
     protected function _getStyle(): string
     {
-        $theme = Configure::read('UI.theme');
-        $theme = is_string($theme) ? $theme : null;
-
-        $backgroundColor = ColorThemeSelector::forTheme($this->color, $theme, factor: 1.0);
-
-        return 'background-color: ' . $backgroundColor . ';'
-            . ' color: ' . ColorTransformer::getContrastColor($backgroundColor) . ';';
+        return $this->labelStyle($this->color);
     }
 }

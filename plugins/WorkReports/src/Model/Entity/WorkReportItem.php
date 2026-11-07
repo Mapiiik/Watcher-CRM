@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace WorkReports\Model\Entity;
 
-use App\Colors\ColorThemeSelector;
 use App\Model\Entity\AppEntity;
-use Cake\Core\Configure;
+use Tasks\Model\Entity\Trait\ColoredStyleTrait;
 
 /**
  * WorkReportItem Entity
@@ -53,6 +52,8 @@ use Cake\Core\Configure;
  */
 class WorkReportItem extends AppEntity
 {
+    use ColoredStyleTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -117,10 +118,7 @@ class WorkReportItem extends AppEntity
             return '';
         }
 
-        $theme = Configure::read('UI.theme');
-        $theme = is_string($theme) ? $theme : null;
-
-        return 'background-color: ' . ColorThemeSelector::forTheme('#ffc0c0', $theme) . '; color: red;';
+        return $this->backgroundStyle('#ffc0c0') . ' color: red;';
     }
 
     /**

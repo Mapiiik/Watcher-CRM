@@ -7,6 +7,7 @@ use App\Model\Table\AppTable;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
+use Tasks\Model\Entity\Task;
 
 /**
  * What a task state is, in both applications.
@@ -76,6 +77,11 @@ class TaskStatesTable extends AppTable
         $validator
             ->integer('priority')
             ->notEmptyString('priority');
+
+        $validator
+            ->scalar('color')
+            ->regex('color', Task::COLOR_PATTERN)
+            ->notEmptyString('color');
 
         return $validator;
     }

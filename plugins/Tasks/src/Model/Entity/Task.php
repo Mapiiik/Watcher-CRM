@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Tasks\Model\Entity;
 
-use App\Colors\ColorThemeSelector;
 use App\Model\Entity\AppEntity;
-use Cake\Core\Configure;
 use Cake\I18n\Date;
+use Tasks\Model\Entity\Trait\ColoredStyleTrait;
 
 /**
  * What a task is, in both applications.
@@ -41,6 +40,8 @@ use Cake\I18n\Date;
  */
 class Task extends AppEntity
 {
+    use ColoredStyleTrait;
+
     /**
      * The priorities a task is offered, ordered from the least to the most pressing.
      */
@@ -126,20 +127,7 @@ class Task extends AppEntity
      */
     protected function _getStyle(): string
     {
-        if (!isset($this->task_state->color)) {
-            // no dynamic style
-            return '';
-        }
-
-        $theme = Configure::read('UI.theme');
-        $theme = is_string($theme) ? $theme : null;
-
-        $backgroundColor = ColorThemeSelector::forTheme(
-            $this->task_state->color,
-            $theme,
-        );
-
-        return 'background-color: ' . $backgroundColor . ';';
+        return $this->backgroundStyle($this->task_state->color ?? null);
     }
 
     /**

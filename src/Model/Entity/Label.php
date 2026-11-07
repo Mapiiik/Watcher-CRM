@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\Colors\ColorThemeSelector;
-use App\Colors\ColorTransformer;
 use App\Model\Entity\Trait\DashboardVisibilityTrait;
-use Cake\Core\Configure;
+use Tasks\Model\Entity\Trait\ColoredStyleTrait;
 
 /**
  * Label Entity
@@ -28,6 +26,7 @@ use Cake\Core\Configure;
  */
 class Label extends AppEntity
 {
+    use ColoredStyleTrait;
     use DashboardVisibilityTrait;
 
     /**
@@ -62,16 +61,6 @@ class Label extends AppEntity
      */
     protected function _getStyle(): string
     {
-        $theme = Configure::read('UI.theme');
-        $theme = is_string($theme) ? $theme : null;
-
-        $backgroundColor = ColorThemeSelector::forTheme(
-            $this->color,
-            $theme,
-            factor: 1.0,
-        );
-
-        return 'background-color: ' . $backgroundColor . ';'
-            . ' color: ' . ColorTransformer::getContrastColor($backgroundColor) . ';';
+        return $this->labelStyle($this->color);
     }
 }

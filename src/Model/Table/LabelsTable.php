@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Label;
 use App\Model\Entity\User;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -76,7 +77,8 @@ class LabelsTable extends AppTable
 
         $validator
             ->scalar('color')
-            ->maxLength('color', 7);
+            ->maxLength('color', 7)
+            ->regex('color', Label::COLOR_PATTERN);
 
         $validator
             ->integer('validity')
