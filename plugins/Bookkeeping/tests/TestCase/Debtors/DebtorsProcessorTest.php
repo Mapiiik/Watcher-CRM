@@ -71,6 +71,20 @@ class DebtorsProcessorTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * The second contract of the customer, with no addresses in the fixtures.
+     *
+     * @var string
+     */
+    private const OTHER_CONTRACT_ID = '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90';
+
+    /**
+     * The address given to the second contract.
+     *
+     * @var string
+     */
+    private const OTHER_ADDRESS = '192.168.22.22';
+
+    /**
      * The label a blocked customer is marked with.
      *
      * @var string
@@ -198,6 +212,110 @@ class DebtorsProcessorTest extends TestCase
 
         $this->assertSame(0, $tolerant->countFilteredOverdueDebtors());
         $this->assertSame(1, $strict->countFilteredOverdueDebtors());
+        $this->assertCount(0, $tolerant->getFilteredOverdueDebtors()->toList());
+        $this->assertCount(1, $strict->getFilteredOverdueDebtors()->toList());
+    }
+
+    /**
+     * Only what is overdue by more than the tolerated delay counts towards the tolerated amount,
+     * so a big invoice that fell due yesterday does not tip a small old one over it. Both readings
+     * decide alike, as one of them is what blocks and the other what the dashboard says.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::getFilteredOverdueDebtors()
+     */
+    public function testAFreshInvoiceDoesNotTipAnOldDebtOverTheTolerance(): void
+    {
+        $this->owes([[40, 5.0], [3, 1000.0]]);
+
+        $tolerant = new DebtorsProcessor(allowed_payment_delay: 30, allowed_total_overdue_debt: 10.0);
+
+        $this->assertCount(0, $tolerant->getFilteredOverdueDebtors()->toList());
+        $this->assertSame(0, $tolerant->countFilteredOverdueDebtors());
+    }
+
+    /**
+     * A debt of exactly the tolerated amount is tolerated, one cent more is not.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::getFilteredOverdueDebtors()
+     */
+    public function testTheToleratedAmountItselfIsStillTolerated(): void
+    {
+        $this->owes([[40, 10.0]]);
+
+        $exactly = new DebtorsProcessor(allowed_payment_delay: 0, allowed_total_overdue_debt: 10.0);
+        $less = new DebtorsProcessor(allowed_payment_delay: 0, allowed_total_overdue_debt: 9.99);
+
+        $this->assertCount(0, $exactly->getFilteredOverdueDebtors()->toList());
+        $this->assertSame(0, $exactly->countFilteredOverdueDebtors());
+        $this->assertCount(1, $less->getFilteredOverdueDebtors()->toList());
+        $this->assertSame(1, $less->countFilteredOverdueDebtors());
+    }
+
+    /**
+     * Owing money cuts off everything somebody has, except what is VIP: its addresses stay off the
+     * list on the routers, while the contract beside it goes on it.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::collectIps()
+     */
+    public function testAVipContractStaysOffTheRouters(): void
+    {
+        $this->throughTheAgent(self::ROUTER_UP);
+        $this->holdAddressOnTheOtherContract();
+        $this->fetchTable('Contracts')->updateAll(['vip' => true], ['id' => self::CONTRACT_ID]);
+        $sent = $this->agentAnswers('sync', [self::ROUTER_UP => $this->nothingChanged()]);
+
+        (new DebtorsProcessor())->blockingUpdate();
+
+        $this->assertSame([self::OTHER_ADDRESS], array_column($sent[0]['entries'], 'address'));
+    }
+
+    /**
+     * An unsigned contract is cut off on its own: the one beside it is signed and paid for.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::contractsToBlock()
+     */
+    public function testAnUnsignedContractLeavesTheOneBesideItRunning(): void
+    {
+        $this->throughTheAgent(self::ROUTER_UP);
+        $this->unsignedPaperwork();
+        $this->holdAddressOnTheOtherContract();
+        $this->fetchTable('Bookkeeping.Invoices')->deleteAll([]);
+        $sent = $this->agentAnswers('sync', [self::ROUTER_UP => $this->nothingChanged()]);
+
+        (new DebtorsProcessor())->blockingUpdate();
+
+        $this->assertSame(['192.168.11.11', '10.0.0.0/8'], array_column($sent[0]['entries'], 'address'));
+    }
+
+    /**
+     * A contract an operator has put into a blocked state is cut off on its own too.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::statedAsBlocked()
+     */
+    public function testABlockedStateLeavesTheContractBesideItRunning(): void
+    {
+        $this->throughTheAgent(self::ROUTER_UP);
+        $this->holdAddressOnTheOtherContract();
+        $this->fetchTable('Bookkeeping.Invoices')->deleteAll([]);
+        $states = $this->fetchTable('ContractStates');
+        $row = $states->find()->disableHydration()->firstOrFail();
+        unset($row['id']);
+        $blocked = $states->newEntity(
+            ['name' => 'Blocked', 'blocked' => true] + $row,
+            ['validate' => false, 'accessibleFields' => ['*' => true]],
+        );
+        $states->saveOrFail($blocked, ['checkRules' => false]);
+        $this->fetchTable('Contracts')->updateAll(['contract_state_id' => $blocked->id], ['id' => self::OTHER_CONTRACT_ID]);
+        $sent = $this->agentAnswers('sync', [self::ROUTER_UP => $this->nothingChanged()]);
+
+        (new DebtorsProcessor())->blockingUpdate();
+
+        $this->assertSame([self::OTHER_ADDRESS], array_column($sent[0]['entries'], 'address'));
     }
 
     /**
@@ -646,6 +764,62 @@ class DebtorsProcessorTest extends TestCase
         Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.enabled', false);
         Settings::set('bookkeeping.debtors.blocking.services.routers.enabled', false);
         Settings::set('bookkeeping.debtors.blocking.blocked_label_id', self::LABEL_ID);
+    }
+
+    /**
+     * Replace what the customer owes.
+     *
+     * @param list<array{int, float}> $invoices How many days ago each invoice fell due, and its debt.
+     * @return void
+     */
+    private function owes(array $invoices): void
+    {
+        $table = $this->fetchTable('Bookkeeping.Invoices');
+        $table->deleteAll([]);
+        foreach ($invoices as $index => [$days, $debt]) {
+            $table->saveOrFail($table->newEntity([
+                'customer_id' => self::CUSTOMER_ID,
+                'number' => $index . '/TEST/2026',
+                'creation_date' => Date::today()->subDays($days + 14),
+                'due_date' => Date::today()->subDays($days),
+                'total' => $debt,
+                'debt' => $debt,
+                'accounting_identifier' => 'test-' . $index,
+            ]));
+        }
+    }
+
+    /**
+     * Give the second contract of the customer an address of its own.
+     *
+     * @return void
+     */
+    private function holdAddressOnTheOtherContract(): void
+    {
+        $addresses = $this->fetchTable('IpAddresses');
+        $addresses->saveOrFail($addresses->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::OTHER_CONTRACT_ID,
+            'ip_address' => self::OTHER_ADDRESS,
+            'type_of_use' => IpAddressTypeOfUse::CustomerManually,
+        ]));
+    }
+
+    /**
+     * What the agent says on a list it found as it should be.
+     *
+     * @return \Cake\Http\Client\Response
+     */
+    private function nothingChanged(): Response
+    {
+        return $this->agentAnswer(200, [
+            'host' => self::ROUTER_UP,
+            'transport' => 'api-ssl',
+            'added' => [],
+            'updated' => [],
+            'removed' => [],
+            'unchanged' => 1,
+        ]);
     }
 
     /**

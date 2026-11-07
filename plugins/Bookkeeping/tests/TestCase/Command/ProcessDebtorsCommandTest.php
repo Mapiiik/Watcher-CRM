@@ -12,6 +12,7 @@ use App\Model\Entity\Phone;
 use App\Model\Enum\CustomerMessageType;
 use Bookkeeping\Command\ProcessDebtorsCommand;
 use Bookkeeping\Debtors\Debtor;
+use Bookkeeping\Debtors\DebtorsProcessor;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Console\Arguments;
@@ -33,10 +34,9 @@ use Settings\Utility\Settings;
 /**
  * Bookkeeping\Command\ProcessDebtorsCommand Test Case
  *
- * A run reads who is overdue from the accounting system and can go on to block them, which a test
- * is no place to reach or to have happen. What is covered here is what can be answered without it:
- * the name, the description and the options a cron entry names the command by. They are what tells
- * a run to only notify from one that blocks, so a renamed one turns a warning into a disconnection.
+ * The name, the description and the options a cron entry names the command by are what tells a run
+ * to only notify from one that blocks, so a renamed one turns a warning into a disconnection. A run
+ * goes by SMS here, as an e-mail needs the invoices from the accounting system.
  */
 #[UsesClass(ProcessDebtorsCommand::class)]
 class ProcessDebtorsCommandTest extends TestCase
@@ -52,6 +52,13 @@ class ProcessDebtorsCommandTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
+     * The label a blocked customer is marked with.
+     *
+     * @var string
+     */
+    private const LABEL_ID = 'e9cbb697-be8b-4e05-8226-1b0aeb53130d';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -61,6 +68,24 @@ class ProcessDebtorsCommandTest extends TestCase
         'app.AccountingProfiles',
         'app.Customers',
         'app.CustomerMessages',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
+        'app.ContractVersions',
+        'app.ConnectionProfiles',
+        'app.Services',
+        'app.Billings',
+        'app.Emails',
+        'app.Phones',
+        'app.IpAddresses',
+        'app.IpNetworks',
+        'app.Labels',
+        'app.CustomerLabels',
+        'plugin.Settings.Settings',
+        'plugin.Bookkeeping.Invoices',
     ];
 
     /**
@@ -88,6 +113,90 @@ class ProcessDebtorsCommandTest extends TestCase
 
         $this->assertExitSuccess();
         $this->assertOutputContains(ProcessDebtorsCommand::getDescription());
+    }
+
+    /**
+     * What a cron entry names decides who is written to: a reminder, the news of being blocked, or
+     * both. Swapping the two would tell people they are cut off on the days of the reminders.
+     *
+     * @param string $option What the entry says.
+     * @param bool $reminded Whether the debtor is reminded.
+     * @param bool $toldOfBlocking Whether the debtor is told of being blocked.
+     * @return void
+     * @link \Bookkeeping\Command\ProcessDebtorsCommand::execute()
+     */
+    #[TestWith(['--only_notify', true, false])]
+    #[TestWith(['--only_block', false, true])]
+    #[TestWith(['', true, true])]
+    public function testTheOptionsChooseWhatIsWritten(string $option, bool $reminded, bool $toldOfBlocking): void
+    {
+        $this->aDebtorWithAPhone();
+
+        $this->exec(trim('process_debtors --skip_emails ' . $option));
+
+        $this->assertExitSuccess();
+        $output = (string)$this->_out?->output();
+        $this->assertSame($reminded, str_contains($output, 'Notification SMS has been generated'), $output);
+        $this->assertSame($toldOfBlocking, str_contains($output, 'Blocking SMS has been generated'), $output);
+    }
+
+    /**
+     * Telling somebody is not blocking them: that takes the option of its own.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\ProcessDebtorsCommand::execute()
+     */
+    public function testOnlyTheBlockingUpdateBlocks(): void
+    {
+        $this->aDebtorWithAPhone();
+        Settings::set('bookkeeping.debtors.blocking.enabled', true);
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.enabled', false);
+        Settings::set('bookkeeping.debtors.blocking.services.routers.enabled', false);
+        Settings::set('bookkeeping.debtors.blocking.blocked_label_id', self::LABEL_ID);
+        $labels = $this->fetchTable('CustomerLabels');
+        $labels->deleteAll([]);
+
+        $this->exec('process_debtors --skip_emails --skip_sms');
+        $this->assertExitSuccess();
+        $this->assertSame(0, $labels->find()->count());
+
+        $this->exec('process_debtors --skip_emails --skip_sms --blocking_update');
+        $this->assertExitSuccess();
+        $this->assertSame(1, $labels->find()->where(['customer_id' => self::CUSTOMER_ID])->count());
+    }
+
+    /**
+     * A customer overdue today by the days a reminder goes out on, reachable by a billing phone only.
+     *
+     * @return void
+     */
+    private function aDebtorWithAPhone(): void
+    {
+        (new ReflectionProperty(DebtorsProcessor::class, 'debtors'))->setValue(null, null);
+
+        Settings::set('bookkeeping.debtors.notifications.enabled', true);
+        Settings::set('bookkeeping.debtors.notifications.channels.sms.enabled', true);
+        Settings::set('bookkeeping.debtors.notifications.types.notify.enabled', true);
+        Settings::set('bookkeeping.debtors.notifications.types.block.enabled', true);
+        Settings::set('bookkeeping.debtors.notifications.days', [3]);
+        Settings::set('bookkeeping.debtors.thresholds.allowed_payment_delay', 0);
+        Settings::set('bookkeeping.debtors.thresholds.allowed_total_overdue_debt', 0);
+
+        $this->fetchTable('Emails')->deleteAll([]);
+        $this->fetchTable('Phones')->updateAll(['use_for_billing' => true], ['1 = 1']);
+        $this->fetchTable('ContractStates')->updateAll(['blocked' => false], ['1 = 1']);
+
+        $invoices = $this->fetchTable('Bookkeeping.Invoices');
+        $invoices->deleteAll([]);
+        $invoices->saveOrFail($invoices->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'number' => '1/TEST/2026',
+            'creation_date' => Date::today()->subDays(17),
+            'due_date' => Date::today()->subDays(3),
+            'total' => 100.0,
+            'debt' => 100.0,
+            'accounting_identifier' => 'test-reminder',
+        ]));
     }
 
     /**
