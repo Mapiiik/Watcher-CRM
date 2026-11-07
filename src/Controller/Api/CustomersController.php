@@ -86,8 +86,9 @@ class CustomersController extends AppController
             'Tasks' => [
                 'TaskTypes',
                 'TaskStates',
-                'Users',
-                'Collaborators',
+                // the rest of an account has nothing to do with the task
+                'Users' => ['fields' => ['id', 'username', 'first_name', 'last_name']],
+                'Collaborators' => ['fields' => ['id', 'username', 'first_name', 'last_name']],
             ],
             'AccountingProfiles',
         ]);

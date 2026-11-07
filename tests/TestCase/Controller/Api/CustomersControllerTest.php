@@ -114,6 +114,37 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * A task names who holds it and who else is on it, and says nothing more about their accounts.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomersController::view()
+     */
+    public function testATaskOfACustomerOnlyNamesThePeopleOnIt(): void
+    {
+        $task = $this->getTableLocator()->get('Tasks')->find()->firstOrFail();
+
+        $links = $this->getTableLocator()->get('TaskCollaborators');
+        $links->saveOrFail($links->newEntity([
+            'task_id' => $task->get('id'),
+            'user_id' => $task->get('user_id'),
+        ]));
+
+        $this->login();
+        $this->configRequest(['headers' => ['Accept' => 'application/json']]);
+        $this->get('/api/customers/' . $task->get('customer_id') . '.json');
+
+        $this->assertResponseOk();
+
+        $answered = json_decode((string)$this->_response?->getBody(), true);
+        $handed_over = $answered['customer']['tasks'][0] ?? [];
+        $names = ['id', 'username', 'first_name', 'last_name'];
+
+        $this->assertSame($names, array_keys($handed_over['user'] ?? []));
+        $this->assertCount(1, $handed_over['collaborators'] ?? []);
+        $this->assertSame($names, array_keys($handed_over['collaborators'][0]));
+    }
+
+    /**
      * The endpoint takes a new customer and reports the outcome.
      *
      * @return void
