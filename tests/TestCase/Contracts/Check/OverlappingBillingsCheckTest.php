@@ -157,6 +157,20 @@ class OverlappingBillingsCheckTest extends TestCase
     }
 
     /**
+     * Billings that name no service at all are of one line too, or their overlap would not count.
+     *
+     * @return void
+     * @link \App\Contracts\Check\OverlappingBillingsCheck::find()
+     */
+    public function testBillingsWithoutAServiceAreOneLine(): void
+    {
+        $this->billed('-2 years', null, null);
+        $this->billed('-1 year', null, null);
+
+        $this->assertCount(1, $this->found());
+    }
+
+    /**
      * Three billings over one stretch are two overlapping pairs, and the two earlier ones are
      * what there is to fix. The latest cannot be at fault: nothing starts under it.
      *
@@ -205,10 +219,10 @@ class OverlappingBillingsCheckTest extends TestCase
      *
      * @param string $from When billing starts, as a modifier of today.
      * @param string|null $until When it ends, or null for an open end.
-     * @param string $service_id The service being billed.
+     * @param string|null $service_id The service being billed, or null for a billing of none.
      * @return void
      */
-    private function billed(string $from, ?string $until, string $service_id = self::SERVICE_ID): void
+    private function billed(string $from, ?string $until, ?string $service_id = self::SERVICE_ID): void
     {
         // dated as it would have come to be before the rules were there to refuse it, which
         // is the very thing the check is here to find

@@ -35,22 +35,16 @@ class BillingGapCheck extends AbstractContractCheck
 {
     /**
      * Another billing of the same run picks up, but later than the day after this one ends.
-     *
-     * Two billings are of one run when both are for a tariff - whichever tariff - or when they
-     * name the very same service. `IS NOT DISTINCT FROM` so that billings carrying no service
-     * at all form one run rather than none.
      */
     private const RESUMES_LATER = <<<'SQL'
         EXISTS (
-            SELECT 1 FROM billings later
-            LEFT JOIN services later_service ON later_service.id = later.service_id
-            WHERE later.id <> Billings.id
-              AND later.contract_id = Billings.contract_id
-              AND (
-                (later_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
-                OR later.service_id IS NOT DISTINCT FROM Billings.service_id
-              )
-              AND later.billing_from > Billings.billing_until + 1
+            SELECT 1 FROM billings other
+            LEFT JOIN services other_service ON other_service.id = other.service_id
+            WHERE other.id <> Billings.id
+              AND other.contract_id = Billings.contract_id
+              AND
+        SQL . ' ' . self::SAME_LINE . ' ' . <<<'SQL'
+              AND other.billing_from > Billings.billing_until + 1
         )
         SQL;
 
@@ -60,15 +54,13 @@ class BillingGapCheck extends AbstractContractCheck
      */
     private const NOTHING_FOLLOWS_IT = <<<'SQL'
         NOT EXISTS (
-            SELECT 1 FROM billings covering
-            LEFT JOIN services covering_service ON covering_service.id = covering.service_id
-            WHERE covering.contract_id = Billings.contract_id
-              AND (
-                (covering_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
-                OR covering.service_id IS NOT DISTINCT FROM Billings.service_id
-              )
-              AND covering.billing_from > Billings.billing_from
-              AND covering.billing_from <= Billings.billing_until + 1
+            SELECT 1 FROM billings other
+            LEFT JOIN services other_service ON other_service.id = other.service_id
+            WHERE other.contract_id = Billings.contract_id
+              AND
+        SQL . ' ' . self::SAME_LINE . ' ' . <<<'SQL'
+              AND other.billing_from > Billings.billing_from
+              AND other.billing_from <= Billings.billing_until + 1
         )
         SQL;
 
@@ -78,16 +70,14 @@ class BillingGapCheck extends AbstractContractCheck
      */
     private const BREAK_NOT_OVER = <<<'SQL'
         NOT EXISTS (
-            SELECT 1 FROM billings resumed
-            LEFT JOIN services resumed_service ON resumed_service.id = resumed.service_id
-            WHERE resumed.id <> Billings.id
-              AND resumed.contract_id = Billings.contract_id
-              AND (
-                (resumed_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
-                OR resumed.service_id IS NOT DISTINCT FROM Billings.service_id
-              )
-              AND resumed.billing_from > Billings.billing_until + 1
-              AND resumed.billing_from <= CURRENT_DATE
+            SELECT 1 FROM billings other
+            LEFT JOIN services other_service ON other_service.id = other.service_id
+            WHERE other.id <> Billings.id
+              AND other.contract_id = Billings.contract_id
+              AND
+        SQL . ' ' . self::SAME_LINE . ' ' . <<<'SQL'
+              AND other.billing_from > Billings.billing_until + 1
+              AND other.billing_from <= CURRENT_DATE
         )
         SQL;
 
@@ -97,15 +87,13 @@ class BillingGapCheck extends AbstractContractCheck
      */
     private const RESUMES_ON = <<<'SQL'
         (
-            SELECT MIN(resumes.billing_from) FROM billings resumes
-            LEFT JOIN services resumes_service ON resumes_service.id = resumes.service_id
-            WHERE resumes.id <> Billings.id
-              AND resumes.contract_id = Billings.contract_id
-              AND (
-                (resumes_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
-                OR resumes.service_id IS NOT DISTINCT FROM Billings.service_id
-              )
-              AND resumes.billing_from > Billings.billing_until + 1
+            SELECT MIN(other.billing_from) FROM billings other
+            LEFT JOIN services other_service ON other_service.id = other.service_id
+            WHERE other.id <> Billings.id
+              AND other.contract_id = Billings.contract_id
+              AND
+        SQL . ' ' . self::SAME_LINE . ' ' . <<<'SQL'
+              AND other.billing_from > Billings.billing_until + 1
         )
         SQL;
 

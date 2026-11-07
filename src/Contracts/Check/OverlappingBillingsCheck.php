@@ -38,10 +38,8 @@ class OverlappingBillingsCheck extends AbstractContractCheck
             SELECT 1 FROM billings other
             LEFT JOIN services other_service ON other_service.id = other.service_id
             WHERE other.contract_id = Billings.contract_id
-              AND (
-                (other_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
-                OR other.service_id IS NOT DISTINCT FROM Billings.service_id
-              )
+              AND
+        SQL . ' ' . self::SAME_LINE . ' ' . <<<'SQL'
               AND (other.billing_from, other.id) > (Billings.billing_from, Billings.id)
               AND other.billing_from <= COALESCE(Billings.billing_until, 'infinity'::date)
         )
@@ -52,15 +50,13 @@ class OverlappingBillingsCheck extends AbstractContractCheck
      */
     private const OVERLAPS_FROM = <<<'SQL'
         (
-            SELECT MIN(overlapping.billing_from) FROM billings overlapping
-            LEFT JOIN services overlapping_service ON overlapping_service.id = overlapping.service_id
-            WHERE overlapping.contract_id = Billings.contract_id
-              AND (
-                (overlapping_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
-                OR overlapping.service_id IS NOT DISTINCT FROM Billings.service_id
-              )
-              AND (overlapping.billing_from, overlapping.id) > (Billings.billing_from, Billings.id)
-              AND overlapping.billing_from <= COALESCE(Billings.billing_until, 'infinity'::date)
+            SELECT MIN(other.billing_from) FROM billings other
+            LEFT JOIN services other_service ON other_service.id = other.service_id
+            WHERE other.contract_id = Billings.contract_id
+              AND
+        SQL . ' ' . self::SAME_LINE . ' ' . <<<'SQL'
+              AND (other.billing_from, other.id) > (Billings.billing_from, Billings.id)
+              AND other.billing_from <= COALESCE(Billings.billing_until, 'infinity'::date)
         )
         SQL;
 
@@ -70,17 +66,15 @@ class OverlappingBillingsCheck extends AbstractContractCheck
      */
     private const OVERLAPS_WITH = <<<'SQL'
         (
-            SELECT with_service.name
-            FROM billings with_billing
-            LEFT JOIN services with_service ON with_service.id = with_billing.service_id
-            WHERE with_billing.contract_id = Billings.contract_id
-              AND (
-                (with_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
-                OR with_billing.service_id IS NOT DISTINCT FROM Billings.service_id
-              )
-              AND (with_billing.billing_from, with_billing.id) > (Billings.billing_from, Billings.id)
-              AND with_billing.billing_from <= COALESCE(Billings.billing_until, 'infinity'::date)
-            ORDER BY with_billing.billing_from, with_billing.id
+            SELECT other_service.name
+            FROM billings other
+            LEFT JOIN services other_service ON other_service.id = other.service_id
+            WHERE other.contract_id = Billings.contract_id
+              AND
+        SQL . ' ' . self::SAME_LINE . ' ' . <<<'SQL'
+              AND (other.billing_from, other.id) > (Billings.billing_from, Billings.id)
+              AND other.billing_from <= COALESCE(Billings.billing_until, 'infinity'::date)
+            ORDER BY other.billing_from, other.id
             LIMIT 1
         )
         SQL;

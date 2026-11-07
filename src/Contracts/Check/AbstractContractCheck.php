@@ -26,6 +26,20 @@ use Settings\Utility\Settings;
 abstract class AbstractContractCheck extends AbstractCheck implements ContractCheckInterface
 {
     /**
+     * Two billings are of one line when both are for a tariff - whichever tariff - or when they
+     * name the very same service. `IS NOT DISTINCT FROM` so that billings carrying no service at
+     * all form one line rather than none.
+     *
+     * Read from a subquery that calls the other billing `other` and its service `other_service`.
+     */
+    protected const SAME_LINE = <<<'SQL'
+        (
+            (other_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
+            OR other.service_id IS NOT DISTINCT FROM Billings.service_id
+        )
+        SQL;
+
+    /**
      * Where the settings say what a date may look like.
      */
     private const SETTINGS_PATH = 'core.contracts.checks';
