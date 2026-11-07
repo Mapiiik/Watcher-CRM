@@ -872,6 +872,28 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
+     * Whoever may return a report may open its days too, and only as many as it takes. Without
+     * that the worker of a returned report stood before a closed month until a manager came.
+     *
+     * @return void
+     * @link \WorkReports\Controller\WorkReportsController::close()
+     */
+    public function testWhoMayReturnAReportOpensItsDays(): void
+    {
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $report = $this->monthOfVacation();
+        $reports->updateAll(['closed_until' => '2026-06-30'], ['id' => $report->id]);
+        $other = $this->otherUser();
+        $this->addRecipient(self::WORKER, $other, true);
+        $this->loginAs($other, 'user', superuser: false);
+
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-06-23']);
+
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertEquals(new Date('2026-06-23'), $reports->get($report->id)->closed_until);
+    }
+
+    /**
      * Log a user in, as the application knows them.
      *
      * @param string $id User id.

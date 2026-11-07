@@ -95,8 +95,8 @@ class AppController extends BaseController
     }
 
     /**
-     * Whether the user signed in may return a submitted report of the worker. The worker does not
-     * return their own, unless they oversee their own too.
+     * Whether the user signed in may return a submitted report of the worker and open its closed
+     * days, as many as it takes. The worker does neither on their own, unless they oversee it too.
      *
      * @param string $userId Worker.
      * @return bool

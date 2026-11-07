@@ -294,7 +294,7 @@ class WorkReportsController extends AppController
         }
 
         $closedUntil = $workReport->closed_until;
-        $mayOpen = $this->oversees($workReport->user_id);
+        $mayOpen = $this->mayReopen($workReport->user_id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $workReport = $this->WorkReports->patchEntity(
