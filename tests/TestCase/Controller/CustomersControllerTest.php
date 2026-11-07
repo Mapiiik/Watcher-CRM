@@ -1161,9 +1161,10 @@ class CustomersControllerTest extends TestCase
 
     /**
      * Not being in a register of companies is a mistake for somebody in business and nothing at
-     * all for anybody else, so it says the same in both but is marked only for the first.
+     * all for anybody else, so it says the same in both but is marked only for the first. The
+     * customer here has a company name, which is what speaks for one with no legal status yet.
      *
-     * @param \App\Model\Enum\CustomerLegalStatus $legalStatus Who the customer is in law.
+     * @param \App\Model\Enum\CustomerLegalStatus|null $legalStatus Who the customer is in law.
      * @param bool $wrong Whether it is marked.
      * @return void
      * @link \App\Controller\CustomersController::registerNote()
@@ -1171,8 +1172,9 @@ class CustomersControllerTest extends TestCase
     #[TestWith([CustomerLegalStatus::LegalEntity, true])]
     #[TestWith([CustomerLegalStatus::SoleTrader, true])]
     #[TestWith([CustomerLegalStatus::NaturalPerson, false])]
+    #[TestWith([null, true])]
     public function testRegisterNoteMarksAMissingNumberOnlyOfABusiness(
-        CustomerLegalStatus $legalStatus,
+        ?CustomerLegalStatus $legalStatus,
         bool $wrong,
     ): void {
         $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);

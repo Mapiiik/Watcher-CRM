@@ -194,6 +194,17 @@ class Customer extends AppEntity
     }
 
     /**
+     * Whether a register of companies is expected to hold the customer: whoever is in business,
+     * and where nobody has said what the customer is, whoever has a company name.
+     *
+     * @return bool
+     */
+    public function isExpectedInARegister(): bool
+    {
+        return $this->isBusiness() || ($this->legal_status === null && (string)$this->company !== '');
+    }
+
+    /**
      * getter for full name with company and with customer number for lists
      *
      * @return string

@@ -29,10 +29,10 @@ $remark = function (string $note, bool $wrong = false): string {
 };
 
 if ($identityNumberCheck !== null) {
-    // only somebody in business is expected to be in a register of companies
+    // a household is in no register of companies, and that is nothing to point out
     echo $remark(
         $identityNumberCheck->note(),
-        wrong: $identityNumberCheck->status === IdentityNumberStatus::NotFound && $customer->isBusiness()
+        wrong: $identityNumberCheck->status === IdentityNumberStatus::NotFound && $customer->isExpectedInARegister()
             || !$customer->isKnownAs($identityNumberCheck->company),
     );
 

@@ -287,6 +287,28 @@ class CustomerTest extends TestCase
     }
 
     /**
+     * A register is expected to hold whoever is in business, and of those with no legal status yet
+     * whoever has a company name.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::isExpectedInARegister()
+     */
+    public function testWhoARegisterIsExpectedToHold(): void
+    {
+        $expected = fn(?CustomerLegalStatus $status, ?string $company): bool => (new Customer([
+            'legal_status' => $status,
+            'company' => $company,
+        ]))->isExpectedInARegister();
+
+        $this->assertTrue($expected(CustomerLegalStatus::LegalEntity, null));
+        $this->assertTrue($expected(CustomerLegalStatus::SoleTrader, null));
+        $this->assertTrue($expected(null, 'NETAIR, s.r.o.'));
+        $this->assertFalse($expected(null, null));
+        $this->assertFalse($expected(null, ''));
+        $this->assertFalse($expected(CustomerLegalStatus::NaturalPerson, 'NETAIR, s.r.o.'));
+    }
+
+    /**
      * The OIB of a natural person stays here: no register of companies holds it. Everybody else
      * is asked about, a customer nobody has said anything about too, as that is how their legal
      * status gets found out, and so is the Czech number of a natural person.
