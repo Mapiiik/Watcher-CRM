@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-06 15:37+0100\n"
+"POT-Creation-Date: 2026-11-07 15:03+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,72 +14,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:87
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:95
 msgid "Checks the stored content against what the records say, and reports what does not match."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:93
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:101
 msgid "Throw away the bytes and the pictures nobody has a row for. Nothing else is touched."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:143
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:151
 msgid "{0} rows, {1} of them with their content stored."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:150
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:158
 msgid "Rows whose bytes are gone"
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:155
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:163
 msgid "Rows whose bytes are not the size they say"
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:160
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:168
 msgid "Bytes nobody has a row for"
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:161
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:169
 msgid "Pictures of content nobody has a row for"
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:164
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:172
 msgid "{0} rows nothing points at. They are safe to let go of one at a time from the storage page."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:180
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:189
 #: ./plugins/Files/src/Command/FilesTrashPurgeCommand.php:99
 msgid "{0} thrown away."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:187
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:196
 msgid "The store and the records agree."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:188
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:197
 msgid "Nothing is missing. Run this again with --fix to throw the rest away."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:210
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:219
 msgid "The store no longer holds everything the records point at."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:212
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:221
 msgid "Rows whose bytes are gone: {0}"
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:213
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:222
 msgid "Rows whose bytes are not the size they say: {0}"
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:215
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:224
 msgid "Run `bin/cake check_files` to see which. What is missing has to come back from a backup - neither can be put right from there."
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:223
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:232
 msgid "File store check failed"
 msgstr ""
 
-#: ./plugins/Files/src/Command/CheckFilesCommand.php:272
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:312
 msgid "  ... and {0} more."
 msgstr ""
 
@@ -111,11 +111,11 @@ msgstr ""
 msgid "How many to make before stopping. Defaults to {0}."
 msgstr ""
 
-#: ./plugins/Files/src/Command/GeneratePreviewsCommand.php:144
+#: ./plugins/Files/src/Command/GeneratePreviewsCommand.php:145
 msgid "{0} made."
 msgstr ""
 
-#: ./plugins/Files/src/Command/GeneratePreviewsCommand.php:147
+#: ./plugins/Files/src/Command/GeneratePreviewsCommand.php:148
 msgid "{0} could not be made. The log says why."
 msgstr ""
 
@@ -145,45 +145,45 @@ msgstr ""
 msgid "The documentation type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:142
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:177
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:143
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:178
 msgid "The documentation has been saved."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:148
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:183
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:149
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:184
 msgid "The documentation could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:209
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:210
 msgid "The documentation has been deleted."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:212
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:213
 msgid "The documentation could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:256
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:257
 msgid "Nothing was chosen to file."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:281
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:282
 msgid "The file has been removed from the documentation."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:283
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:284
 msgid "The file could not be removed: {0}"
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:305
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:306
 msgid "The files could not be reordered: {0}"
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:331
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:332
 msgid "That file belongs to something else."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:245
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:246
 msgid "{0} file has been filed."
 msgid_plural "{0} files have been filed."
 msgstr[0] ""

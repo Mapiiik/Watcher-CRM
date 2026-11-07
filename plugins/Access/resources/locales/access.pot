@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-24 01:55+0200\n"
+"POT-Creation-Date: 2026-11-07 15:03+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -87,7 +87,9 @@ msgid "The API key of {0} is removed."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:87
-#: ./plugins/Access/src/Controller/UsersController.php:115
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:306
+#: ./plugins/Access/src/Controller/UsersController.php:112
+#: ./plugins/Access/src/Controller/UsersController.php:307
 msgid "Too many failed sign-ins. Try again in a few minutes."
 msgstr ""
 
@@ -95,13 +97,12 @@ msgstr ""
 msgid "The code is not right. Please sign in again."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:133
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:170
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:202
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:134
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:319
 msgid "The code is not right. Please try again."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:154
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:155
 msgid "Your account has to use two-step verification."
 msgstr ""
 
@@ -109,7 +110,7 @@ msgstr ""
 msgid "Two-step verification is turned off."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:246
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:241
 msgid "The two-step verification of {0} is reset."
 msgstr ""
 
@@ -121,11 +122,11 @@ msgstr ""
 msgid "The link for setting a new password does not work any more. Ask for a new one."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:108
+#: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:109
 msgid "The new password is set. Sign in with it."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:112
+#: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:113
 msgid "The password could not be set."
 msgstr ""
 
@@ -147,27 +148,27 @@ msgstr ""
 msgid "The identity could not be unlinked."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:133
+#: ./plugins/Access/src/Controller/UsersController.php:130
 msgid "The username or the password is not right."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:139
+#: ./plugins/Access/src/Controller/UsersController.php:136
 msgid "An account without a password signs in with {0}."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:142
+#: ./plugins/Access/src/Controller/UsersController.php:139
 msgid "or"
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:162
+#: ./plugins/Access/src/Controller/UsersController.php:159
 msgid "Signing in with {0} did not finish. Please try again."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:163
+#: ./plugins/Access/src/Controller/UsersController.php:160
 msgid "No account here is linked to that identity. Sign in with your password and link it in your profile."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:192
+#: ./plugins/Access/src/Controller/UsersController.php:190
 msgid "You have signed out."
 msgstr ""
 
@@ -175,49 +176,49 @@ msgstr ""
 msgid "Only a superuser changes the password of somebody else."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:255
-msgid "This is not the current password."
-msgstr ""
-
 #: ./plugins/Access/src/Controller/UsersController.php:258
 msgid "The new password has to differ from the current one."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:267
+#: ./plugins/Access/src/Controller/UsersController.php:275
 msgid "The password has been changed."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:271
+#: ./plugins/Access/src/Controller/UsersController.php:279
 msgid "The password could not be changed."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:297
+#: ./plugins/Access/src/Controller/UsersController.php:316
+msgid "This is not the current password."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:333
 msgid "Only a superuser turns off signing in with a password."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:299
+#: ./plugins/Access/src/Controller/UsersController.php:335
 msgid "Signing in to your own account with a password stays on."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:307
+#: ./plugins/Access/src/Controller/UsersController.php:343
 msgid "Signing in with a password is off. Setting a password turns it on."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:374
-#: ./plugins/Access/src/Controller/UsersController.php:398
+#: ./plugins/Access/src/Controller/UsersController.php:410
+#: ./plugins/Access/src/Controller/UsersController.php:436
 msgid "The account has been saved."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:378
-#: ./plugins/Access/src/Controller/UsersController.php:402
+#: ./plugins/Access/src/Controller/UsersController.php:414
+#: ./plugins/Access/src/Controller/UsersController.php:440
 msgid "The account could not be saved."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:421
+#: ./plugins/Access/src/Controller/UsersController.php:459
 msgid "The account has been deleted."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:424
+#: ./plugins/Access/src/Controller/UsersController.php:462
 msgid "The account could not be deleted."
 msgstr ""
 

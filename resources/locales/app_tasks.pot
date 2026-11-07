@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-27 09:01+0200\n"
+"POT-Creation-Date: 2026-11-07 15:03+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,111 +14,115 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./templates/element/Tasks/related.php:18
+#: ./templates/element/Tasks/related.php:22
 msgid "Number"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:20
+#: ./templates/element/Tasks/related.php:24
 #: ./templates/plugin/Tasks/TaskTypes/view.php:38
 msgid "Task Type"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:23
+#: ./templates/element/Tasks/related.php:27
 #: ./templates/plugin/Tasks/TaskStates/view.php:38
 msgid "Task State"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:25
+#: ./templates/element/Tasks/related.php:29
 #: ./templates/plugin/Tasks/TaskStates/view.php:51
 msgid "Priority"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:26
+#: ./templates/element/Tasks/related.php:30
 msgid "User"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:27
+#: ./templates/element/Tasks/related.php:31
 msgid "Subject"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:28
+#: ./templates/element/Tasks/related.php:32
 msgid "Text"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:29
+#: ./templates/element/Tasks/related.php:33
 msgid "Email"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:30
+#: ./templates/element/Tasks/related.php:34
 msgid "Phone"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:31
+#: ./templates/element/Tasks/related.php:35
 msgid "Customer"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:32
+#: ./templates/element/Tasks/related.php:36
 msgid "Customer Number"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:33
+#: ./templates/element/Tasks/related.php:37
 msgid "Access Point"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:34
+#: ./templates/element/Tasks/related.php:38
 msgid "Start Date"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:35
+#: ./templates/element/Tasks/related.php:39
 msgid "Estimated Date"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:36
+#: ./templates/element/Tasks/related.php:40
 msgid "Critical Date"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:37
+#: ./templates/element/Tasks/related.php:41
 msgid "Finish Date"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:38
+#: ./templates/element/Tasks/related.php:42
 #: ./templates/plugin/Tasks/TaskStates/view.php:10
 #: ./templates/plugin/Tasks/TaskTypes/add.php:10
 #: ./templates/plugin/Tasks/TaskTypes/edit.php:10
 #: ./templates/plugin/Tasks/TaskTypes/index.php:39
 #: ./templates/plugin/Tasks/TaskTypes/view.php:10
-#: ./templates/plugin/Tasks/TaskTypes/view.php:103
+#: ./templates/plugin/Tasks/TaskTypes/view.php:104
 msgid "Actions"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:66
+#: ./templates/element/Tasks/related.php:70
 msgid "Collaborators"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:95
+#: ./templates/element/Tasks/related.php:99
 #: ./templates/plugin/Tasks/TaskTypes/index.php:55
-#: ./templates/plugin/Tasks/TaskTypes/view.php:123
+#: ./templates/plugin/Tasks/TaskTypes/view.php:124
 msgid "View"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:99
+#: ./templates/element/Tasks/related.php:103
 #: ./templates/plugin/Tasks/TaskTypes/index.php:57
-#: ./templates/plugin/Tasks/TaskTypes/view.php:127
+#: ./templates/plugin/Tasks/TaskTypes/view.php:128
 msgid "Edit"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:104
+#: ./templates/element/Tasks/related.php:108
 #: ./templates/plugin/Tasks/TaskTypes/edit.php:12
 #: ./templates/plugin/Tasks/TaskTypes/index.php:62
 msgid "Delete"
 msgstr ""
 
-#: ./templates/element/Tasks/related.php:107
+#: ./templates/element/Tasks/related.php:111
 #: ./templates/plugin/Tasks/TaskStates/view.php:20
 #: ./templates/plugin/Tasks/TaskTypes/edit.php:15
 #: ./templates/plugin/Tasks/TaskTypes/index.php:64
 #: ./templates/plugin/Tasks/TaskTypes/view.php:20
 msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: ./templates/element/Tasks/related.php:124
+msgid "Only the first {0} are shown."
 msgstr ""
 
 #: ./templates/plugin/Tasks/TaskStates/view.php:12
@@ -142,7 +146,7 @@ msgstr ""
 #: ./templates/plugin/Tasks/TaskTypes/edit.php:32
 #: ./templates/plugin/Tasks/TaskTypes/index.php:30
 #: ./templates/plugin/Tasks/TaskTypes/view.php:43
-#: ./templates/plugin/Tasks/TaskTypes/view.php:98
+#: ./templates/plugin/Tasks/TaskTypes/view.php:99
 msgid "Name"
 msgstr ""
 
@@ -163,10 +167,10 @@ msgstr ""
 #: ./templates/plugin/Tasks/TaskTypes/view.php:55
 #: ./templates/plugin/Tasks/TaskTypes/view.php:61
 #: ./templates/plugin/Tasks/TaskTypes/view.php:67
-#: ./templates/plugin/Tasks/TaskTypes/view.php:110
-#: ./templates/plugin/Tasks/TaskTypes/view.php:113
-#: ./templates/plugin/Tasks/TaskTypes/view.php:116
-#: ./templates/plugin/Tasks/TaskTypes/view.php:119
+#: ./templates/plugin/Tasks/TaskTypes/view.php:111
+#: ./templates/plugin/Tasks/TaskTypes/view.php:114
+#: ./templates/plugin/Tasks/TaskTypes/view.php:117
+#: ./templates/plugin/Tasks/TaskTypes/view.php:120
 msgid "Yes"
 msgstr ""
 
@@ -179,10 +183,10 @@ msgstr ""
 #: ./templates/plugin/Tasks/TaskTypes/view.php:56
 #: ./templates/plugin/Tasks/TaskTypes/view.php:62
 #: ./templates/plugin/Tasks/TaskTypes/view.php:68
-#: ./templates/plugin/Tasks/TaskTypes/view.php:111
-#: ./templates/plugin/Tasks/TaskTypes/view.php:114
-#: ./templates/plugin/Tasks/TaskTypes/view.php:117
-#: ./templates/plugin/Tasks/TaskTypes/view.php:120
+#: ./templates/plugin/Tasks/TaskTypes/view.php:112
+#: ./templates/plugin/Tasks/TaskTypes/view.php:115
+#: ./templates/plugin/Tasks/TaskTypes/view.php:118
+#: ./templates/plugin/Tasks/TaskTypes/view.php:121
 msgid "No"
 msgstr ""
 
@@ -261,23 +265,23 @@ msgstr ""
 msgid "Delete Task Type"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:84
+#: ./templates/plugin/Tasks/TaskTypes/view.php:85
 msgid "Related Contract States"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:99
+#: ./templates/plugin/Tasks/TaskTypes/view.php:100
 msgid "Usable for New Contracts"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:100
+#: ./templates/plugin/Tasks/TaskTypes/view.php:101
 msgid "Active Services"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:101
+#: ./templates/plugin/Tasks/TaskTypes/view.php:102
 msgid "Billed"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:102
+#: ./templates/plugin/Tasks/TaskTypes/view.php:103
 msgid "Blocked"
 msgstr ""
 

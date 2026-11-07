@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-02 12:28+0100\n"
+"POT-Creation-Date: 2026-11-07 15:03+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,12 +14,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#: ./plugins/Radius/src/Check/AbstractRadiusCheck.php:61
+msgid "The RADIUS database could not be read, so this was not checked."
+msgstr ""
+
 #: ./plugins/Radius/src/Check/RadiusAccountWithoutTariffCheck.php:30
 msgid "Active RADIUS Account Without a Tariff"
 msgstr ""
 
 #: ./plugins/Radius/src/Check/RadiusAccountWithoutTariffCheck.php:39
 msgid "Every active RADIUS account has a tariff naming its group."
+msgstr ""
+
+#: ./plugins/Radius/src/Check/RadiusAddressOutsideContractCheck.php:31
+msgid "Active RADIUS Account With an Address Outside Its Contract"
+msgstr ""
+
+#: ./plugins/Radius/src/Check/RadiusAddressOutsideContractCheck.php:40
+msgid "Every active RADIUS account keeps to the addresses of its contract."
 msgstr ""
 
 #: ./plugins/Radius/src/Check/RadiusGroupMismatchCheck.php:30
@@ -69,6 +81,7 @@ msgstr ""
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:13
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:36
 #: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:24
+#: ./plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:23
 #: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:20
 msgid "Customer"
 msgstr ""
@@ -80,10 +93,11 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/index.php:37
 #: ./plugins/Radius/templates/Accounts/monitoring.php:109
 #: ./plugins/Radius/templates/Accounts/view.php:84
-#: ./plugins/Radius/templates/cell/Accounts/display.php:15
+#: ./plugins/Radius/templates/cell/Accounts/display.php:27
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:14
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:37
 #: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:27
+#: ./plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:26
 #: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:23
 msgid "Contract"
 msgstr ""
@@ -109,7 +123,7 @@ msgstr ""
 
 #: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:124
 #: ./plugins/Radius/templates/Radreply/index.php:13
-#: ./plugins/Radius/templates/cell/Accounts/display.php:22
+#: ./plugins/Radius/templates/cell/Accounts/display.php:36
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:41
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:42
 msgid "RADIUS Replies"
@@ -117,10 +131,11 @@ msgstr ""
 
 #: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:125
 #: ./plugins/Radius/templates/Radusergroup/index.php:13
-#: ./plugins/Radius/templates/cell/Accounts/display.php:21
+#: ./plugins/Radius/templates/cell/Accounts/display.php:35
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:43
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:44
 #: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:31
+#: ./plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:29
 #: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:26
 msgid "RADIUS User Groups"
 msgstr ""
@@ -144,26 +159,26 @@ msgstr ""
 msgid "RADIUS accounts update failed."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:175
-#: ./plugins/Radius/src/Controller/AccountsController.php:288
+#: ./plugins/Radius/src/Controller/AccountsController.php:170
+#: ./plugins/Radius/src/Controller/AccountsController.php:283
 msgid "The RADIUS account has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:179
-#: ./plugins/Radius/src/Controller/AccountsController.php:299
+#: ./plugins/Radius/src/Controller/AccountsController.php:174
+#: ./plugins/Radius/src/Controller/AccountsController.php:298
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:346
+#: ./plugins/Radius/src/Controller/AccountsController.php:345
 msgid "The RADIUS account has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:349
+#: ./plugins/Radius/src/Controller/AccountsController.php:348
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:393
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:200
+#: ./plugins/Radius/src/Controller/AccountsController.php:386
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:197
 msgid "No active RADIUS session for {0} found."
 msgstr ""
 
@@ -303,11 +318,11 @@ msgstr ""
 msgid "The RADIUS user group could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadusergroupController.php:133
+#: ./plugins/Radius/src/Controller/RadusergroupController.php:136
 msgid "The RADIUS user group has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadusergroupController.php:136
+#: ./plugins/Radius/src/Controller/RadusergroupController.php:139
 msgid "The RADIUS user group could not be deleted. Please, try again."
 msgstr ""
 
@@ -315,7 +330,7 @@ msgstr ""
 msgid "PPPoE"
 msgstr ""
 
-#: ./plugins/Radius/src/Model/Table/AccountsTable.php:170
+#: ./plugins/Radius/src/Model/Table/AccountsTable.php:173
 msgid "An active RADIUS account cannot be deleted. Deactivate it first."
 msgstr ""
 
@@ -368,47 +383,47 @@ msgstr ""
 msgid "The RADIUS account could not be updated."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:207
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:204
 msgid "No active RADIUS session found."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:224
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:221
 msgid "The RADIUS session started on {0} at {1} could not be disconnected ({2})."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:250
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:247
 msgid "Related entries for {0} RADIUS accounts were processed, {1} accounts were updated, and {2} accounts failed to update."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:280
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:277
 msgid "Automatic RADIUS account changes"
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:297
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:294
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:304
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:301
 msgid "Automatic RADIUS account changes have been reported."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:310
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:307
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:469
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:466
 msgid "The RADIUS replies for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:475
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:472
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:514
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:511
 msgid "The RADIUS user groups for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:520
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:517
 msgid "The billings for the contract for the current or upcoming period are probably not set correctly."
 msgstr ""
 
@@ -467,7 +482,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/view.php:10
 #: ./plugins/Radius/templates/Radusergroup/view.php:70
 #: ./plugins/Radius/templates/Radusergroup/view.php:114
-#: ./plugins/Radius/templates/cell/Accounts/display.php:25
+#: ./plugins/Radius/templates/cell/Accounts/display.php:39
 msgid "Actions"
 msgstr ""
 
@@ -497,8 +512,9 @@ msgstr ""
 #: ./plugins/Radius/templates/Radpostauth/view.php:41
 #: ./plugins/Radius/templates/Radreply/view.php:41
 #: ./plugins/Radius/templates/Radusergroup/view.php:41
-#: ./plugins/Radius/templates/cell/Accounts/display.php:17
+#: ./plugins/Radius/templates/cell/Accounts/display.php:29
 #: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:30
+#: ./plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:28
 #: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:25
 msgid "Username"
 msgstr ""
@@ -508,7 +524,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/index.php:39
 #: ./plugins/Radius/templates/Accounts/monitoring.php:126
 #: ./plugins/Radius/templates/Accounts/view.php:101
-#: ./plugins/Radius/templates/cell/Accounts/display.php:18
+#: ./plugins/Radius/templates/cell/Accounts/display.php:31
 msgid "Password"
 msgstr ""
 
@@ -518,7 +534,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/monitoring.php:134
 #: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:29
 #: ./plugins/Radius/templates/Accounts/view.php:109
-#: ./plugins/Radius/templates/cell/Accounts/display.php:19
+#: ./plugins/Radius/templates/cell/Accounts/display.php:33
 msgid "Active"
 msgstr ""
 
@@ -587,7 +603,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/view.php:20
 #: ./plugins/Radius/templates/Radusergroup/view.php:91
 #: ./plugins/Radius/templates/Radusergroup/view.php:135
-#: ./plugins/Radius/templates/cell/Accounts/display.php:113
+#: ./plugins/Radius/templates/cell/Accounts/display.php:129
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
@@ -639,20 +655,20 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/index.php:71
 #: ./plugins/Radius/templates/Accounts/monitoring.php:135
 #: ./plugins/Radius/templates/Accounts/view.php:110
-#: ./plugins/Radius/templates/cell/Accounts/display.php:47
+#: ./plugins/Radius/templates/cell/Accounts/display.php:63
 msgid "Yes"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:71
 #: ./plugins/Radius/templates/Accounts/monitoring.php:135
 #: ./plugins/Radius/templates/Accounts/view.php:110
-#: ./plugins/Radius/templates/cell/Accounts/display.php:47
+#: ./plugins/Radius/templates/cell/Accounts/display.php:63
 msgid "No"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:77
 #: ./plugins/Radius/templates/Accounts/monitoring.php:87
-#: ./plugins/Radius/templates/cell/Accounts/display.php:117
+#: ./plugins/Radius/templates/cell/Accounts/display.php:133
 msgid "Monitoring"
 msgstr ""
 
@@ -674,7 +690,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/index.php:31
 #: ./plugins/Radius/templates/Radusergroup/view.php:80
 #: ./plugins/Radius/templates/Radusergroup/view.php:124
-#: ./plugins/Radius/templates/cell/Accounts/display.php:87
+#: ./plugins/Radius/templates/cell/Accounts/display.php:103
 msgid "View"
 msgstr ""
 
@@ -696,7 +712,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/index.php:33
 #: ./plugins/Radius/templates/Radusergroup/view.php:84
 #: ./plugins/Radius/templates/Radusergroup/view.php:128
-#: ./plugins/Radius/templates/cell/Accounts/display.php:96
+#: ./plugins/Radius/templates/cell/Accounts/display.php:112
 msgid "Edit"
 msgstr ""
 
@@ -718,7 +734,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Radusergroup/index.php:38
 #: ./plugins/Radius/templates/Radusergroup/view.php:89
 #: ./plugins/Radius/templates/Radusergroup/view.php:133
-#: ./plugins/Radius/templates/cell/Accounts/display.php:106
+#: ./plugins/Radius/templates/cell/Accounts/display.php:122
 msgid "Delete"
 msgstr ""
 
@@ -744,7 +760,7 @@ msgid "RADIUS Disconnect Request"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:80
-#: ./plugins/Radius/templates/cell/Accounts/display.php:146
+#: ./plugins/Radius/templates/cell/Accounts/display.php:162
 msgid "Are you sure you want to disconnect {0}?"
 msgstr ""
 
@@ -812,7 +828,7 @@ msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:191
 #: ./plugins/Radius/templates/Radacct/view.php:48
-#: ./plugins/Radius/templates/cell/Accounts/display.php:23
+#: ./plugins/Radius/templates/cell/Accounts/display.php:37
 msgid "NAS IP Address"
 msgstr ""
 
@@ -827,7 +843,7 @@ msgid "NAS Port Type"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:202
-#: ./plugins/Radius/templates/cell/Accounts/display.php:24
+#: ./plugins/Radius/templates/cell/Accounts/display.php:38
 msgid "Network Access Server"
 msgstr ""
 
@@ -872,12 +888,12 @@ msgid "Downloaded"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:265
-#: ./plugins/Radius/templates/cell/Accounts/display.php:81
+#: ./plugins/Radius/templates/cell/Accounts/display.php:97
 msgid "Data from Watcher NMS could not be loaded."
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:266
-#: ./plugins/Radius/templates/cell/Accounts/display.php:82
+#: ./plugins/Radius/templates/cell/Accounts/display.php:98
 msgid "Loading..."
 msgstr ""
 
@@ -959,7 +975,7 @@ msgid "RADIUS Account Monitoring"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/view.php:59
-#: ./plugins/Radius/templates/cell/Accounts/display.php:134
+#: ./plugins/Radius/templates/cell/Accounts/display.php:150
 msgid "Are you sure you want to update related records?"
 msgstr ""
 
@@ -1377,14 +1393,18 @@ msgid "RADIUS System Related"
 msgstr ""
 
 #: ./plugins/Radius/templates/cell/Accounts/display.php:20
+msgid "Data from the RADIUS database could not be loaded."
+msgstr ""
+
+#: ./plugins/Radius/templates/cell/Accounts/display.php:34
 msgid "IP Addresses"
 msgstr ""
 
-#: ./plugins/Radius/templates/cell/Accounts/display.php:126
+#: ./plugins/Radius/templates/cell/Accounts/display.php:142
 msgid "Update"
 msgstr ""
 
-#: ./plugins/Radius/templates/cell/Accounts/display.php:138
+#: ./plugins/Radius/templates/cell/Accounts/display.php:154
 msgid "Disconnect"
 msgstr ""
 
@@ -1410,6 +1430,18 @@ msgstr ""
 
 #: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:32
 msgid "Tariff From"
+msgstr ""
+
+#: ./plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:13
+msgid "The account keeps the address until its contract has one of its own or the account is deactivated."
+msgstr ""
+
+#: ./plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:30
+msgid "IP Address"
+msgstr ""
+
+#: ./plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:31
+msgid "Contract Holding It"
 msgstr ""
 
 #: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:13

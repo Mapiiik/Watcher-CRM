@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tasks\n"
-"POT-Creation-Date: 2026-09-22 00:39+0200\n"
+"POT-Creation-Date: 2026-11-07 15:03+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -81,19 +81,19 @@ msgstr "Nepřiřazené úkoly"
 msgid "Every unfinished task has somebody holding it."
 msgstr "Za každým nedokončeným úkolem stojí někdo, kdo ho má na starosti."
 
-#: plugins/Tasks/src/Model/Entity/Task.php:153
+#: plugins/Tasks/src/Model/Entity/Task.php:141
 msgid "Low"
 msgstr "Nízká"
 
-#: plugins/Tasks/src/Model/Entity/Task.php:154
+#: plugins/Tasks/src/Model/Entity/Task.php:142
 msgid "Normal"
 msgstr "Normální"
 
-#: plugins/Tasks/src/Model/Entity/Task.php:155
+#: plugins/Tasks/src/Model/Entity/Task.php:143
 msgid "High"
 msgstr "Vysoká"
 
-#: plugins/Tasks/src/Model/Entity/Task.php:156
+#: plugins/Tasks/src/Model/Entity/Task.php:144
 msgid "Urgent"
 msgstr "Naléhavé"
 

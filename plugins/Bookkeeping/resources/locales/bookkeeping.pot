@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-06 03:09+0100\n"
+"POT-Creation-Date: 2026-11-07 15:03+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -498,6 +498,10 @@ msgstr ""
 msgid "On the last day of the month it covers"
 msgstr ""
 
+#: ./plugins/Bookkeeping/src/Model/Table/InvoicesTable.php:165
+msgid "An invoice of the same year already has this number."
+msgstr ""
+
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:80
 msgid "Eurofaktura / E-racuni is not configured."
 msgstr ""
@@ -699,7 +703,7 @@ msgid "Phones"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:59
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:89
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:90
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:41
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:49
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:60
@@ -709,14 +713,14 @@ msgid "Due Date"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:60
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:136
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:137
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:124
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:78
 msgid "Total Debt"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Debtors/index.php:61
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:141
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:142
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:125
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:84
 msgid "Total Overdue Debt"
@@ -727,7 +731,7 @@ msgstr ""
 msgid "Invoices"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:86
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:87
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:31
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:39
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:54
@@ -736,7 +740,7 @@ msgstr ""
 msgid "Number"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:87
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:88
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:34
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:42
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:57
@@ -745,7 +749,7 @@ msgstr ""
 msgid "Variable Symbol"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:88
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:89
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:37
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:45
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:59
@@ -755,7 +759,7 @@ msgstr ""
 msgid "Creation Date"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:90
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:91
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:54
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:62
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:63
@@ -764,7 +768,7 @@ msgstr ""
 msgid "Payment Date"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:91
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:92
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:45
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:53
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:110
@@ -772,7 +776,7 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:92
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:93
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:48
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:56
 #: ./plugins/Bookkeeping/templates/Invoices/generate.php:137
@@ -783,7 +787,7 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:93
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:94
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:51
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:59
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:62
@@ -792,7 +796,7 @@ msgstr ""
 msgid "Debt"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:94
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:95
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:58
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:66
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:28
@@ -802,7 +806,7 @@ msgstr ""
 msgid "Send By Email"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:95
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:96
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:61
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:69
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:65
@@ -811,7 +815,7 @@ msgstr ""
 msgid "Email Sent"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:96
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:97
 #: ./plugins/Bookkeeping/templates/Invoices/add.php:11
 #: ./plugins/Bookkeeping/templates/Invoices/edit.php:11
 #: ./plugins/Bookkeeping/templates/Invoices/generate.php:18
@@ -823,21 +827,21 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:112
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:113
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:89
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:97
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:55
 msgid "Yes"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:112
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:113
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:89
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:97
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:55
 msgid "No"
 msgstr ""
 
-#: ./plugins/Bookkeeping/templates/Debtors/index.php:116
+#: ./plugins/Bookkeeping/templates/Debtors/index.php:117
 #: ./plugins/Bookkeeping/templates/Invoices/index.php:95
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:59
 msgid "Download"

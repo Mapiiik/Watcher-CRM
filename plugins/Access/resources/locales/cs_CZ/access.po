@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-24 01:55+0200\n"
+"POT-Creation-Date: 2026-11-07 15:03+0100\n"
 "PO-Revision-Date: 2026-10-13 23:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -108,7 +108,9 @@ msgid "The API key of {0} is removed."
 msgstr "API klíč účtu {0} byl odebrán."
 
 #: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:87
-#: plugins/Access/src/Controller/UsersController.php:115
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:306
+#: plugins/Access/src/Controller/UsersController.php:112
+#: plugins/Access/src/Controller/UsersController.php:307
 msgid "Too many failed sign-ins. Try again in a few minutes."
 msgstr "Příliš mnoho neúspěšných přihlášení. Zkuste to znovu za několik minut."
 
@@ -116,13 +118,12 @@ msgstr "Příliš mnoho neúspěšných přihlášení. Zkuste to znovu za něko
 msgid "The code is not right. Please sign in again."
 msgstr "Kód je nesprávný. Přihlaste se prosím znovu."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:133
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:170
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:202
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:134
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:319
 msgid "The code is not right. Please try again."
 msgstr "Kód je nesprávný. Zkuste to prosím znovu."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:154
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:155
 msgid "Your account has to use two-step verification."
 msgstr "Váš účet musí používat dvoufázové ověření."
 
@@ -130,7 +131,7 @@ msgstr "Váš účet musí používat dvoufázové ověření."
 msgid "Two-step verification is turned off."
 msgstr "Dvoufázové ověření je vypnuté."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:246
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:241
 msgid "The two-step verification of {0} is reset."
 msgstr "Dvoufázové ověření účtu {0} je resetované."
 
@@ -148,11 +149,11 @@ msgid ""
 "one."
 msgstr "Odkaz pro nastavení nového hesla už neplatí. Požádejte o nový."
 
-#: plugins/Access/src/Controller/Trait/PasswordResetTrait.php:108
+#: plugins/Access/src/Controller/Trait/PasswordResetTrait.php:109
 msgid "The new password is set. Sign in with it."
 msgstr "Nové heslo je nastavené. Přihlaste se s ním."
 
-#: plugins/Access/src/Controller/Trait/PasswordResetTrait.php:112
+#: plugins/Access/src/Controller/Trait/PasswordResetTrait.php:113
 msgid "The password could not be set."
 msgstr "Heslo se nepodařilo nastavit."
 
@@ -174,23 +175,23 @@ msgstr "Propojení sociálního účtu bylo zrušeno."
 msgid "The identity could not be unlinked."
 msgstr "Propojení sociálního účtu se nepodařilo zrušit."
 
-#: plugins/Access/src/Controller/UsersController.php:133
+#: plugins/Access/src/Controller/UsersController.php:130
 msgid "The username or the password is not right."
 msgstr "Uživatelské jméno nebo heslo je nesprávné."
 
-#: plugins/Access/src/Controller/UsersController.php:139
+#: plugins/Access/src/Controller/UsersController.php:136
 msgid "An account without a password signs in with {0}."
 msgstr "Účet bez hesla se přihlašuje přes {0}."
 
-#: plugins/Access/src/Controller/UsersController.php:142
+#: plugins/Access/src/Controller/UsersController.php:139
 msgid "or"
 msgstr "nebo"
 
-#: plugins/Access/src/Controller/UsersController.php:162
+#: plugins/Access/src/Controller/UsersController.php:159
 msgid "Signing in with {0} did not finish. Please try again."
 msgstr "Přihlášení přes {0} se nedokončilo. Zkuste to prosím znovu."
 
-#: plugins/Access/src/Controller/UsersController.php:163
+#: plugins/Access/src/Controller/UsersController.php:160
 msgid ""
 "No account here is linked to that identity. Sign in with your password and "
 "link it in your profile."
@@ -198,7 +199,7 @@ msgstr ""
 "S tímto sociálním účtem tu není propojený žádný účet. Přihlaste se heslem a "
 "propojte ho ve svém profilu."
 
-#: plugins/Access/src/Controller/UsersController.php:192
+#: plugins/Access/src/Controller/UsersController.php:190
 msgid "You have signed out."
 msgstr "Úspěšně jste se odhlásili."
 
@@ -206,49 +207,49 @@ msgstr "Úspěšně jste se odhlásili."
 msgid "Only a superuser changes the password of somebody else."
 msgstr "Heslo jiného uživatele může změnit jen superuživatel."
 
-#: plugins/Access/src/Controller/UsersController.php:255
-msgid "This is not the current password."
-msgstr "Současné heslo je nesprávné."
-
 #: plugins/Access/src/Controller/UsersController.php:258
 msgid "The new password has to differ from the current one."
 msgstr "Nové heslo se musí lišit od současného."
 
-#: plugins/Access/src/Controller/UsersController.php:267
+#: plugins/Access/src/Controller/UsersController.php:275
 msgid "The password has been changed."
 msgstr "Heslo bylo úspěšně změněno."
 
-#: plugins/Access/src/Controller/UsersController.php:271
+#: plugins/Access/src/Controller/UsersController.php:279
 msgid "The password could not be changed."
 msgstr "Heslo se nepodařilo změnit."
 
-#: plugins/Access/src/Controller/UsersController.php:297
+#: plugins/Access/src/Controller/UsersController.php:316
+msgid "This is not the current password."
+msgstr "Současné heslo je nesprávné."
+
+#: plugins/Access/src/Controller/UsersController.php:333
 msgid "Only a superuser turns off signing in with a password."
 msgstr "Přihlášení heslem vypíná jen superuživatel."
 
-#: plugins/Access/src/Controller/UsersController.php:299
+#: plugins/Access/src/Controller/UsersController.php:335
 msgid "Signing in to your own account with a password stays on."
 msgstr "Přihlášení heslem k vlastnímu účtu vypnout nelze."
 
-#: plugins/Access/src/Controller/UsersController.php:307
+#: plugins/Access/src/Controller/UsersController.php:343
 msgid "Signing in with a password is off. Setting a password turns it on."
 msgstr "Přihlášení heslem je vypnuté. Nastavením hesla se zase zapne."
 
-#: plugins/Access/src/Controller/UsersController.php:374
-#: plugins/Access/src/Controller/UsersController.php:398
+#: plugins/Access/src/Controller/UsersController.php:410
+#: plugins/Access/src/Controller/UsersController.php:436
 msgid "The account has been saved."
 msgstr "Účet byl uložen."
 
-#: plugins/Access/src/Controller/UsersController.php:378
-#: plugins/Access/src/Controller/UsersController.php:402
+#: plugins/Access/src/Controller/UsersController.php:414
+#: plugins/Access/src/Controller/UsersController.php:440
 msgid "The account could not be saved."
 msgstr "Účet se nepodařilo uložit."
 
-#: plugins/Access/src/Controller/UsersController.php:421
+#: plugins/Access/src/Controller/UsersController.php:459
 msgid "The account has been deleted."
 msgstr "Účet byl smazán."
 
-#: plugins/Access/src/Controller/UsersController.php:424
+#: plugins/Access/src/Controller/UsersController.php:462
 msgid "The account could not be deleted."
 msgstr "Účet se nepodařilo smazat."
 

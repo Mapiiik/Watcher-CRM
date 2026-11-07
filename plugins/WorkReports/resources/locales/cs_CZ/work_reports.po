@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-27 17:20+0100\n"
+"POT-Creation-Date: 2026-11-07 15:03+0100\n"
 "PO-Revision-Date: 2026-09-22 01:00+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -73,30 +73,37 @@ msgstr[0] "{0} záznam byl označen."
 msgstr[1] "{0} záznamy byly označeny."
 msgstr[2] "{0} záznamů bylo označeno."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:61
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:93
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:59
+#: plugins/WorkReports/src/Controller/WorkReportOnCallsController.php:41
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:375
+#: plugins/WorkReports/src/Model/Table/WorkReportOnCallsTable.php:109
+msgid "Work is not reported ahead of time."
+msgstr "Do budoucna se nevykazuje."
+
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:67
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:99
 msgid "The work report item has been saved."
 msgstr "Záznam výkazu byl uložen."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:66
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:98
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:129
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:72
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:104
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:135
 msgid "The work report item could not be saved. Please, try again."
 msgstr "Záznam výkazu nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:122
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:128
 msgid "The work has already been finished."
 msgstr "Práce už byla ukončena."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:126
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:132
 msgid "The work has been finished."
 msgstr "Práce byla ukončena."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:151
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:157
 msgid "The work report item has been deleted."
 msgstr "Záznam výkazu byl odstraněn."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:154
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:160
 msgid "The work report item could not be deleted. Please, try again."
 msgstr "Záznam výkazu nelze odstranit. Zkuste to prosím znovu."
 
@@ -104,23 +111,17 @@ msgstr "Záznam výkazu nelze odstranit. Zkuste to prosím znovu."
 msgid "A day is asked for as YYYY-MM-DD."
 msgstr "Den se zadává ve tvaru RRRR-MM-DD."
 
-#: plugins/WorkReports/src/Controller/WorkReportOnCallsController.php:41
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:367
-#: plugins/WorkReports/src/Model/Table/WorkReportOnCallsTable.php:108
-msgid "Work is not reported ahead of time."
-msgstr "Do budoucna se nevykazuje."
-
 #: plugins/WorkReports/src/Controller/WorkReportOnCallsController.php:52
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:311
 #: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:319
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:327
 msgid "The report has been submitted, its items can no longer be changed."
 msgstr "Výkaz byl odevzdán, jeho záznamy už nelze měnit."
 
 #: plugins/WorkReports/src/Controller/WorkReportOnCallsController.php:55
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:378
 #: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:386
-#: plugins/WorkReports/src/Model/Table/WorkReportOnCallsTable.php:114
-#: plugins/WorkReports/src/Model/Table/WorkReportOnCallsTable.php:119
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:394
+#: plugins/WorkReports/src/Model/Table/WorkReportOnCallsTable.php:115
+#: plugins/WorkReports/src/Model/Table/WorkReportOnCallsTable.php:120
 msgid "The report is closed up to this day."
 msgstr "Výkaz je k tomuto dni uzavřený."
 
@@ -139,6 +140,7 @@ msgid "The report has already been submitted."
 msgstr "Výkaz už byl odevzdán."
 
 #: plugins/WorkReports/src/Controller/WorkReportsController.php:159
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:335
 msgid "Some work is still going on. Finish it first."
 msgstr "Některá práce ještě běží. Nejdřív ji ukončete."
 
@@ -174,7 +176,7 @@ msgid "The note has been saved."
 msgstr "Poznámka byla uložena."
 
 #: plugins/WorkReports/src/Controller/WorkReportsController.php:310
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:333
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:341
 msgid "The day is not in the month of the report."
 msgstr "Den nepatří do měsíce výkazu."
 
@@ -187,17 +189,21 @@ msgstr "Den, který ještě nenastal, nelze uzavřít."
 msgid "Only a supervisor opens days that are closed."
 msgstr "Uzavřené dny může otevřít jen administrátor."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:338
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:343
 msgid "The whole month is open again."
 msgstr "Celý měsíc je zase otevřený."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:339
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:344
 msgid "The report is closed up to {0}."
 msgstr "Výkaz je uzavřený do {0}."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:404
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:409
 msgid "A month is asked for as YYYY-MM."
 msgstr "Měsíc se zadává ve tvaru RRRR-MM."
+
+#: plugins/WorkReports/src/Event/ReferencesListener.php:58
+msgid "Reported work names this record, so it cannot be deleted."
+msgstr "Na tento záznam odkazuje vykázaná práce, proto ho nelze odstranit."
 
 #: plugins/WorkReports/src/Model/Enum/DayKind.php:25
 msgid "Working Day"
@@ -232,63 +238,63 @@ msgstr "Auto je na vykázané práci. Místo mazání ho vypněte."
 msgid "The car is the one a worker drives by default."
 msgstr "Auto má pracovník jako výchozí."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:344
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:352
 msgid "Split work over the end of the month into two items."
 msgstr "Práci přes konec měsíce rozdělte na dva záznamy."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:355
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:363
 msgid "The time runs over other work."
 msgstr "Čas se překrývá s jinou prací."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:408
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:416
 msgid "Other work is still going on. Finish it first."
 msgstr "Jiná práce ještě běží. Nejdřív ji ukončete."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:421
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:429
 msgid "Items of this type need a description."
 msgstr "Záznamy tohoto typu vyžadují popis."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:439
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:447
 msgid "The contract is not one of the customer's."
 msgstr "Smlouva nepatří zákazníkovi."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:450
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:458
 msgid "Say which car the distance was driven in."
 msgstr "Uveďte, kterým autem se jelo."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:461
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:469
 msgid "Work to invoice needs the hours and the rate."
 msgstr "Práce k fakturaci potřebuje hodiny a sazbu."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:484
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:492
 msgid "Items of this type are stated from and until, not as a whole day."
 msgstr "Záznamy tohoto typu se zadávají od a do, ne na celý den."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:489
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:497
 msgid "A whole day has no from and until."
 msgstr "Celý den nemá od a do."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:493
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:501
 msgid "Items of this type take the whole day."
 msgstr "Záznamy tohoto typu jsou na celý den."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:497
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:505
 msgid "State from and until."
 msgstr "Zadejte od a do."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:507
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:515
 msgid "The until has to come after the from."
 msgstr "Do musí být později než od."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:150
+#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:151
 msgid "The car is not one of the worker's own."
 msgstr "Auto nepatří pracovníkovi."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:167
+#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:168
 msgid "The car is not a company car."
 msgstr "Auto není služební."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:178
+#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:179
 msgid "The worker has reports. Switch the worker off instead."
 msgstr "Pracovník má výkazy. Místo mazání ho vypněte."
 
@@ -296,7 +302,7 @@ msgstr "Pracovník má výkazy. Místo mazání ho vypněte."
 msgid "A report starts on the first day of a month."
 msgstr "Výkaz začíná prvním dnem měsíce."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportsTable.php:130
+#: plugins/WorkReports/src/Model/Table/WorkReportsTable.php:131
 msgid "Say what is to be corrected."
 msgstr "Uveďte, co je třeba opravit."
 
