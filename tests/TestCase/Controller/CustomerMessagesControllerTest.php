@@ -527,6 +527,55 @@ class CustomerMessagesControllerTest extends TestCase
     }
 
     /**
+     * A contact is whatever somebody wrote down, so the list of recipients shows it as text.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::addBulk()
+     */
+    public function testTheContactsOfTheRecipientsAreText(): void
+    {
+        $this->contactsWithMarkup();
+
+        $this->login();
+        $this->session([
+            'CustomerMessages.bulkWizard' => [
+                'purpose' => CustomerMessagePurpose::Outages->value,
+                'filters' => [],
+                'ignore_customer_consent' => true,
+                'ignore_contact_use' => true,
+            ],
+        ]);
+        $this->get('/customer-messages/add-bulk?step=compose');
+
+        $this->assertResponseOk();
+        $this->assertContactsAreText();
+    }
+
+    /**
+     * Contacts that would come out as markup if they were not escaped.
+     *
+     * @return void
+     */
+    private function contactsWithMarkup(): void
+    {
+        $this->fetchTable('Emails')->updateAll(['email' => '<i>mail</i>'], ['1 = 1']);
+        $this->fetchTable('Phones')->updateAll(['phone' => '<i>phone</i>'], ['1 = 1']);
+    }
+
+    /**
+     * What was written as a contact is on the page as text.
+     *
+     * @return void
+     */
+    private function assertContactsAreText(): void
+    {
+        $this->assertResponseContains('&lt;i&gt;mail&lt;/i&gt;');
+        $this->assertResponseContains('&lt;i&gt;phone&lt;/i&gt;');
+        $this->assertResponseNotContains('<i>mail</i>');
+        $this->assertResponseNotContains('<i>phone</i>');
+    }
+
+    /**
      * The whole wizard, the way an operator goes through it: a purpose, the filters, the message,
      * and a summary at the end of what was queued.
      *

@@ -64,6 +64,7 @@ use Bookkeeping\Debtors\Debtor;
             </thead>
             <tbody>
                 <?php foreach ($debtors as $debtor) : ?>
+                    <?php $customer = $debtor->getCustomer(); ?>
                 <tr>
                     <td><?=
                         $this->Html->link(
@@ -76,8 +77,8 @@ use Bookkeeping\Debtors\Debtor;
                             ],
                         ) ?></td>
                     <td><?= h($debtor->getCustomer()->number) ?></td>
-                    <td><?= implode('<br>', array_column($debtor->getCustomer()->emails, 'email')) ?></td>
-                    <td><?= implode('<br>', array_column($debtor->getCustomer()->phones, 'phone')) ?></td>
+                    <td><?= implode('<br>', array_map('h', array_column($customer->emails, 'email'))) ?></td>
+                    <td><?= implode('<br>', array_map('h', array_column($customer->phones, 'phone'))) ?></td>
                     <td><?= h($debtor->getDueDate()) ?></td>
                     <td><?= $this->Number->currency($debtor->getTotalDebt()) ?></td>
                     <td><?= $this->Number->currency($debtor->getTotalOverdueDebt()) ?></td>

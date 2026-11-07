@@ -109,6 +109,47 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
+     * A contact is whatever somebody wrote down, so it is shown as text.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContracts()
+     */
+    public function testTheContactsOfTheCustomersAreText(): void
+    {
+        $this->contactsWithMarkup();
+        $this->login();
+
+        $this->get('/overviews/overview-of-contracts');
+
+        $this->assertResponseOk();
+        $this->assertContactsAreText();
+    }
+
+    /**
+     * Contacts that would come out as markup if they were not escaped.
+     *
+     * @return void
+     */
+    private function contactsWithMarkup(): void
+    {
+        $this->fetchTable('Emails')->updateAll(['email' => '<i>mail</i>'], ['1 = 1']);
+        $this->fetchTable('Phones')->updateAll(['phone' => '<i>phone</i>'], ['1 = 1']);
+    }
+
+    /**
+     * What was written as a contact is on the page as text.
+     *
+     * @return void
+     */
+    private function assertContactsAreText(): void
+    {
+        $this->assertResponseContains('&lt;i&gt;mail&lt;/i&gt;');
+        $this->assertResponseContains('&lt;i&gt;phone&lt;/i&gt;');
+        $this->assertResponseNotContains('<i>mail</i>');
+        $this->assertResponseNotContains('<i>phone</i>');
+    }
+
+    /**
      * Test overview of contracts method
      *
      * The listing is sorted by columns of the customers while it eager loads the billings of the

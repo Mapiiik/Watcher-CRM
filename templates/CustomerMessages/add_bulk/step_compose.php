@@ -158,6 +158,8 @@
                                         $customer = $row['customer'];
                                         $contract = $row['contract'];
                                         $noContact = $customer->emails === [] && $customer->phones === [];
+                                        $emails = array_map('h', array_column($customer->emails, 'email'));
+                                        $phones = array_map('h', array_column($customer->phones, 'phone'));
                                     ?>
                                     <tr<?= $noContact ? ' class="error-text"' : '' ?>>
                                         <td><input type="checkbox" name="send_to[]"
@@ -190,10 +192,10 @@
                                         </td>
                                         <td><?= $customer->emails === []
                                             ? '<strong>&mdash; ' . __('Email Missing') . ' &mdash;</strong>'
-                                            : implode('<br>', array_column($customer->emails, 'email')) ?></td>
+                                            : implode('<br>', $emails) ?></td>
                                         <td><?= $customer->phones === []
                                             ? '<strong>&mdash; ' . __('Phone Missing') . ' &mdash;</strong>'
-                                            : implode('<br>', array_column($customer->phones, 'phone')) ?></td>
+                                            : implode('<br>', $phones) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </table>

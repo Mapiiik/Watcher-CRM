@@ -126,8 +126,8 @@
                     <td><?= h($contract->installation_date) ?></td>
                     <td><?= h($contract->uninstallation_date) ?></td>
                     <td><?= h($contract->termination_date) ?></td>
-                    <td><?= implode('<br>', array_column($contract->customer->emails, 'email')) ?></td>
-                    <td><?= implode('<br>', array_column($contract->customer->phones, 'phone')) ?></td>
+                    <td><?= implode('<br>', array_map('h', array_column($contract->customer->emails, 'email'))) ?></td>
+                    <td><?= implode('<br>', array_map('h', array_column($contract->customer->phones, 'phone'))) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),
