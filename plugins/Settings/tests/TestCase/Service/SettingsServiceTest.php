@@ -451,6 +451,23 @@ class SettingsServiceTest extends TestCase
     }
 
     /**
+     * The service that wrote a value is not left answering with what it held in memory.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::clearCache()
+     */
+    public function testAWriteIsSeenByTheServiceThatWroteIt(): void
+    {
+        $settings = new SettingsService();
+        $settings->set(self::BLOCK . '.value', 'first');
+        $this->assertSame('first', $settings->get(self::BLOCK . '.value'));
+
+        $settings->set(self::BLOCK . '.value', 'second');
+
+        $this->assertSame('second', $settings->get(self::BLOCK . '.value'));
+    }
+
+    /**
      * A path naming only a namespace addresses nothing, and reading it is not an error - the caller
      * gets what it said to fall back on.
      *

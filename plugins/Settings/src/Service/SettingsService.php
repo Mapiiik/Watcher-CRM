@@ -502,38 +502,20 @@ class SettingsService
     }
 
     /**
-     * Clear cached settings.
+     * Clear the cached settings of one block, which is what they are cached by.
      *
-     * @param string|null $plugin If provided, clear only this plugin.
-     *                            If null, clear all cached plugins.
-     * @param string|null $key    If provided together with plugin, clear only this key.
+     * @param string $plugin The plugin the block belongs to.
+     * @param string $key The block.
      * @return void
      */
-    public function clearCache(?string $plugin = null, ?string $key = null): void
+    public function clearCache(string $plugin, string $key): void
     {
-        // Clear specific key
-        if ($plugin !== null && $key !== null) {
-            unset($this->localCache[$plugin][$key]);
+        unset($this->localCache[$plugin][$key]);
 
-            if (empty($this->localCache[$plugin])) {
-                unset($this->localCache[$plugin]);
-            }
-
-            Cache::delete(sprintf('settings.%s.%s', $plugin, $key), 'default');
-
-            return;
-        }
-
-        // Clear whole plugin
-        if ($plugin !== null) {
+        if (empty($this->localCache[$plugin])) {
             unset($this->localCache[$plugin]);
-            Cache::delete('settings.' . $plugin, 'default');
-
-            return;
         }
 
-        // Clear everything
-        $this->localCache = [];
-        Cache::delete('settings', 'default');
+        Cache::delete(sprintf('settings.%s.%s', $plugin, $key), 'default');
     }
 }
