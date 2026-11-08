@@ -176,14 +176,28 @@
 .select2-selection__rendered li {
     margin-bottom: 0;
 }
-/* The inline search field is an input, so it would otherwise pick up the
-   height and the margin every other input has. */
+/* The inline search field is a textarea, so it would otherwise pick up the
+   minimum height and the margin Milligram gives every textarea. Its height is
+   the one select2 sets. */
 .select2-container
 .select2-selection--multiple
 .select2-search__field {
-    height: auto;
+    min-height: 0;
     line-height: inherit;
     margin-bottom: 0;
+}
+/* The cross that takes a chosen item away is a button, and Milligram makes
+   every button tall, spaced out and in capitals - the cross ends up below the
+   item, out of sight. */
+.select2-container
+.select2-selection__choice__remove {
+    height: auto;
+    line-height: normal;
+    margin: 0;
+    letter-spacing: normal;
+    text-transform: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 .select2-results__options {
     padding: 0.6rem 1rem;
