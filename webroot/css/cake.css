@@ -163,12 +163,6 @@
     height: auto;
     min-height: 3rem;
 }
-.select2-container
-.select2-selection--multiple
-.select2-selection__rendered {
-    line-height: inherit;
-    padding: 0 0.5rem 0.5rem;
-}
 /* Milligram spaces list items apart, which tears the chosen items into rows
    far too loose. */
 .select2-container
@@ -177,11 +171,13 @@
     margin-bottom: 0;
 }
 /* The inline search field is a textarea, so it would otherwise pick up the
-   minimum height and the margin Milligram gives every textarea. Its height is
-   the one select2 sets. */
+   minimum height and the margin Milligram gives every textarea. It is as tall
+   as a chosen item - the line height of the selection and the border - or the
+   row it ends up on stands further apart than the others. */
 .select2-container
 .select2-selection--multiple
 .select2-search__field {
+    height: calc(1.15em + 2px);
     min-height: 0;
     line-height: inherit;
     margin-bottom: 0;
