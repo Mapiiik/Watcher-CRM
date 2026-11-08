@@ -6,7 +6,6 @@ namespace Scheduler\Test\TestCase;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Command\VersionCommand;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
 use Cake\Http\ServerRequest;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -16,17 +15,13 @@ use DOMElement;
 use DOMXPath;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\UsesClass;
-use Scheduler\Event\LocalAssetsListener;
 use Scheduler\Service\Schedule;
 
 /**
  * The pages of the queue and of the schedule.
  *
- * Whoever may open them may run any command of the application, so who that is comes first. They
- * also come from a library that loads everything from a CDN, and the application must not.
+ * Whoever may open them may run any command of the application, so who that is comes first.
  */
-#[UsesClass(LocalAssetsListener::class)]
 class AdminPagesTest extends TestCase
 {
     use ControllerTestTrait;
@@ -76,31 +71,20 @@ class AdminPagesTest extends TestCase
     }
 
     /**
-     * An administrator gets the page, with nothing loaded from anywhere else.
+     * An administrator gets the page. That it loads nothing from elsewhere is up to the application.
      *
      * @param string $url The page.
      * @return void
-     * @link \Scheduler\Event\LocalAssetsListener::useLocalAssets()
+     * @see \App\Test\TestCase\Event\LocalAssetsListenerTest
      */
     #[DataProvider('pages')]
-    public function testAPageLoadsEverythingFromHere(string $url): void
+    public function testAnAdministratorGetsIn(string $url): void
     {
         $this->login();
 
         $this->get($url);
 
         $this->assertResponseOk();
-        $body = (string)$this->_response?->getBody();
-
-        // what the browser fetches by itself, a link somebody clicks is another matter
-        $this->assertSame(0, preg_match('~<(?:link|script)[^>]+(?:href|src)="https?://~', $body), $body);
-        $this->assertSame(1, preg_match_all('~/scheduler/vendor/bootstrap/bootstrap\.min\.css~', $body));
-
-        preg_match_all('~/scheduler/vendor/([^"]+)"~', $body, $assets);
-
-        foreach ($assets[1] as $asset) {
-            $this->assertFileExists(Plugin::path('Scheduler') . 'webroot/vendor/' . $asset);
-        }
     }
 
     /**

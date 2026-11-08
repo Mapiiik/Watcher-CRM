@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Scheduler\Event;
+namespace App\Event;
 
 use Cake\Event\EventInterface;
 use Cake\Event\EventListenerInterface;
@@ -10,11 +10,12 @@ use Cake\View\View;
 use Override;
 
 /**
- * Serves the libraries of the queue's pages from here instead of a CDN.
+ * Serves from here the libraries that the pages of other packages fetch from a CDN.
  *
- * Their layouts name the addresses outright, and opening a page must not tell anybody else who
- * opened it. Replacing the addresses in what is rendered saves carrying a copy of both layouts.
- * The files are the very same ones, so the integrity the layouts ask for still holds.
+ * The layouts of the queue, of its schedule and of the audit log name the addresses outright, and
+ * opening a page must not tell anybody else who opened it. Replacing the addresses in what is
+ * rendered saves carrying a copy of each layout. The files are the very same ones, so the integrity
+ * the layouts ask for still holds.
  */
 class LocalAssetsListener implements EventListenerInterface
 {
@@ -31,7 +32,18 @@ class LocalAssetsListener implements EventListenerInterface
         'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js' => 'chart.js/chart.umd.min.js',
         'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css' => 'flatpickr/flatpickr.min.css',
         'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js' => 'flatpickr/flatpickr.min.js',
+        // the audit log asks for whatever version is the latest, which has been 4.6.13 since 2022, and
+        // `strtr()` tries the longer addresses above before the bare package
+        'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css' => 'flatpickr/flatpickr.min.css',
+        'https://cdn.jsdelivr.net/npm/flatpickr' => 'flatpickr/flatpickr.min.js',
     ];
+
+    /**
+     * The packages whose layouts name the addresses.
+     *
+     * @var array<string>
+     */
+    private const PLUGINS = ['AuditStash', 'Queue', 'QueueScheduler'];
 
     /**
      * @return array<string, mixed>
@@ -50,12 +62,12 @@ class LocalAssetsListener implements EventListenerInterface
     {
         $view = $event->getSubject();
 
-        if (!$view instanceof View || !in_array($view->getPlugin(), ['Queue', 'QueueScheduler'], true)) {
+        if (!$view instanceof View || !in_array($view->getPlugin(), self::PLUGINS, true)) {
             return;
         }
 
         $local = array_map(
-            fn(string $file): string => Router::url('/scheduler/vendor/' . $file),
+            fn(string $file): string => Router::url('/vendor/' . $file),
             self::ASSETS,
         );
 

@@ -17,10 +17,12 @@ declare(strict_types=1);
 namespace App;
 
 use Access\Authentication\BearerRequest;
+use App\Event\LocalAssetsListener;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Cake\Event\EventManager;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
@@ -75,6 +77,9 @@ class Application extends BaseApplication
         if (is_string($defaultCurrency)) {
             Number::setDefaultCurrency($defaultCurrency);
         }
+
+        // Nothing from a CDN, not even on the pages of other packages
+        EventManager::instance()->on(new LocalAssetsListener());
     }
 
     /**

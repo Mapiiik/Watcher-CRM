@@ -9,7 +9,6 @@ use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventManager;
 use Override;
 use Scheduler\Event\FailedJobListener;
-use Scheduler\Event\LocalAssetsListener;
 use Scheduler\Event\SchedulerRowsListener;
 
 /**
@@ -44,7 +43,6 @@ class SchedulerPlugin extends BasePlugin
 
         $events = EventManager::instance();
         $events->on(new FailedJobListener());
-        $events->on(new LocalAssetsListener());
         $events->on(new SchedulerRowsListener());
     }
 }
