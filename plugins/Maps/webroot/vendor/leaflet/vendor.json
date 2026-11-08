@@ -1,0 +1,15 @@
+{
+    "npm": "leaflet",
+    "version": "1.9.4",
+    "files": {
+        "LICENSE": "LICENSE",
+        "dist/leaflet.css": "leaflet.css",
+        "dist/leaflet.js": "leaflet.js",
+        "dist/leaflet.js.map": "leaflet.js.map",
+        "dist/images/layers-2x.png": "images/layers-2x.png",
+        "dist/images/layers.png": "images/layers.png",
+        "dist/images/marker-icon-2x.png": "images/marker-icon-2x.png",
+        "dist/images/marker-icon.png": "images/marker-icon.png",
+        "dist/images/marker-shadow.png": "images/marker-shadow.png"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "googleFonts": "Fira Sans:ital,wght@0,400;0,600;1,400",
+    "version": "v18",
+    "files": {
+        "latin normal 400": "fira-sans-400-latin.woff2",
+        "latin-ext normal 400": "fira-sans-400-latin-ext.woff2",
+        "latin italic 400": "fira-sans-400-italic-latin.woff2",
+        "latin-ext italic 400": "fira-sans-400-italic-latin-ext.woff2",
+        "latin normal 600": "fira-sans-600-latin.woff2",
+        "latin-ext normal 600": "fira-sans-600-latin-ext.woff2"
+    },
+    "url": {
+        "https://raw.githubusercontent.com/google/fonts/main/ofl/firasans/OFL.txt": "OFL.txt"
+    }
+}

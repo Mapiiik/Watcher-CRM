@@ -72,7 +72,7 @@ $urlWithQuery = function ($query = []) use ($request) {
     <?php endif ?>
 
     <?php
-    $normalize = '/vendor/normalize/normalize.min.css';
+    $normalize = '/vendor/normalize/normalize.css';
     $milligram = '/vendor/milligram/milligram.min.css';
 
     switch (Configure::read('UI.theme')) {

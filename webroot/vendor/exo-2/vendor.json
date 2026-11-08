@@ -1,0 +1,11 @@
+{
+    "googleFonts": "Exo 2:wght@400..700",
+    "version": "v26",
+    "files": {
+        "latin normal 400 700": "exo-2-latin.woff2",
+        "latin-ext normal 400 700": "exo-2-latin-ext.woff2"
+    },
+    "url": {
+        "https://raw.githubusercontent.com/google/fonts/main/ofl/exo2/OFL.txt": "OFL.txt"
+    }
+}

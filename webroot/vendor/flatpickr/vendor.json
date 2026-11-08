@@ -1,0 +1,10 @@
+{
+    "npm": "flatpickr",
+    "version": "4.6.13",
+    "pinnedBy": "App\\Event\\LocalAssetsListener",
+    "files": {
+        "LICENSE.md": "LICENSE.md",
+        "dist/flatpickr.min.css": "flatpickr.min.css",
+        "dist/flatpickr.min.js": "flatpickr.min.js"
+    }
+}

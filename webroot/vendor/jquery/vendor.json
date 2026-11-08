@@ -1,0 +1,8 @@
+{
+    "npm": "jquery",
+    "version": "3.7.1",
+    "files": {
+        "LICENSE.txt": "LICENSE.txt",
+        "dist/jquery.min.js": "jquery.min.js"
+    }
+}

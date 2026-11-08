@@ -216,6 +216,21 @@ through the ports they publish on the host, `https://host.docker.internal:<port>
 their own. What the compose file sets (`DATABASE_URL`, `EMAIL_TRANSPORT_*_URL`) stays out of
 `config/.env`: a variable set in both stops the bootstrap.
 
+### Libraries in `webroot/vendor`
+
+The pages load nothing from a CDN. Every library lies whole in `webroot/vendor/<library>`, of the
+application or of a plugin, with its licence and a `vendor.json` that says where it comes from: a
+version of an npm package, a family of Google Fonts, or an address.
+
+```bash
+bin/cake vendor_assets check                          # each folder against its source, and what is newer
+bin/cake vendor_assets update webroot/vendor/jquery   # the newest version, or name one after the folder
+```
+
+A new library starts as a folder with only its `vendor.json`, which `update` fills. Bootstrap,
+Font Awesome, Chart.js and flatpickr stay at the versions the pages of the queue and the audit log
+ask for, as `App\Event\LocalAssetsListener` serves them those instead of the CDN.
+
 ## License
 
 Watcher CRM is licensed under the GNU Affero General Public License v3.0.

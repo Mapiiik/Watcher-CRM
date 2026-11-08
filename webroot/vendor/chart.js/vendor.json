@@ -1,0 +1,9 @@
+{
+    "npm": "chart.js",
+    "version": "4.4.7",
+    "pinnedBy": "App\\Event\\LocalAssetsListener",
+    "files": {
+        "LICENSE.md": "LICENSE.md",
+        "dist/chart.umd.js": "chart.umd.js"
+    }
+}

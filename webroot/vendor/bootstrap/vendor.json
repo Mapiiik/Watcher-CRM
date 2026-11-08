@@ -1,0 +1,10 @@
+{
+    "npm": "bootstrap",
+    "version": "5.3.3",
+    "pinnedBy": "App\\Event\\LocalAssetsListener",
+    "files": {
+        "LICENSE": "LICENSE",
+        "dist/css/bootstrap.min.css": "bootstrap.min.css",
+        "dist/js/bootstrap.bundle.min.js": "bootstrap.bundle.min.js"
+    }
+}

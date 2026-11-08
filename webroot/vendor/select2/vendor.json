@@ -1,0 +1,9 @@
+{
+    "npm": "select2",
+    "version": "4.0.13",
+    "files": {
+        "LICENSE.md": "LICENSE.md",
+        "dist/css/select2.min.css": "select2.min.css",
+        "dist/js/select2.min.js": "select2.min.js"
+    }
+}

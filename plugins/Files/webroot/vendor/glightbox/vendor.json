@@ -1,0 +1,9 @@
+{
+    "npm": "glightbox",
+    "version": "3.3.1",
+    "files": {
+        "LICENSE.md": "LICENSE.md",
+        "dist/css/glightbox.min.css": "glightbox.min.css",
+        "dist/js/glightbox.min.js": "glightbox.min.js"
+    }
+}

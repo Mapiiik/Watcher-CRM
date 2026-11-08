@@ -1,0 +1,6 @@
+{
+    "url": {
+        "https://raw.githubusercontent.com/cakephp/app/5.x/webroot/css/milligram.min.css": "milligram.min.css",
+        "https://cdn.jsdelivr.net/npm/milligram@1.4.1/license": "LICENSE"
+    }
+}

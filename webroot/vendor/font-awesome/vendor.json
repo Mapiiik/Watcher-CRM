@@ -1,0 +1,13 @@
+{
+    "npm": "@fortawesome/fontawesome-free",
+    "version": "6.7.2",
+    "pinnedBy": "App\\Event\\LocalAssetsListener",
+    "files": {
+        "LICENSE.txt": "LICENSE.txt",
+        "css/all.min.css": "css/all.min.css",
+        "webfonts/fa-brands-400.woff2": "webfonts/fa-brands-400.woff2",
+        "webfonts/fa-regular-400.woff2": "webfonts/fa-regular-400.woff2",
+        "webfonts/fa-solid-900.woff2": "webfonts/fa-solid-900.woff2",
+        "webfonts/fa-v4compatibility.woff2": "webfonts/fa-v4compatibility.woff2"
+    }
+}

@@ -29,7 +29,7 @@ class LocalAssetsListener implements EventListenerInterface
         'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js' =>
             'bootstrap/bootstrap.bundle.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css' => 'font-awesome/css/all.min.css',
-        'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js' => 'chart.js/chart.umd.min.js',
+        'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js' => 'chart.js/chart.umd.js',
         'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css' => 'flatpickr/flatpickr.min.css',
         'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js' => 'flatpickr/flatpickr.min.js',
         // the audit log asks for whatever version is the latest, which has been 4.6.13 since 2022, and
