@@ -1,0 +1,82 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-11-10 14:52+0100\n"
+"PO-Revision-Date: 2026-11-10 15:00+0100\n"
+"Last-Translator: Martin Patočka <mapik@mapik.net>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+
+#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:66
+msgid "The scheduler needs attention"
+msgstr "Plánovač potřebuje pozornost"
+
+#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:92
+msgid "Job {0} ({1}) was started at {2} and has not finished."
+msgstr "Úloha {0} ({1}) byla spuštěna {2} a dosud neskončila."
+
+#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:120
+msgid "Row {0} was due at {1} and has not run."
+msgstr "Řádek plánu {0} měl běžet {1} a nespustil se."
+
+#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:146
+msgid "The dispatcher last ran at {0}."
+msgstr "Dispečer úloh naposledy běžel {0}."
+
+#: plugins/Scheduler/src/Command/SchedulerEnableCommand.php:60
+msgid "There is no row of that name: {0}"
+msgstr "Řádek plánu s tímto názvem neexistuje: {0}"
+
+#: plugins/Scheduler/src/Command/SchedulerEnableCommand.php:63
+msgid "{0}: on, next run at {1}"
+msgstr "{0}: zapnuto, další spuštění {1}"
+
+#: plugins/Scheduler/src/Command/SchedulerEnableCommand.php:65
+msgid "{0}: off"
+msgstr "{0}: vypnuto"
+
+#: plugins/Scheduler/src/Command/SchedulerImportCommand.php:46
+msgid "The JSON file, rows described as in config/scheduler.php."
+msgstr "Soubor JSON s řádky popsanými jako v config/scheduler.php."
+
+#: plugins/Scheduler/src/Command/SchedulerImportCommand.php:63
+msgid "The file {0} cannot be read."
+msgstr "Soubor {0} nelze přečíst."
+
+#: plugins/Scheduler/src/Command/SchedulerImportCommand.php:71
+msgid "The file {0} is not JSON: {1}"
+msgstr "Soubor {0} není JSON: {1}"
+
+#: plugins/Scheduler/src/Command/SchedulerImportCommand.php:79
+#: plugins/Scheduler/src/Command/SchedulerSyncCommand.php:44
+msgid "Added to the schedule: {0}"
+msgstr "Přidáno do plánu: {0}"
+
+#: plugins/Scheduler/src/Command/SchedulerImportCommand.php:82
+msgid "Changed in the schedule: {0}"
+msgstr "Změněno v plánu: {0}"
+
+#: plugins/Scheduler/src/Command/SchedulerImportCommand.php:85
+msgid "Left alone, it is switched on: {0}"
+msgstr "Ponecháno beze změny, je zapnutý: {0}"
+
+#: plugins/Scheduler/src/Event/FailedJobListener.php:57
+msgid "Job failed: {0}"
+msgstr "Úloha selhala: {0}"
+
+#: plugins/Scheduler/src/Event/FailedJobListener.php:58
+msgid ""
+"The job {0} has failed.\n"
+"\n"
+"Error: {1}"
+msgstr ""
+"Úloha {0} selhala.\n"
+"\n"
+"Chyba: {1}"

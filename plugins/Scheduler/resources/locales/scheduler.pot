@@ -1,0 +1,77 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-11-10 14:52+0100\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Scheduler/src/Command/SchedulerCheckCommand.php:66
+msgid "The scheduler needs attention"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerCheckCommand.php:92
+msgid "Job {0} ({1}) was started at {2} and has not finished."
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerCheckCommand.php:120
+msgid "Row {0} was due at {1} and has not run."
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerCheckCommand.php:146
+msgid "The dispatcher last ran at {0}."
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerEnableCommand.php:60
+msgid "There is no row of that name: {0}"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerEnableCommand.php:63
+msgid "{0}: on, next run at {1}"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerEnableCommand.php:65
+msgid "{0}: off"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerImportCommand.php:46
+msgid "The JSON file, rows described as in config/scheduler.php."
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerImportCommand.php:63
+msgid "The file {0} cannot be read."
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerImportCommand.php:71
+msgid "The file {0} is not JSON: {1}"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerImportCommand.php:79
+#: ./plugins/Scheduler/src/Command/SchedulerSyncCommand.php:44
+msgid "Added to the schedule: {0}"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerImportCommand.php:82
+msgid "Changed in the schedule: {0}"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Command/SchedulerImportCommand.php:85
+msgid "Left alone, it is switched on: {0}"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Event/FailedJobListener.php:57
+msgid "Job failed: {0}"
+msgstr ""
+
+#: ./plugins/Scheduler/src/Event/FailedJobListener.php:58
+msgid "The job {0} has failed.\n\nError: {1}"
+msgstr ""
+
