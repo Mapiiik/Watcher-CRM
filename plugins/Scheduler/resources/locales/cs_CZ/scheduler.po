@@ -28,7 +28,7 @@ msgstr "Řádek plánu {0} měl běžet {1} a nespustil se."
 
 #: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:146
 msgid "The dispatcher last ran at {0}."
-msgstr "Dispečer úloh naposledy běžel {0}."
+msgstr "Plánovač naposledy běžel {0}."
 
 #: plugins/Scheduler/src/Command/SchedulerEnableCommand.php:60
 msgid "There is no row of that name: {0}"
