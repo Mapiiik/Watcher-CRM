@@ -25,6 +25,31 @@ duration and output. Administrators only.
 
 `import` writes rows described as in `config/scheduler.php`, in JSON, and never switches one on.
 
+The defaults are a starting point, all of them off. What an installation runs differently, or on top
+of them, goes into such a file: a name the schedule has changes that row, a new name adds one. A row
+that is on is left alone, switch it off first. A CRM that issues its invoices in the accounting
+system, reads them in full every night and only warns its debtors could import:
+
+    {
+        "Issue invoices": {
+            "command": "Bookkeeping\\Command\\IssueInvoicesCommand",
+            "args": ["--accounting-profile-id", "<id of the accounting profile>", "--schedule", "prev-month-on-first"],
+            "frequency": "0 6 * * *",
+            "window": {"from": "06:00", "to": "18:00"}
+        },
+        "Load invoices in full": {
+            "command": "Bookkeeping\\Command\\LoadInvoicesCommand",
+            "args": ["--mode", "full"],
+            "frequency": "15 23 * * *"
+        },
+        "Process debtors": {
+            "command": "Bookkeeping\\Command\\ProcessDebtorsCommand",
+            "args": ["--only_notify"],
+            "frequency": "0 10 * * 1-5",
+            "window": {"from": "10:00", "to": "18:00"}
+        }
+    }
+
 ## What to know about a row
 
 - **It runs at most once.** A failed job is not run again until its next time. Most jobs here write
