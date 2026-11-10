@@ -705,6 +705,9 @@ return [
 
                         'general_statements_text' => 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________',
 
+                        'installation_date_line' => 'Datum instalace: ____________________',
+                        'installation_received_on_site' => 'Za Uživatele převzal na místě (jméno a podpis): ________________________________________',
+
                         'final_statements_text' => <<<TEXT
                             Uživatel svým podpisem stvrzuje, že výše uvedená zařízení převzal nainstalovaná a plně funkční, a zároveň se zavazuje uhradit částku aktivačního poplatku i cenu dodaných zařízení a příslušenství a prací nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).
 
@@ -751,6 +754,8 @@ return [
 
                         'uninstallation_cash_payment_text' => 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________',
                         'uninstallation_general_statements_text' => 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________',
+                        'uninstallation_date_line' => 'Datum deinstalace: ____________________',
+                        'uninstallation_handed_over_on_site' => 'Za Uživatele předal na místě (jméno a podpis): ________________________________________',
 
                         'uninstallation_final_statements_text' => <<<TEXT
                             Poskytovatel svým podpisem stvrzuje, že zařízení, která mu byla vrácena, převzal ve stavu popsaném výše.
@@ -792,7 +797,7 @@ return [
                             TEXT,
 
                         'exchange_date_line' => 'Datum výměny: ____________________',
-                        'exchange_received_on_site' => 'Za Uživatele převzal na místě (jméno a podpis): ____________________',
+                        'exchange_received_on_site' => 'Za Uživatele převzal na místě (jméno a podpis): ________________________________________',
 
                         'exchange_final_statements_text' => <<<TEXT
                             Smluvní strany se dohodly, že ke dni výměny uvedenému v tomto předávacím protokolu Uživatel vrací Poskytovateli zařízení uvedená v části Vrácená zařízení a jejich stav a že Poskytnutými zařízeními podle Smlouvy jsou ode dne výměny zařízení uvedená v části Poskytnutá zařízení po výměně. Tento předávací protokol je nedílnou součástí Smlouvy č. {contract_number}. Ostatní ustanovení Smlouvy zůstávají beze změny.

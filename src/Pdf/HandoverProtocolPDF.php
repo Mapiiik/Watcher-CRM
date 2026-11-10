@@ -149,6 +149,10 @@ class HandoverProtocolPDF extends ContractPaperPDF
      * The installation protocol: how the customer gets on the network, what was lent to them,
      * what the installation cost, and what they are confirming by signing.
      *
+     * The day of the installation and who took the equipment over on the spot are written in by
+     * hand, as on the exchange protocol: the papers are printed ahead and not always signed on
+     * the day, and whoever signs for the customer is not always the one at the door.
+     *
      * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
      * @return void
      */
@@ -179,6 +183,10 @@ class HandoverProtocolPDF extends ContractPaperPDF
 
         $this->printEarlyTerminationTerms($contract, $executed, $soldEquipmentsDiscount, $soldEquipmentsValue);
 
+        // A line of air between the two, because both are written in by hand.
+        $this->printParagraph($this->handoverText('texts.installation_date_line'), gap: 2.0 + self::LINE_HEIGHT);
+        $this->printParagraph($this->handoverText('texts.installation_received_on_site'), gap: 4.0);
+
         $this->printSectionHeading($this->handoverText('sections.final_statements'));
         $this->printParagraph(strtr($this->handoverText('texts.final_statements_text'), [
             '{contract_number}' => (string)$contract->number,
@@ -188,6 +196,9 @@ class HandoverProtocolPDF extends ContractPaperPDF
     /**
      * The uninstallation protocol: what is being taken back, in what state, and what is
      * settled on the doorstep.
+     *
+     * The day of the uninstallation and who handed the equipment over on the spot are written in
+     * by hand, for the same reasons as on the installation protocol.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
      * @return void
@@ -209,6 +220,9 @@ class HandoverProtocolPDF extends ContractPaperPDF
             'uninstallation_general_statements_text',
             lnBeforeText: 4,
         );
+
+        $this->printParagraph($this->handoverText('texts.uninstallation_date_line'), gap: 2.0 + self::LINE_HEIGHT);
+        $this->printParagraph($this->handoverText('texts.uninstallation_handed_over_on_site'), gap: 4.0);
 
         $this->printSectionHeading($this->handoverText('sections.final_statements'));
         $this->printParagraph(strtr($this->handoverText('texts.uninstallation_final_statements_text'), [

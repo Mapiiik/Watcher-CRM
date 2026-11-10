@@ -194,6 +194,58 @@ class ProposalPapersTest extends TestCase
     }
 
     /**
+     * Every handover protocol has lines for the day the work was done and for whoever took part
+     * in it for the customer. The papers are printed ahead and not always signed on the day, so
+     * neither date says when the equipment changed hands, and the signature need not be theirs.
+     *
+     * Told apart by changing what each protocol's own line says: the protocol has to change with it.
+     *
+     * @return void
+     */
+    public function testEveryHandoverProtocolHasLinesForTheWorkOnTheSpot(): void
+    {
+        $this->furnishTheContract();
+
+        $lines = [
+            'installation_date_line' => ContractDocumentType::HandoverInstallation,
+            'installation_received_on_site' => ContractDocumentType::HandoverInstallation,
+            'uninstallation_date_line' => ContractDocumentType::HandoverUninstallation,
+            'uninstallation_handed_over_on_site' => ContractDocumentType::HandoverUninstallation,
+            'exchange_date_line' => ContractDocumentType::HandoverExchange,
+            'exchange_received_on_site' => ContractDocumentType::HandoverExchange,
+        ];
+
+        foreach ($lines as $line => $type) {
+            $asWritten = $this->handoverProtocol($type);
+            Settings::set('core.documents.contracts.handover.texts.' . $line, 'Lorem ipsum: ____');
+
+            $this->assertNotSame($asWritten, $this->handoverProtocol($type), $type->value . ' has no ' . $line . '.');
+        }
+    }
+
+    /**
+     * One handover protocol of the kind given, the exchange one for a box swapped for another.
+     *
+     * @param \App\Model\Enum\ContractDocumentType $type Which protocol.
+     * @return string
+     */
+    private function handoverProtocol(ContractDocumentType $type): string
+    {
+        if ($type !== ContractDocumentType::HandoverExchange) {
+            return $this->printedForANewContract($type, projected: false);
+        }
+
+        $contract = $this->liveContract();
+        $version = $this->liveVersion();
+        $version->set('valid_until', null);
+
+        $data = $this->replacing($type, $contract, $version, reactivates: false);
+        $data->projectedEquipment = new ProjectedEquipment([], [$this->anotherBox()], $contract->borrowed_equipments);
+
+        return $this->print($data);
+    }
+
+    /**
      * A contract replacing an earlier one hands over only what it adds - the rest is with the
      * customer already - so its installation protocol is the one a new contract lending only
      * that would print.
