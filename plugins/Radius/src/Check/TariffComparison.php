@@ -61,6 +61,11 @@ class TariffComparison
     private ?array $outside_their_contract = null;
 
     /**
+     * @var list<\Radius\Check\AccountFinding>|null
+     */
+    private ?array $with_competing_addresses = null;
+
+    /**
      * @param \App\Check\CheckScope $scope What is being asked about.
      * @param \Radius\Updater\ExpectedUserGroups|null $expected_user_groups Where the tariffs are read.
      */
@@ -181,6 +186,46 @@ class TariffComparison
         }
 
         return $this->outside_their_contract = $findings;
+    }
+
+    /**
+     * Accounts handed more than one address of a family. FreeRADIUS sends them all and the router
+     * takes one, so the customer may be given another address than the one meant.
+     *
+     * @return list<\Radius\Check\AccountFinding>
+     */
+    public function withCompetingAddresses(): array
+    {
+        if ($this->with_competing_addresses !== null) {
+            return $this->with_competing_addresses;
+        }
+
+        $findings = [];
+        foreach ($this->accounts() as $account) {
+            // keyed by how the address reads, so one address written twice is not two
+            $byAttribute = [];
+            foreach ($account->radreply as $reply) {
+                $attribute = AddressAttribute::tryFrom($reply->attribute);
+                $block = AddressBlock::read($reply->value);
+                if ($attribute !== null && $attribute->isSingleValued() && $block !== null) {
+                    $byAttribute[$attribute->value][(string)$block] = true;
+                }
+            }
+
+            $competing = [];
+            foreach ($byAttribute as $addresses) {
+                if (count($addresses) > 1) {
+                    array_push($competing, ...array_map('strval', array_keys($addresses)));
+                }
+            }
+
+            if ($competing !== []) {
+                sort($competing, SORT_NATURAL);
+                $findings[] = new AccountFinding($account, competing_addresses: $competing);
+            }
+        }
+
+        return $this->with_competing_addresses = $findings;
     }
 
     /**

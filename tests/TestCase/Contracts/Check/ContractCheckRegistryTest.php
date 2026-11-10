@@ -231,6 +231,7 @@ class ContractCheckRegistryTest extends TestCase
         $this->assertNotNull((new ContractCheckRegistry())->get('radius_group_mismatch'));
         $this->assertNotNull((new ContractCheckRegistry())->get('radius_account_without_tariff'));
         $this->assertNotNull((new ContractCheckRegistry())->get('radius_address_outside_contract'));
+        $this->assertNotNull((new ContractCheckRegistry())->get('radius_competing_addresses'));
 
         $plugins = Plugin::getCollection();
         $radius = $plugins->get('Radius');
@@ -240,6 +241,7 @@ class ContractCheckRegistryTest extends TestCase
             $this->assertNull((new ContractCheckRegistry())->get('radius_group_mismatch'));
             $this->assertNull((new ContractCheckRegistry())->get('radius_account_without_tariff'));
             $this->assertNull((new ContractCheckRegistry())->get('radius_address_outside_contract'));
+            $this->assertNull((new ContractCheckRegistry())->get('radius_competing_addresses'));
         } finally {
             $plugins->add($radius);
         }

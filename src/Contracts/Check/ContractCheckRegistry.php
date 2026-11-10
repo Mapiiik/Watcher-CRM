@@ -14,6 +14,7 @@ use App\Model\Table\ContractVersionsTable;
 use Cake\Core\Plugin;
 use Radius\Check\RadiusAccountWithoutTariffCheck;
 use Radius\Check\RadiusAddressOutsideContractCheck;
+use Radius\Check\RadiusCompetingAddressesCheck;
 use Radius\Check\RadiusGroupMismatchCheck;
 use Radius\Check\TariffComparison;
 
@@ -119,6 +120,8 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
                 fn() => new RadiusAccountWithoutTariffCheck($contracts, $this->scope, $comparison),
             'radius_address_outside_contract' =>
                 fn() => new RadiusAddressOutsideContractCheck($contracts, $this->scope, $comparison),
+            'radius_competing_addresses' =>
+                fn() => new RadiusCompetingAddressesCheck($contracts, $this->scope, $comparison),
         ];
     }
 }

@@ -611,6 +611,38 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
+     * An account handed two addresses where it takes one is listed with both.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContractProblems()
+     */
+    public function testOverviewOfContractProblemsListsCompetingAddresses(): void
+    {
+        $account = $this->fetchTable('Radius.Accounts')->find()->firstOrFail();
+        $replies = $this->fetchTable('Radius.Radreply');
+        $replies->deleteAll(['1 = 1']);
+        foreach (['192.0.2.245', '192.0.2.18'] as $address) {
+            $replies->saveOrFail($replies->newEntity(
+                [
+                    'username' => $account->get('username'),
+                    'attribute' => 'Framed-IP-Address',
+                    'op' => '=',
+                    'value' => $address,
+                ],
+                ['validate' => false, 'accessibleFields' => ['*' => true]],
+            ));
+        }
+
+        $this->login();
+
+        $this->get('/overviews/overview-of-contract-problems');
+
+        $this->assertResponseOk();
+        $this->assertCount(1, $this->viewVariable('results')['radius_competing_addresses']);
+        $this->assertResponseContains('<td>192.0.2.18<br>192.0.2.245</td>');
+    }
+
+    /**
      * Breaks that are long over are passed over unless somebody asks for them.
      *
      * @return void

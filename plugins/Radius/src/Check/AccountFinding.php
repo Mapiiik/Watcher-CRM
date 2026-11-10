@@ -18,12 +18,15 @@ final class AccountFinding
      * @param \Cake\I18n\Date|null $tariff_from Where the tariff names none yet, the day a later one starts.
      * @param array<string, \App\Model\Entity\Contract|null> $stray_addresses The addresses the account
      *   holds that its contract does not, each with the contract that has it now, if any does.
+     * @param list<string> $competing_addresses The addresses the account is handed where it takes
+     *   only one of them.
      */
     public function __construct(
         public readonly Account $account,
         public readonly ?string $expected_groupname = null,
         public readonly ?Date $tariff_from = null,
         public readonly array $stray_addresses = [],
+        public readonly array $competing_addresses = [],
     ) {
     }
 
