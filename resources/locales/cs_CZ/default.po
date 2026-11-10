@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-07 15:03+0100\n"
+"POT-Creation-Date: 2026-11-10 14:44+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -270,20 +270,20 @@ msgstr ""
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr "Jak dlouho před koncem závazku se na něj upozorňuje."
 
-#: config/settings.php:849
+#: config/settings.php:854
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr "Tři úvodní odrážky předepsané šablonou shrnutí smlouvy."
 
-#: config/settings.php:900
+#: config/settings.php:905
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 "Podíl inzerované rychlosti, který se bere jako běžně dostupná rychlost."
 
-#: config/settings.php:905
+#: config/settings.php:910
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
 
-#: config/settings.php:984
+#: config/settings.php:989
 msgid "Documents the summary points the customer to."
 msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
 
@@ -2863,21 +2863,21 @@ msgstr "Prodané zařízení bylo odstraněno."
 msgid "The sold equipment could not be deleted. Please, try again."
 msgstr "Prodané zařízení nelze odstranit. Opakujte akci."
 
-#: src/Controller/TasksController.php:396
+#: src/Controller/TasksController.php:392
 msgid "none"
 msgstr "žádný"
 
-#: src/Controller/TasksController.php:506
-#: src/Controller/TasksController.php:653
+#: src/Controller/TasksController.php:530
+#: src/Controller/TasksController.php:677
 msgid "The task has been saved."
 msgstr "Úkol byl uložen."
 
-#: src/Controller/TasksController.php:510
-#: src/Controller/TasksController.php:657
+#: src/Controller/TasksController.php:534
+#: src/Controller/TasksController.php:681
 msgid "The task could not be saved. Please, try again."
 msgstr "Úkol nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/TasksController.php:582 src/Model/Enum/AddressType.php:41
+#: src/Controller/TasksController.php:606 src/Model/Enum/AddressType.php:41
 #: templates/Customers/view.php:663
 #: templates/element/AddressChecks/several_contracts_at_one_address.php:20
 #: templates/element/Contracts/facts.php:51
@@ -2887,7 +2887,7 @@ msgstr "Úkol nelze uložit. Zkuste to prosím znovu."
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
-#: src/Controller/TasksController.php:595
+#: src/Controller/TasksController.php:619
 #: src/Model/Enum/CustomerMessageType.php:27
 #: src/Utility/ServiceChangeMessageBuilder.php:163
 #: templates/Customers/view.php:428 templates/Emails/view.php:27
@@ -2897,7 +2897,7 @@ msgstr "Adresa instalace"
 msgid "Email"
 msgstr "E-mail"
 
-#: src/Controller/TasksController.php:596
+#: src/Controller/TasksController.php:620
 #: src/Utility/ServiceChangeMessageBuilder.php:164
 #: templates/Customers/view.php:477 templates/Phones/view.php:27
 #: templates/Phones/view.php:43 templates/Tasks/add.php:58
@@ -2906,15 +2906,15 @@ msgstr "E-mail"
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/Controller/TasksController.php:729
+#: src/Controller/TasksController.php:753
 msgid "The task has been deleted."
 msgstr "Úkol byl odstraněn."
 
-#: src/Controller/TasksController.php:732
+#: src/Controller/TasksController.php:756
 msgid "The task could not be deleted. Please, try again."
 msgstr "Úkol nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/TasksController.php:416
+#: src/Controller/TasksController.php:412
 msgid "There was {0} unfinished task found that does not have a user assigned."
 msgid_plural ""
 "There were {0} unfinished tasks found that do not have a user assigned."
@@ -3081,11 +3081,11 @@ msgstr "Data návrhů k verzi smlouvy nejsou k dispozici."
 msgid "indefinitely"
 msgstr "na dobu neurčitou"
 
-#: src/Model/Entity/Customer.php:539 src/Model/Entity/Customer.php:561
+#: src/Model/Entity/Customer.php:550 src/Model/Entity/Customer.php:572
 msgid "Contracts data not available."
 msgstr "Údaje o smlouvách nejsou k dispozici."
 
-#: src/Model/Entity/Customer.php:576
+#: src/Model/Entity/Customer.php:587
 msgid "Accounting profile data not available."
 msgstr "Údaje o účetním profilu nejsou k dispozici."
 
@@ -3109,7 +3109,7 @@ msgstr "Změny aplikovány"
 msgid "Contract proposal data not available."
 msgstr "Návrhy smluv nejsou načtené."
 
-#: src/Model/Entity/User.php:36 src/Model/Enum/LoginRights.php:28
+#: src/Model/Entity/User.php:52 src/Model/Enum/LoginRights.php:28
 #: templates/Tasks/add.php:44 templates/Tasks/edit.php:57
 #: templates/Tasks/index.php:105 templates/Tasks/view.php:54
 #: templates/element/Contracts/Tasks.php:25
@@ -3117,51 +3117,51 @@ msgstr "Návrhy smluv nejsou načtené."
 msgid "User"
 msgstr "Uživatel"
 
-#: src/Model/Entity/User.php:37
+#: src/Model/Entity/User.php:53
 msgid "Customer Service Technician"
 msgstr "Technik zákaznického servisu"
 
-#: src/Model/Entity/User.php:38
+#: src/Model/Entity/User.php:54
 msgid "Network Technician"
 msgstr "Síťový technik"
 
-#: src/Model/Entity/User.php:39
+#: src/Model/Entity/User.php:55
 msgid "Network Manager"
 msgstr "Správce sítě"
 
-#: src/Model/Entity/User.php:40
+#: src/Model/Entity/User.php:56
 msgid "Sales Representative"
 msgstr "Obchodní zástupce"
 
-#: src/Model/Entity/User.php:41
+#: src/Model/Entity/User.php:57
 msgid "Sales Manager"
 msgstr "Manažer prodeje"
 
-#: src/Model/Entity/User.php:42
+#: src/Model/Entity/User.php:58
 msgid "Bookkeeper"
 msgstr "Účetní"
 
-#: src/Model/Entity/User.php:43
+#: src/Model/Entity/User.php:59
 msgid "Manager"
 msgstr "Manažer"
 
-#: src/Model/Entity/User.php:44
+#: src/Model/Entity/User.php:60
 msgid "Admin"
 msgstr "Admin"
 
-#: src/Model/Entity/User.php:45
+#: src/Model/Entity/User.php:61
 msgid "API"
 msgstr "API"
 
-#: src/Model/Entity/User.php:46
+#: src/Model/Entity/User.php:62
 msgid "Watcher NMS"
 msgstr "Watcher NMS"
 
-#: src/Model/Entity/User.php:47
+#: src/Model/Entity/User.php:63
 msgid "Customer Portal"
 msgstr "Zákaznický portál"
 
-#: src/Model/Entity/User.php:48
+#: src/Model/Entity/User.php:64
 msgid "Customer Identification"
 msgstr "Identifikace zákazníka"
 

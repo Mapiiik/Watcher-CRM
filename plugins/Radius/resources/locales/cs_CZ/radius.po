@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-07 15:03+0100\n"
+"POT-Creation-Date: 2026-11-10 14:44+0100\n"
 "PO-Revision-Date: 2026-08-22 17:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -34,6 +34,15 @@ msgstr "Aktivní účet RADIUS s adresou mimo svou smlouvu"
 #: plugins/Radius/src/Check/RadiusAddressOutsideContractCheck.php:40
 msgid "Every active RADIUS account keeps to the addresses of its contract."
 msgstr "Každý aktivní účet RADIUS se drží adres své smlouvy."
+
+#: plugins/Radius/src/Check/RadiusCompetingAddressesCheck.php:31
+msgid "Active RADIUS Account With More Than One IP Address"
+msgstr "Aktivní účet RADIUS s více než jednou IP adresou"
+
+#: plugins/Radius/src/Check/RadiusCompetingAddressesCheck.php:40
+msgid "No active RADIUS account is handed more than one IPv4 or IPv6 address."
+msgstr ""
+"Žádný aktivní účet RADIUS nedostává více než jednu adresu IPv4 nebo IPv6."
 
 #: plugins/Radius/src/Check/RadiusGroupMismatchCheck.php:30
 msgid "RADIUS Group Not Matching the Tariff"
@@ -83,6 +92,7 @@ msgstr "U těchto účtů se změny neuplatnily."
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:36
 #: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:24
 #: plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:23
+#: plugins/Radius/templates/element/ContractChecks/radius_competing_addresses.php:24
 #: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:20
 msgid "Customer"
 msgstr "Zákazník"
@@ -99,6 +109,7 @@ msgstr "Zákazník"
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:37
 #: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:27
 #: plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:26
+#: plugins/Radius/templates/element/ContractChecks/radius_competing_addresses.php:27
 #: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:23
 msgid "Contract"
 msgstr "Smlouva"
@@ -137,6 +148,7 @@ msgstr "Odpovědi RADIUS"
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:44
 #: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:31
 #: plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:29
+#: plugins/Radius/templates/element/ContractChecks/radius_competing_addresses.php:30
 #: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:26
 msgid "RADIUS User Groups"
 msgstr "Skupiny uživatelů RADIUS"
@@ -179,7 +191,8 @@ msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr "Účet RADIUS nelze odstranit. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/AccountsController.php:386
-#: plugins/Radius/src/Updater/AccountsUpdater.php:197
+#: plugins/Radius/src/Updater/AccountsUpdater.php:122
+#: plugins/Radius/src/Updater/AccountsUpdater.php:239
 msgid "No active RADIUS session for {0} found."
 msgstr "Nebyla nalezena žádná aktivní relace RADIUS pro {0}."
 
@@ -348,7 +361,7 @@ msgid "Problem connecting to an access point: {0}"
 msgstr "Problém s připojením k přístupovému bodu: {0}"
 
 #: plugins/Radius/src/Updater/AccessListCleaner.php:75
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:75
+#: plugins/Radius/src/Updater/RadiusRequestSender.php:77
 msgid "Watcher Agent is not configured."
 msgstr "Watcher Agent není nakonfigurován."
 
@@ -364,36 +377,36 @@ msgstr "Přístupový bod aktualizován."
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:93
+#: plugins/Radius/src/Updater/AccountsUpdater.php:98
 msgid "The RADIUS account has been updated."
 msgstr "Účet RADIUS byl aktualizován."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:97
+#: plugins/Radius/src/Updater/AccountsUpdater.php:106
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:132
+#: plugins/Radius/src/Updater/AccountsUpdater.php:179
 msgid "Nothing has been selected for update."
 msgstr "Nic nebylo vybráno k aktualizaci."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:176
+#: plugins/Radius/src/Updater/AccountsUpdater.php:223
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr "Účet RADIUS {0} nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:183
+#: plugins/Radius/src/Updater/AccountsUpdater.php:230
 msgid "The RADIUS account could not be updated."
 msgstr "Účet RADIUS nelze aktualizovat."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:204
+#: plugins/Radius/src/Updater/AccountsUpdater.php:246
 msgid "No active RADIUS session found."
 msgstr "Nebyla nalezena žádná aktivní relace RADIUS."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:221
+#: plugins/Radius/src/Updater/AccountsUpdater.php:263
 msgid ""
 "The RADIUS session started on {0} at {1} could not be disconnected ({2})."
 msgstr "Relace RADIUS zahájená {0} na {1} nemohla být odpojena ({2})."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:247
+#: plugins/Radius/src/Updater/AccountsUpdater.php:289
 msgid ""
 "Related entries for {0} RADIUS accounts were processed, {1} accounts were "
 "updated, and {2} accounts failed to update."
@@ -401,23 +414,23 @@ msgstr ""
 "Související záznamy pro {0} účtů RADIUS byly zpracovány, {1} účtů bylo "
 "aktualizováno a {2} účtů se nepodařilo aktualizovat."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:277
+#: plugins/Radius/src/Updater/AccountsUpdater.php:319
 msgid "Automatic RADIUS account changes"
 msgstr "Automatické změny účtu RADIUS"
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:294
+#: plugins/Radius/src/Updater/AccountsUpdater.php:336
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr "Tyto automatické změny účtu RADIUS právě proběhly."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:301
+#: plugins/Radius/src/Updater/AccountsUpdater.php:343
 msgid "Automatic RADIUS account changes have been reported."
 msgstr "Byly nahlášeny automatické změny účtu RADIUS."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:307
+#: plugins/Radius/src/Updater/AccountsUpdater.php:349
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr "Automatické změny účtu RADIUS nelze nahlásit."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:466
+#: plugins/Radius/src/Updater/AccountsUpdater.php:508
 msgid ""
 "The RADIUS replies for {0} could not be found automatically. Please, set it "
 "manually."
@@ -425,11 +438,11 @@ msgstr ""
 "Odpovědi RADIUS pro {0} nebyly automaticky nalezeny. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:472
+#: plugins/Radius/src/Updater/AccountsUpdater.php:514
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:511
+#: plugins/Radius/src/Updater/AccountsUpdater.php:553
 msgid ""
 "The RADIUS user groups for {0} could not be found automatically. Please, set "
 "it manually."
@@ -437,7 +450,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS pro {0} nebyly nalezeny automaticky. Nastavte je "
 "prosím ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:517
+#: plugins/Radius/src/Updater/AccountsUpdater.php:559
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."
@@ -445,11 +458,11 @@ msgstr ""
 "Fakturace pro smlouvu pro aktuální nebo nadcházející období pravděpodobně "
 "nejsou správně nastaveny."
 
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:41
+#: plugins/Radius/src/Updater/RadiusRequestSender.php:43
 msgid "The RADIUS session for {0} started on {1} has been disconnected ({2})."
 msgstr "Relace RADIUS pro {0} zahájená {1} byla odpojena ({2})."
 
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:49
+#: plugins/Radius/src/Updater/RadiusRequestSender.php:51
 msgid ""
 "The RADIUS session for {0} started on {1} could not be disconnected ({2})."
 msgstr "Relace RADIUS pro {0} zahájená {1} nemohla být odpojena ({2})."
@@ -534,6 +547,7 @@ msgstr "Přidat účet RADIUS"
 #: plugins/Radius/templates/cell/Accounts/display.php:29
 #: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:30
 #: plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:28
+#: plugins/Radius/templates/element/ContractChecks/radius_competing_addresses.php:29
 #: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:25
 msgid "Username"
 msgstr "Uživatelské jméno"
@@ -1420,6 +1434,7 @@ msgid "Data from the RADIUS database could not be loaded."
 msgstr "Data z databáze RADIUS nelze načíst."
 
 #: plugins/Radius/templates/cell/Accounts/display.php:34
+#: plugins/Radius/templates/element/ContractChecks/radius_competing_addresses.php:31
 msgid "IP Addresses"
 msgstr "IP adresy"
 
@@ -1474,6 +1489,15 @@ msgstr "IP adresa"
 #: plugins/Radius/templates/element/ContractChecks/radius_address_outside_contract.php:31
 msgid "Contract Holding It"
 msgstr "Smlouva, která ji má"
+
+#: plugins/Radius/templates/element/ContractChecks/radius_competing_addresses.php:13
+msgid ""
+"The router takes only one of the addresses, so the customer may be given "
+"another one than meant. Leave the contract only the address it should have, "
+"the account follows it."
+msgstr ""
+"Směrovač použije jen jednu z adres, takže zákazník může dostat jinou, než má "
+"mít. Na smlouvě nechte jen adresu, kterou má mít, a účet se podle ní upraví."
 
 #: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:13
 msgid ""
