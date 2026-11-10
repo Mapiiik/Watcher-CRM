@@ -242,6 +242,42 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * The listing opens on the operator's own tasks, unless their account holds none - narrowed
+     * to it, the listing would always be empty, and the list of people does not even offer it,
+     * so the filter would read as everybody's while showing nothing.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testIndexOpensOnEverybodysForAnAccountHoldingNoTasks(): void
+    {
+        $this->loginAs(self::HOLDER_ID);
+        $this->get('/tasks?show_completed=1');
+
+        $this->assertResponseOk();
+        /** @var \Cake\Form\Form $filterForm */
+        $filterForm = $this->viewVariable('filterForm');
+        $this->assertSame(self::HOLDER_ID, $filterForm->getData('user_id'));
+
+        // moved away first, as the rule switching the account off asks
+        $tasks = $this->getTableLocator()->get('Tasks');
+        $tasks->updateAll(['user_id' => null], ['user_id' => self::HOLDER_ID]);
+        $users = $this->getTableLocator()->get('Users');
+        $users->saveOrFail($users->patchEntity($users->get(self::HOLDER_ID), ['holds_tasks' => false], [
+            'accessibleFields' => ['holds_tasks' => true],
+        ]));
+
+        $this->loginAs(self::HOLDER_ID);
+        $this->get('/tasks?show_completed=1');
+
+        $this->assertResponseOk();
+        /** @var \Cake\Form\Form $filterForm */
+        $filterForm = $this->viewVariable('filterForm');
+        $this->assertNull($filterForm->getData('user_id'));
+        $this->assertCount($tasks->find()->count(), $this->listedTaskIds());
+    }
+
+    /**
      * The form of an existing task renders.
      *
      * @return void

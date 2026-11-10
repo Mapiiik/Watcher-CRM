@@ -213,11 +213,7 @@ class TasksController extends AppController
         }
 
         // filter by user
-        if (Hash::get($this->user_settings, 'tasks.all_by_default', false)) {
-            $user_id = $filter['user_id'] ?? null;
-        } else {
-            $user_id = $filter['user_id'] ?? $this->getRequest()->getAttribute('identity')['id'] ?? null;
-        }
+        $user_id = $filter['user_id'] ?? $this->ownTasksByDefault();
         // Narrowed by the finders rather than by a condition of its own, so that the listing
         // holds what the dashboard card pointing at it holds: somebody's work is the work they
         // hold and the work they were put on, and nobody's is nobody's at all. Asked to leave
@@ -444,6 +440,34 @@ class TasksController extends AppController
 
         // load access points from NMS if possible
         $this->setAccessPointsViewVarList(onlyActive: false);
+    }
+
+    /**
+     * Whose tasks the listing opens on before anybody has been picked.
+     *
+     * The operator's own, unless their settings ask for everybody's or their account holds no
+     * tasks - such an account can be named on none, so its own list would always be empty.
+     *
+     * @return string|null The account to narrow to, or null for everybody.
+     */
+    private function ownTasksByDefault(): ?string
+    {
+        if (Hash::get($this->user_settings, 'tasks.all_by_default', false)) {
+            return null;
+        }
+
+        $id = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+        if (!is_string($id)) {
+            return null;
+        }
+
+        $users = $this->Tasks->Users;
+        $holdsTasks = $users
+            ->find('holdingTasks')
+            ->where([$users->aliasField('id') => $id])
+            ->count() > 0;
+
+        return $holdsTasks ? $id : null;
     }
 
     /**
