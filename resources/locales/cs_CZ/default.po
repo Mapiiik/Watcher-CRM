@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-10 14:44+0100\n"
+"POT-Creation-Date: 2026-11-11 10:35+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -4508,7 +4508,7 @@ msgstr ""
 #: templates/Addresses/edit.php:16 templates/Addresses/index.php:46
 #: templates/Addresses/view.php:10 templates/AvailableConnections/add.php:10
 #: templates/AvailableConnections/edit.php:10
-#: templates/AvailableConnections/index.php:58
+#: templates/AvailableConnections/index.php:62
 #: templates/AvailableConnections/view.php:13 templates/Billings/add.php:14
 #: templates/Billings/bulk_service_change.php:15 templates/Billings/edit.php:16
 #: templates/Billings/index.php:40 templates/Billings/service_change.php:13
@@ -4583,7 +4583,7 @@ msgstr ""
 #: templates/Labels/view.php:13 templates/Labels/view.php:103
 #: templates/Logins/add.php:13 templates/Logins/edit.php:11
 #: templates/Logins/index.php:35 templates/Logins/view.php:10
-#: templates/Overviews/overview_of_active_services.php:70
+#: templates/Overviews/overview_of_active_services.php:74
 #: templates/Overviews/overview_of_contracts.php:84
 #: templates/Overviews/overview_of_dealer_commissions.php:63
 #: templates/Phones/add.php:11 templates/Phones/edit.php:11
@@ -4803,7 +4803,7 @@ msgstr "Přístupová oprávnění"
 #: templates/AccessCredentials/index.php:75
 #: templates/AccountingProfiles/index.php:51
 #: templates/AccountingProfiles/view.php:112 templates/Addresses/index.php:94
-#: templates/AvailableConnections/index.php:73 templates/Billings/index.php:84
+#: templates/AvailableConnections/index.php:77 templates/Billings/index.php:84
 #: templates/BorrowedEquipments/index.php:77 templates/Commissions/index.php:35
 #: templates/Commissions/view.php:69 templates/ConnectionProfiles/index.php:61
 #: templates/ConnectionProfiles/view.php:149
@@ -4824,7 +4824,7 @@ msgstr "Přístupová oprávnění"
 #: templates/IpAddresses/index.php:58 templates/IpNetworks/index.php:61
 #: templates/Labels/index.php:75 templates/Labels/view.php:128
 #: templates/Logins/index.php:56
-#: templates/Overviews/overview_of_active_services.php:122
+#: templates/Overviews/overview_of_active_services.php:126
 #: templates/Overviews/overview_of_contracts.php:133
 #: templates/Overviews/overview_of_dealer_commissions.php:102
 #: templates/Phones/index.php:50 templates/RemovedIpAddresses/index.php:64
@@ -4854,7 +4854,7 @@ msgstr "Zobrazit"
 #: templates/AccessCredentials/index.php:79
 #: templates/AccountingProfiles/index.php:53
 #: templates/AccountingProfiles/view.php:116 templates/Addresses/index.php:96
-#: templates/AvailableConnections/index.php:75 templates/Billings/index.php:86
+#: templates/AvailableConnections/index.php:79 templates/Billings/index.php:86
 #: templates/BorrowedEquipments/index.php:79 templates/Commissions/index.php:37
 #: templates/Commissions/view.php:73 templates/ConnectionProfiles/index.php:63
 #: templates/ConnectionProfiles/view.php:153
@@ -5130,7 +5130,7 @@ msgstr "neznámé"
 msgid "Delete Address"
 msgstr "Odstranit adresu"
 
-#: templates/Addresses/view.php:27 templates/AvailableConnections/index.php:51
+#: templates/Addresses/view.php:27 templates/AvailableConnections/index.php:55
 #: templates/AvailableConnections/view.php:61
 #: templates/Overviews/overview_of_croatian_connection_points.php:38
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:61
@@ -5226,22 +5226,22 @@ msgstr "Přidat dostupné připojení"
 msgid "Edit Available Connection"
 msgstr "Upravit dostupné připojení"
 
-#: templates/AvailableConnections/index.php:32
+#: templates/AvailableConnections/index.php:36
 msgid "Show Retired"
 msgstr "Zobrazit vyřazená"
 
-#: templates/AvailableConnections/index.php:42
+#: templates/AvailableConnections/index.php:46
 #: templates/AvailableConnections/view.php:48
 msgid "New Available Connection"
 msgstr "Nové dostupné připojení"
 
-#: templates/AvailableConnections/index.php:46
+#: templates/AvailableConnections/index.php:50
 #: templates/Overviews/overview_of_croatian_connection_points.php:42
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:55
 msgid "Available Connections"
 msgstr "Dostupná připojení"
 
-#: templates/AvailableConnections/index.php:52
+#: templates/AvailableConnections/index.php:56
 #: templates/AvailableConnections/view.php:65
 #: templates/Overviews/overview_of_croatian_connection_points.php:37
 msgid "Address Point"
@@ -5319,7 +5319,7 @@ msgstr "Povolit cenu za připojení pod minimum nastavené na smlouvě"
 #: templates/Billings/bulk_service_change.php:30
 #: templates/Billings/index.php:21 templates/Contracts/view.php:120
 #: templates/Contracts/view.php:278 templates/Customers/view.php:144
-#: templates/Overviews/overview_of_active_services.php:60
+#: templates/Overviews/overview_of_active_services.php:64
 msgid "Billings"
 msgstr "Fakturace"
 
@@ -5772,7 +5772,7 @@ msgid "Delete Connection Profile"
 msgstr "Odstranit profil připojení"
 
 #: templates/ConnectionProfiles/view.php:39
-#: templates/Overviews/overview_of_active_services.php:58
+#: templates/Overviews/overview_of_active_services.php:62
 #: templates/ServiceTypes/view.php:116 templates/Services/view.php:47
 msgid "Connection Profile"
 msgstr "Profil připojení"
@@ -5803,7 +5803,7 @@ msgid "Related Services"
 msgstr "Související služby"
 
 #: templates/ConnectionProfiles/view.php:131 templates/Customers/view.php:662
-#: templates/Overviews/overview_of_active_services.php:57
+#: templates/Overviews/overview_of_active_services.php:61
 #: templates/ServiceTypes/view.php:30 templates/Services/view.php:40
 #: templates/element/AddressChecks/missing_installation_address.php:18
 #: templates/element/ContractChecks/contract.php:28
@@ -8023,7 +8023,7 @@ msgid "Service Related"
 msgstr "Související se službou"
 
 #: templates/Overviews/index.php:62
-#: templates/Overviews/overview_of_active_services.php:47
+#: templates/Overviews/overview_of_active_services.php:51
 msgid "Overview of Active Services"
 msgstr "Přehled aktivních služeb"
 
@@ -8129,11 +8129,11 @@ msgstr "Měsíc k zobrazení"
 msgid "YYYY-MM"
 msgstr "RRRR-MM"
 
-#: templates/Overviews/overview_of_active_services.php:19
+#: templates/Overviews/overview_of_active_services.php:41
 msgid "Show Billings"
 msgstr "Zobrazit fakturace"
 
-#: templates/Overviews/overview_of_active_services.php:46
+#: templates/Overviews/overview_of_active_services.php:50
 #: templates/Overviews/overview_of_address_problems.php:35
 #: templates/Overviews/overview_of_contract_problems.php:35
 #: templates/Overviews/overview_of_contracts.php:52
@@ -8148,40 +8148,40 @@ msgstr "Zobrazit fakturace"
 msgid "List Overviews"
 msgstr "Seznam přehledů"
 
-#: templates/Overviews/overview_of_active_services.php:62
+#: templates/Overviews/overview_of_active_services.php:66
 msgid "Number of Uses"
 msgstr "Počet použití"
 
-#: templates/Overviews/overview_of_active_services.php:63
+#: templates/Overviews/overview_of_active_services.php:67
 msgid "Number of Uses (nonbusiness)"
 msgstr "Počet použití (neobchodní)"
 
-#: templates/Overviews/overview_of_active_services.php:64
+#: templates/Overviews/overview_of_active_services.php:68
 msgid "Sum"
 msgstr "Součet"
 
-#: templates/Overviews/overview_of_active_services.php:65
+#: templates/Overviews/overview_of_active_services.php:69
 msgid "Fixed Discount Sum"
 msgstr "Součet pevných slev"
 
-#: templates/Overviews/overview_of_active_services.php:66
+#: templates/Overviews/overview_of_active_services.php:70
 msgid "Percentage Discount Sum"
 msgstr "Součet procentuálních slev"
 
-#: templates/Overviews/overview_of_active_services.php:67
-#: templates/Overviews/overview_of_active_services.php:140
+#: templates/Overviews/overview_of_active_services.php:71
+#: templates/Overviews/overview_of_active_services.php:144
 msgid "Total Sum"
 msgstr "Celkový součet"
 
-#: templates/Overviews/overview_of_active_services.php:68
+#: templates/Overviews/overview_of_active_services.php:72
 msgid "Total Sum (nonbusiness)"
 msgstr "Celkový součet (neobchodní)"
 
-#: templates/Overviews/overview_of_active_services.php:69
+#: templates/Overviews/overview_of_active_services.php:73
 msgid "Total Sum (unbilled)"
 msgstr "Celkový součet (nefakturováno)"
 
-#: templates/Overviews/overview_of_active_services.php:138
+#: templates/Overviews/overview_of_active_services.php:142
 msgid "Total Number of Uses"
 msgstr "Celkový počet použití"
 
@@ -8902,15 +8902,15 @@ msgstr "Ignorovat spolupracovníky"
 
 #: templates/Tasks/index.php:64
 msgid "Urgent or Overdue Only"
-msgstr "Pouze urgentní nebo po termínu"
+msgstr "Pouze naléhavé nebo zpožděné"
 
 #: templates/Tasks/index.php:71
 msgid "Show Completed"
 msgstr "Zobrazit dokončené"
 
 #: templates/Tasks/index.php:78
-msgid "Untouched for a While Only"
-msgstr "Pouze ty které jsou chvíli bez zásahu"
+msgid "Stale Only"
+msgstr "Pouze zaseknuté"
 
 #: templates/Tasks/index.php:85
 msgid "Expandable Text"
@@ -9925,6 +9925,9 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:293
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Untouched for a While Only"
+#~ msgstr "Pouze ty které jsou chvíli bez zásahu"
 
 #~ msgid ""
 #~ "An expression for data modification was detected in the SQL query, which "

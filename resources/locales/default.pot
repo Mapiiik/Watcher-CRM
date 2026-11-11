@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-10 14:44+0100\n"
+"POT-Creation-Date: 2026-11-11 10:35+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -4275,7 +4275,7 @@ msgstr ""
 #: ./templates/Addresses/view.php:10
 #: ./templates/AvailableConnections/add.php:10
 #: ./templates/AvailableConnections/edit.php:10
-#: ./templates/AvailableConnections/index.php:58
+#: ./templates/AvailableConnections/index.php:62
 #: ./templates/AvailableConnections/view.php:13
 #: ./templates/Billings/add.php:14
 #: ./templates/Billings/bulk_service_change.php:15
@@ -4387,7 +4387,7 @@ msgstr ""
 #: ./templates/Logins/edit.php:11
 #: ./templates/Logins/index.php:35
 #: ./templates/Logins/view.php:10
-#: ./templates/Overviews/overview_of_active_services.php:70
+#: ./templates/Overviews/overview_of_active_services.php:74
 #: ./templates/Overviews/overview_of_contracts.php:84
 #: ./templates/Overviews/overview_of_dealer_commissions.php:63
 #: ./templates/Phones/add.php:11
@@ -4694,7 +4694,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/index.php:51
 #: ./templates/AccountingProfiles/view.php:112
 #: ./templates/Addresses/index.php:94
-#: ./templates/AvailableConnections/index.php:73
+#: ./templates/AvailableConnections/index.php:77
 #: ./templates/Billings/index.php:84
 #: ./templates/BorrowedEquipments/index.php:77
 #: ./templates/Commissions/index.php:35
@@ -4727,7 +4727,7 @@ msgstr ""
 #: ./templates/Labels/index.php:75
 #: ./templates/Labels/view.php:128
 #: ./templates/Logins/index.php:56
-#: ./templates/Overviews/overview_of_active_services.php:122
+#: ./templates/Overviews/overview_of_active_services.php:126
 #: ./templates/Overviews/overview_of_contracts.php:133
 #: ./templates/Overviews/overview_of_dealer_commissions.php:102
 #: ./templates/Phones/index.php:50
@@ -4763,7 +4763,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/index.php:53
 #: ./templates/AccountingProfiles/view.php:116
 #: ./templates/Addresses/index.php:96
-#: ./templates/AvailableConnections/index.php:75
+#: ./templates/AvailableConnections/index.php:79
 #: ./templates/Billings/index.php:86
 #: ./templates/BorrowedEquipments/index.php:79
 #: ./templates/Commissions/index.php:37
@@ -5107,7 +5107,7 @@ msgid "Delete Address"
 msgstr ""
 
 #: ./templates/Addresses/view.php:27
-#: ./templates/AvailableConnections/index.php:51
+#: ./templates/AvailableConnections/index.php:55
 #: ./templates/AvailableConnections/view.php:61
 #: ./templates/Overviews/overview_of_croatian_connection_points.php:38
 #: ./templates/Overviews/overview_of_czech_customer_connection_points.php:61
@@ -5215,22 +5215,22 @@ msgstr ""
 msgid "Edit Available Connection"
 msgstr ""
 
-#: ./templates/AvailableConnections/index.php:32
+#: ./templates/AvailableConnections/index.php:36
 msgid "Show Retired"
 msgstr ""
 
-#: ./templates/AvailableConnections/index.php:42
+#: ./templates/AvailableConnections/index.php:46
 #: ./templates/AvailableConnections/view.php:48
 msgid "New Available Connection"
 msgstr ""
 
-#: ./templates/AvailableConnections/index.php:46
+#: ./templates/AvailableConnections/index.php:50
 #: ./templates/Overviews/overview_of_croatian_connection_points.php:42
 #: ./templates/Overviews/overview_of_czech_customer_connection_points.php:55
 msgid "Available Connections"
 msgstr ""
 
-#: ./templates/AvailableConnections/index.php:52
+#: ./templates/AvailableConnections/index.php:56
 #: ./templates/AvailableConnections/view.php:65
 #: ./templates/Overviews/overview_of_croatian_connection_points.php:37
 msgid "Address Point"
@@ -5312,7 +5312,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:120
 #: ./templates/Contracts/view.php:278
 #: ./templates/Customers/view.php:144
-#: ./templates/Overviews/overview_of_active_services.php:60
+#: ./templates/Overviews/overview_of_active_services.php:64
 msgid "Billings"
 msgstr ""
 
@@ -5800,7 +5800,7 @@ msgid "Delete Connection Profile"
 msgstr ""
 
 #: ./templates/ConnectionProfiles/view.php:39
-#: ./templates/Overviews/overview_of_active_services.php:58
+#: ./templates/Overviews/overview_of_active_services.php:62
 #: ./templates/ServiceTypes/view.php:116
 #: ./templates/Services/view.php:47
 msgid "Connection Profile"
@@ -5833,7 +5833,7 @@ msgstr ""
 
 #: ./templates/ConnectionProfiles/view.php:131
 #: ./templates/Customers/view.php:662
-#: ./templates/Overviews/overview_of_active_services.php:57
+#: ./templates/Overviews/overview_of_active_services.php:61
 #: ./templates/ServiceTypes/view.php:30
 #: ./templates/Services/view.php:40
 #: ./templates/element/AddressChecks/missing_installation_address.php:18
@@ -8029,7 +8029,7 @@ msgid "Service Related"
 msgstr ""
 
 #: ./templates/Overviews/index.php:62
-#: ./templates/Overviews/overview_of_active_services.php:47
+#: ./templates/Overviews/overview_of_active_services.php:51
 msgid "Overview of Active Services"
 msgstr ""
 
@@ -8144,11 +8144,11 @@ msgstr ""
 msgid "YYYY-MM"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:19
+#: ./templates/Overviews/overview_of_active_services.php:41
 msgid "Show Billings"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:46
+#: ./templates/Overviews/overview_of_active_services.php:50
 #: ./templates/Overviews/overview_of_address_problems.php:35
 #: ./templates/Overviews/overview_of_contract_problems.php:35
 #: ./templates/Overviews/overview_of_contracts.php:52
@@ -8163,40 +8163,40 @@ msgstr ""
 msgid "List Overviews"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:62
+#: ./templates/Overviews/overview_of_active_services.php:66
 msgid "Number of Uses"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:63
+#: ./templates/Overviews/overview_of_active_services.php:67
 msgid "Number of Uses (nonbusiness)"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:64
+#: ./templates/Overviews/overview_of_active_services.php:68
 msgid "Sum"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:65
+#: ./templates/Overviews/overview_of_active_services.php:69
 msgid "Fixed Discount Sum"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:66
+#: ./templates/Overviews/overview_of_active_services.php:70
 msgid "Percentage Discount Sum"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:67
-#: ./templates/Overviews/overview_of_active_services.php:140
+#: ./templates/Overviews/overview_of_active_services.php:71
+#: ./templates/Overviews/overview_of_active_services.php:144
 msgid "Total Sum"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:68
+#: ./templates/Overviews/overview_of_active_services.php:72
 msgid "Total Sum (nonbusiness)"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:69
+#: ./templates/Overviews/overview_of_active_services.php:73
 msgid "Total Sum (unbilled)"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_active_services.php:138
+#: ./templates/Overviews/overview_of_active_services.php:142
 msgid "Total Number of Uses"
 msgstr ""
 
@@ -8947,7 +8947,7 @@ msgid "Show Completed"
 msgstr ""
 
 #: ./templates/Tasks/index.php:78
-msgid "Untouched for a While Only"
+msgid "Stale Only"
 msgstr ""
 
 #: ./templates/Tasks/index.php:85

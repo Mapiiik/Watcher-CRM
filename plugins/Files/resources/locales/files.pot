@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-07 15:03+0100\n"
+"POT-Creation-Date: 2026-11-11 10:35+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -311,7 +311,7 @@ msgid "Name"
 msgstr ""
 
 #: ./plugins/Files/templates/FileLinks/index.php:52
-#: ./plugins/Files/templates/Storage/index.php:40
+#: ./plugins/Files/templates/Storage/index.php:44
 #: ./plugins/Files/templates/Storage/view.php:13
 msgid "Storage"
 msgstr ""
@@ -324,8 +324,8 @@ msgstr ""
 
 #: ./plugins/Files/templates/FileLinks/index.php:61
 #: ./plugins/Files/templates/FileLinks/index.php:64
-#: ./plugins/Files/templates/Storage/index.php:36
-#: ./plugins/Files/templates/Storage/index.php:54
+#: ./plugins/Files/templates/Storage/index.php:40
+#: ./plugins/Files/templates/Storage/index.php:58
 #: ./plugins/Files/templates/Storage/view.php:18
 #: ./plugins/Files/templates/Storage/view.php:68
 #: ./plugins/Files/templates/Trash/index.php:37
@@ -337,7 +337,7 @@ msgid "Every file the records have, and what each of them is filed as."
 msgstr ""
 
 #: ./plugins/Files/templates/FileLinks/index.php:70
-#: ./plugins/Files/templates/Storage/index.php:50
+#: ./plugins/Files/templates/Storage/index.php:54
 #: ./plugins/Files/templates/Storage/view.php:58
 #: ./plugins/Files/templates/cell/Documentations/contents.php:41
 msgid "Created"
@@ -349,7 +349,7 @@ msgid "Position"
 msgstr ""
 
 #: ./plugins/Files/templates/FileLinks/index.php:76
-#: ./plugins/Files/templates/Storage/index.php:53
+#: ./plugins/Files/templates/Storage/index.php:57
 #: ./plugins/Files/templates/Storage/view.php:50
 #: ./plugins/Files/templates/Trash/index.php:56
 #: ./plugins/Files/templates/cell/Documentations/contents.php:40
@@ -358,7 +358,7 @@ msgid "Size"
 msgstr ""
 
 #: ./plugins/Files/templates/FileLinks/index.php:78
-#: ./plugins/Files/templates/Storage/index.php:55
+#: ./plugins/Files/templates/Storage/index.php:59
 #: ./plugins/Files/templates/Storage/view.php:11
 #: ./plugins/Files/templates/Storage/view.php:103
 #: ./plugins/Files/templates/Trash/index.php:58
@@ -394,40 +394,40 @@ msgid "Remove this document from the record? It goes to the trash."
 msgstr ""
 
 #: ./plugins/Files/templates/Storage/index.php:13
-#: ./plugins/Files/templates/Storage/index.php:52
+#: ./plugins/Files/templates/Storage/index.php:56
 #: ./plugins/Files/templates/Storage/view.php:46
 msgid "MIME Type"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:19
-msgid "Nothing points at it"
-msgstr ""
-
-#: ./plugins/Files/templates/Storage/index.php:26
+#: ./plugins/Files/templates/Storage/index.php:21
 msgid "Hash Begins With"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:41
+#: ./plugins/Files/templates/Storage/index.php:30
+msgid "Without Links Only"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:45
 msgid "Each piece of content once, however many records point at it. What nothing points at any more is here too - that is the state a torn backup leaves behind, and the harmless one."
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:51
+#: ./plugins/Files/templates/Storage/index.php:55
 msgid "Hash"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:69
+#: ./plugins/Files/templates/Storage/index.php:73
 msgid "nothing"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:72
+#: ./plugins/Files/templates/Storage/index.php:76
 msgid "{0} in the trash"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:76
+#: ./plugins/Files/templates/Storage/index.php:80
 msgid "View"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:86
+#: ./plugins/Files/templates/Storage/index.php:90
 msgid "{0} in the store, {1} in all, {2} of them pointed at by nothing."
 msgstr ""
 
