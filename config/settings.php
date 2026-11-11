@@ -216,16 +216,11 @@ return [
                             'sms' => ['enabled' => new BoolType(default: true)],
                         ],
                         // Two letters, because two different things are being said. The first
-                        // asks for the paper. The second says what happens now that it has not
-                        // come.
+                        // asks for the paper, on the days above. The second says the service is
+                        // cut off, every day it is, and only where the blocking is on.
                         //
                         // Both on, because cutting somebody off without telling them is the
-                        // worse of the two mistakes available here. The other one is worth
-                        // knowing about all the same: with the blocking switched off, the second
-                        // letter warns of a disconnection no run is going to carry out, and a
-                        // warning that comes to nothing is not believed the next time. An
-                        // installation that chases paperwork but never cuts anybody off wants
-                        // this one switched off.
+                        // worse of the two mistakes available here.
                         'types' => [
                             'notify' => ['enabled' => new BoolType(default: true)],
                             'block' => ['enabled' => new BoolType(default: true)],

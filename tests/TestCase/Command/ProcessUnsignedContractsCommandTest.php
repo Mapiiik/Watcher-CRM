@@ -134,6 +134,7 @@ class ProcessUnsignedContractsCommandTest extends TestCase
         Settings::set('core.contracts.paperwork.unsigned.notifications.channels.sms.enabled', true);
         Settings::set('core.contracts.paperwork.unsigned.notifications.types.notify.enabled', true);
         Settings::set('core.contracts.paperwork.unsigned.notifications.types.block.enabled', true);
+        Settings::set('core.contracts.paperwork.unsigned.blocking.enabled', true);
         Settings::set('core.contracts.paperwork.unsigned.blocking.after_anchor_days', 10);
         Settings::set('core.contracts.paperwork.unsigned.blocking.after_start_days', 20);
         Settings::set('core.contracts.paperwork.unsigned.notifications.enabled', true);
@@ -174,8 +175,13 @@ class ProcessUnsignedContractsCommandTest extends TestCase
         $this->exec('process_unsigned_contracts');
 
         $this->assertExitSuccess();
+        // The fixture's other contract has been charged for since 2022 with no version either, so
+        // it is cut off by now and hears so in a letter of its own.
+        $this->assertSame(2, $this->CustomerMessages->find()->count());
         /** @var \App\Model\Entity\CustomerMessage $message */
-        $message = $this->CustomerMessages->find()->firstOrFail();
+        $message = $this->CustomerMessages->find()
+            ->where(['CustomerMessages.body NOT LIKE' => '%omezena%'])
+            ->firstOrFail();
         // Written the way the letter writes a day, not the way the fixture spells it.
         $this->assertStringContainsString(
             sprintf('%s %s', __('provided since'), new Date(self::DUE_TODAY)),
@@ -462,9 +468,86 @@ class ProcessUnsignedContractsCommandTest extends TestCase
     }
 
     /**
-     * Switched off, the warning does not go out even though the day has come. Which is what
-     * an installation that has not switched the blocking on needs, since the warning would
-     * otherwise promise a disconnection that is not coming.
+     * Once the service is cut off, the warning goes every day it stays so, whatever the
+     * reminder days say - the way the debtors hear it while they are blocked.
+     *
+     * @return void
+     * @link \App\Command\ProcessUnsignedContractsCommand::blockedOn()
+     */
+    public function testTheWarningGoesEveryDayTheServiceIsCutOff(): void
+    {
+        $this->emailFor(self::CUSTOMER_ID);
+        // its disconnection day was a week ago, no reminder day falls on today
+        $this->agreed('2026-05-05');
+
+        $this->exec('process_unsigned_contracts');
+
+        $this->assertSame(1, $this->CustomerMessages->find()->count());
+
+        /** @var \App\Model\Entity\CustomerMessage $message */
+        $message = $this->CustomerMessages->find()->firstOrFail();
+
+        $this->assertStringContainsString('omezena', (string)$message->body);
+    }
+
+    /**
+     * Once the service is cut off, it is not asked for the paper any more, not even by the
+     * daily asking, and not even where the warning is switched off.
+     *
+     * @return void
+     * @link \App\Command\ProcessUnsignedContractsCommand::dueToday()
+     */
+    public function testOnceCutOffTheAskingStops(): void
+    {
+        Settings::set('core.contracts.paperwork.unsigned.notifications.daily_after', true);
+        $this->emailFor(self::CUSTOMER_ID);
+        $this->agreed('2026-05-05');
+
+        $this->exec('process_unsigned_contracts');
+
+        /** @var \App\Model\Entity\CustomerMessage $message */
+        $message = $this->CustomerMessages->find()->firstOrFail();
+
+        $this->assertStringNotContainsString('Prosíme Vás o její podepsání', (string)$message->body);
+
+        $this->CustomerMessages->deleteAll(['1 = 1']);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.types.block.enabled', false);
+
+        $this->exec('process_unsigned_contracts');
+
+        $this->assertSame(0, $this->CustomerMessages->find()->count());
+    }
+
+    /**
+     * Where the blocking is off nothing is cut off and no warning promises it. The asking goes
+     * on by its days instead.
+     *
+     * @return void
+     * @link \App\Command\ProcessUnsignedContractsCommand::blockedOn()
+     */
+    public function testWithTheBlockingOffNoWarningGoes(): void
+    {
+        Settings::set('core.contracts.paperwork.unsigned.blocking.enabled', false);
+        $this->emailFor(self::CUSTOMER_ID);
+        $this->agreed(self::BLOCK_DUE_TODAY);
+
+        $this->exec('process_unsigned_contracts');
+
+        $this->assertSame(0, $this->CustomerMessages->find()->count());
+
+        Settings::set('core.contracts.paperwork.unsigned.notifications.daily_after', true);
+
+        $this->exec('process_unsigned_contracts');
+
+        /** @var \App\Model\Entity\CustomerMessage $message */
+        $message = $this->CustomerMessages->find()->firstOrFail();
+
+        $this->assertStringContainsString('Prosíme Vás o její podepsání', (string)$message->body);
+    }
+
+    /**
+     * Switched off, the warning does not go out even though the service is cut off, for an
+     * installation that tells its customers some other way.
      *
      * @return void
      * @link \App\Command\ProcessUnsignedContractsCommand::isTypeEnabled()

@@ -37,18 +37,16 @@ use Throwable;
  * the nightly blocking acts on.
  *
  * Two letters, because the two waits mean two different things. Reaching the reminder
- * deadline asks the customer for the paper. Reaching the blocking one tells them what
- * happens now that it has not come. A version that reaches its disconnection day today gets
- * only the second: the two contradict each other in the same post, and the sterner of them
- * is the one that is still true.
+ * deadline asks the customer for the paper, on the days the settings name. Reaching the
+ * blocking one puts the service among those the blocking cuts off, and from then on the
+ * second letter says so every day, as the debtors hear it while they are blocked. The asking
+ * stops there: the two contradict each other, and the sterner one is what is still true.
  *
- * Both are switched separately and both ship on, because cutting somebody off without
- * telling them is the worse of the two mistakes available here. The other one is real
- * though: with the blocking switched off, the second letter warns of a disconnection no run
- * will carry out, and an installation that chases paperwork without ever cutting anybody off
- * wants that letter switched off.
+ * The second letter belongs to the blocking. Where the blocking is off nothing is cut off, so
+ * nothing warns of it, and the asking goes on by its days. Both letters are switched apart as
+ * well, so that an installation can cut off without this command saying anything.
  *
- * Nothing is remembered between runs. A version is written about on the days its wait falls
+ * Nothing is remembered between runs. A version is asked about on the days its wait falls
  * on, worked out from the dates each time, which is what keeps one reminder from being sent
  * on every day that follows it. Two things follow from having no memory, and both are shared
  * with the debtor run this is modelled on:
@@ -172,9 +170,8 @@ class ProcessUnsignedContractsCommand extends Command
      * One customer with three unsigned services is one letter listing three, not three
      * letters. Which is also why they are collected before anything is written.
      *
-     * A version that has reached the day of its disconnection today is left out of the
-     * asking letter, whatever the reminder days would otherwise say: the two would be
-     * contradicting each other in the same post.
+     * A service the blocking cuts off is left out of the asking letter, whatever the reminder
+     * days would otherwise say, and even where its own letter is switched off.
      *
      * @return array<string, array<string, list<\App\Contracts\Unsigned\UnsignedService>>>
      */
@@ -182,7 +179,7 @@ class ProcessUnsignedContractsCommand extends Command
     {
         $today = Date::today();
 
-        $blocking = $this->gather(UnsignedWaits::beforeBlocking(), $today);
+        $blocking = $this->blockedOn($today);
         $notifying = $this->gather(UnsignedWaits::beforeNotifying(), $today);
 
         $due = [];
@@ -208,6 +205,32 @@ class ProcessUnsignedContractsCommand extends Command
         }
 
         return $due;
+    }
+
+    /**
+     * Every unsigned service the blocking cuts off on the given day, or none where it is off.
+     *
+     * The same set the blocking run reads, so that the letter goes to exactly those it speaks
+     * of, see {@see \App\Contracts\Unsigned\UnsignedPaperwork::contractIdsToBlock()}.
+     *
+     * @param \Cake\I18n\Date $today The day the run is happening on.
+     * @return array<string, \App\Contracts\Unsigned\UnsignedService> Keyed as gather() keys them.
+     */
+    private function blockedOn(Date $today): array
+    {
+        if (!(bool)Settings::get(self::SETTINGS_PATH . '.blocking.enabled', false)) {
+            return [];
+        }
+
+        $paperwork = new UnsignedPaperwork($this->fetchTable(ContractVersionsTable::class));
+
+        $found = [];
+
+        foreach ($paperwork->due(UnsignedWaits::beforeBlocking(), $today) as $service) {
+            $found[$service->key()] = $service;
+        }
+
+        return $found;
     }
 
     /**
@@ -325,10 +348,8 @@ class ProcessUnsignedContractsCommand extends Command
     /**
      * Whether a kind of letter may go out at all.
      *
-     * Warning of a disconnection is switched apart from asking for the paper, so that an
-     * installation which chases paperwork without ever cutting anybody off can leave off the
-     * letter that threatens one. Both are on to begin with: the worse mistake is the service
-     * going quiet with nothing said about it.
+     * Both are on to begin with: the worse mistake is the service going quiet with nothing said
+     * about it. The warning goes only where the blocking is on as well, see blockedOn().
      *
      * @param string $kind Letter identifier ("notify", "block").
      * @return bool
