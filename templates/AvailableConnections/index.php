@@ -28,6 +28,10 @@
             'empty' => true,
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
+    </div>
+</div>
+<div class="row">
+    <div class="column">
         <?= $this->Form->control('show_retired', [
             'label' => __('Show Retired'),
             'type' => 'checkbox',

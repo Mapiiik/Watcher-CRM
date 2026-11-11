@@ -15,16 +15,20 @@
             'empty' => true,
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
-        <?= $this->Form->control('unused', [
-            'label' => __d('files', 'Nothing points at it'),
-            'type' => 'checkbox',
-            'onchange' => $this::SUBMIT_ON_CHANGE,
-        ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('search', [
             'label' => __d('files', 'Hash Begins With'),
             'type' => 'search',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+    </div>
+</div>
+<div class="row">
+    <div class="column">
+        <?= $this->Form->control('unused', [
+            'label' => __d('files', 'Without Links Only'),
+            'type' => 'checkbox',
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>

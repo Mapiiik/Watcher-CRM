@@ -15,11 +15,6 @@
             'type' => 'month',
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
-        <?= $this->Form->control('show_billings', [
-            'label' => __('Show Billings'),
-            'type' => 'checkbox',
-            'onchange' => $this::SUBMIT_ON_CHANGE,
-        ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('service_type_id', [
@@ -36,6 +31,15 @@
     <div class="column">
         <?= $this->Form->control('access_point_id', [
             'empty' => true,
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+    </div>
+</div>
+<div class="row">
+    <div class="column">
+        <?= $this->Form->control('show_billings', [
+            'label' => __('Show Billings'),
+            'type' => 'checkbox',
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>

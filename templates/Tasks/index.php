@@ -75,7 +75,7 @@ $this->Html->script('expandable-text.js', ['block' => true]);
     </div>
     <div class="column">
         <?= $this->Form->control('stale', [
-            'label' => __('Untouched for a While Only'),
+            'label' => __('Stale Only'),
             'type' => 'checkbox',
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
