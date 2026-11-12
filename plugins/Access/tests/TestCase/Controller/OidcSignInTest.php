@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Access\Test\TestCase\Controller;
 
 use Access\Authentication\LoginThrottle;
+use Access\Authentication\OneTimePassword;
 use Access\Controller\UsersController;
 use Access\Identifier\LinkedSocialIdentifier;
 use Access\Social\Service\OidcService;
@@ -153,6 +154,63 @@ class OidcSignInTest extends TestCase
         Settings::set('access.security.two_step_verification_required', true);
         $this->comeBackFromTheProvider($this->startSigningIn(), ['amr' => ['pwd']]);
         $this->assertRedirectContains('/verify');
+    }
+
+    /**
+     * Somebody sent to sign in goes on to the page they wanted through the provider too, and back
+     * to sign in on the way to it where the provider let nobody in - but never to another site.
+     *
+     * @return void
+     */
+    public function testSigningInThroughTheProviderLeadsOnToThePageAskedFor(): void
+    {
+        $this->linkedAccount('admin');
+
+        $this->get('/users');
+        $this->assertRedirectContains('/login?redirect=%2Fusers');
+        $this->get('/login?redirect=%2Fusers');
+        $this->assertResponseContains('href="/auth/oidc?redirect=%2Fusers"');
+
+        $this->comeBackFromTheProvider($this->startSigningIn('/users'));
+        $this->assertRedirect('/users');
+
+        $this->_session = [];
+        $this->get('/auth/oidc?error=access_denied&state=' . $this->startSigningIn('/users'));
+        $this->assertRedirect('/login?redirect=%2Fusers');
+
+        $this->_session = [];
+        $this->comeBackFromTheProvider($this->startSigningIn('//example.com'));
+        $this->assertRedirect('/');
+    }
+
+    /**
+     * Where the application asks for the one-time code after the provider, the page asked for
+     * waits for it.
+     *
+     * @return void
+     */
+    public function testThePageAskedForWaitsForTheOneTimeCode(): void
+    {
+        $secret = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ';
+        $this->linkedAccount('admin');
+        $this->getTableLocator()->get('Users')->updateQuery()
+            ->set(['secret' => $secret, 'secret_verified' => true])
+            ->where(['username' => 'jnovak'])
+            ->execute();
+        Settings::set('access.security.two_step_verification_required', true);
+
+        $this->comeBackFromTheProvider($this->startSigningIn('/users'), ['amr' => ['pwd']]);
+        $this->assertRedirectContains('/verify');
+        $this->_session = $_SESSION ?? [];
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/verify', ['code' => OneTimePassword::code($secret, intdiv(time(), 30))]);
+        $this->assertRedirectContains('/login');
+        $this->_session = $_SESSION ?? [];
+
+        $this->get('/login');
+        $this->assertRedirect('/users');
     }
 
     /**
@@ -310,11 +368,12 @@ class OidcSignInTest extends TestCase
     /**
      * Starts signing in with the button, and says the state the provider is to send back.
      *
+     * @param string|null $redirect The page the sign-in page was to lead on to, if any.
      * @return string
      */
-    private function startSigningIn(): string
+    private function startSigningIn(?string $redirect = null): string
     {
-        $this->get('/auth/oidc');
+        $this->get('/auth/oidc' . ($redirect === null ? '' : '?' . http_build_query(['redirect' => $redirect])));
         $this->assertRedirectContains('https://idp.example.com/application/o/authorize/?');
         $this->_session = $_SESSION ?? [];
 
@@ -354,11 +413,12 @@ class OidcSignInTest extends TestCase
     /**
      * Adds an account whose identity at the provider is linked to it.
      *
+     * @param string $role Its role.
      * @return void
      */
-    private function linkedAccount(): void
+    private function linkedAccount(string $role = 'user'): void
     {
-        $user = $this->addAccount();
+        $user = $this->addAccount(role: $role);
         $this->getTableLocator()->get('Access.SocialAccounts')
             ->link((string)$user->get('id'), 'oidc', 'person-at-the-provider', 'jnovak');
     }

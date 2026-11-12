@@ -165,8 +165,14 @@ class UsersController extends AppController
             ['key' => 'auth'],
         );
 
-        // not where the provider sent them, with its code in the address
-        return $this->redirect((array)Configure::read('Auth.AuthenticationComponent.loginAction'));
+        // not where the provider sent them, with its code in the address, but to sign in again on
+        // the way to the page they wanted
+        $redirect = $this->getRequest()->getSession()->consume(OidcService::REDIRECT_SESSION_KEY);
+
+        return $this->redirect(
+            (array)Configure::read('Auth.AuthenticationComponent.loginAction')
+            + (is_string($redirect) ? ['?' => ['redirect' => $redirect]] : []),
+        );
     }
 
     /**
@@ -505,13 +511,15 @@ class UsersController extends AppController
 
     /**
      * Where to go once signed in: the page the account was on its way to, where it is a page of
-     * this application the account may open, or the root.
+     * this application the account may open, or the root. Who comes back from an identity
+     * provider has it in the session, not in the address.
      *
      * @return array<string, mixed>|string
      */
     private function afterSignIn(): array|string
     {
-        $target = $this->getRequest()->getQuery('redirect');
+        $remembered = $this->getRequest()->getSession()->consume(OidcService::REDIRECT_SESSION_KEY);
+        $target = $this->getRequest()->getQuery('redirect') ?? $remembered;
         if (
             is_string($target)
             && str_starts_with($target, '/')

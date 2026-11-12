@@ -34,6 +34,12 @@ class OidcService extends OAuth2Service
     public const SESSION_KEY = 'Access.oidc';
 
     /**
+     * Where a sign-in waiting for the provider keeps the page the person was on their way to. The
+     * provider sends them back only to the address registered with it.
+     */
+    public const REDIRECT_SESSION_KEY = 'Access.redirect';
+
+    /**
      * The methods of RFC 8176 that are something the person has or the provider's own word for
      * more than one factor. Signing in always takes a first factor besides.
      *
@@ -63,7 +69,8 @@ class OidcService extends OAuth2Service
     }
 
     /**
-     * Where the person is sent to sign in, the sign-in being remembered for when they come back.
+     * Where the person is sent to sign in, the sign-in and the page they were on their way to
+     * being remembered for when they come back.
      *
      * Where the provider cannot be asked how, they are sent straight back with the error OAuth has
      * for it, so that they see why on the sign-in page.
@@ -76,6 +83,13 @@ class OidcService extends OAuth2Service
     {
         if (!$request instanceof ServerRequest) {
             throw new BadMethodCallException('Request must be an instance of ServerRequest');
+        }
+
+        $redirect = $request->getQuery('redirect');
+        if (is_string($redirect) && $redirect !== '') {
+            $request->getSession()->write(self::REDIRECT_SESSION_KEY, $redirect);
+        } else {
+            $request->getSession()->delete(self::REDIRECT_SESSION_KEY);
         }
 
         try {
