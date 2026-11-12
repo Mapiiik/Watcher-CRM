@@ -1,17 +1,24 @@
 <!--
-  The icon of Watcher CRM, a W drawn as points joined by links. Watcher NMS has the same one in its
-  own colour. favicon.ico and apple-touch-icon.png are made from it with ImageMagick and librsvg:
+  The icon of Watcher CRM, a W drawn as a ribbon with the waves of a signal above it, on a tile in
+  the colour of the application. Watcher NMS has the same one on a tile of its own colour.
+  favicon.ico and apple-touch-icon.png are made from it with ImageMagick and librsvg:
   magick -background none -density 1536 favicon.svg -define icon:auto-resize=48,32,16 favicon.ico
-  magick -background "#2a6496" -density 540 favicon.svg -flatten apple-touch-icon.png
+  magick -background "#d02f37" -density 540 favicon.svg -flatten apple-touch-icon.png
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="7" fill="#2a6496"/>
-  <polyline points="6,9.5 11,22.5 16,12.5 21,22.5 26,9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/>
-  <g fill="#fff">
-    <circle cx="6" cy="9.5" r="2.7"/>
-    <circle cx="11" cy="22.5" r="2.7"/>
-    <circle cx="21" cy="22.5" r="2.7"/>
-    <circle cx="26" cy="9.5" r="2.7"/>
+  <rect width="32" height="32" rx="7" fill="#d02f37"/>
+  <g transform="translate(16 16.1) scale(1.12) translate(-16 -16.2)">
+    <!-- the top of the outer wave is level with the tops of the W -->
+    <g fill="none" stroke="#fff" stroke-width="1.9">
+      <path d="M10.06 11.61A8.4 8.4 0 0 1 21.94 11.61"/>
+      <path d="M12.02 14.21A5.2 5.2 0 0 1 19.98 14.21"/>
+    </g>
+    <g fill="#fff" stroke="#fff" stroke-width="0.6" stroke-linejoin="round">
+      <path d="M15.8 17.9C16 16.8 16.9 16 17.9 15.9L19.96 19.4L24.58 8.5H27.94L21.4 22.9C21 23.8 19.3 23.9 18.8 22.9Z"/>
+      <path d="M4 8.5H7.4L11.2 18.1L9.5 21.1Z"/>
+    </g>
+    <!-- the ribbon crosses the strokes beside it, with a gap in the colour of the tile -->
+    <path d="M9.9 22C10 23.3 11.4 23.9 12.4 23.6C12.8 23.5 13 23.3 13.1 23.1L15.1 18.4C15.6 17.2 16.4 16.2 17.94 15.35C17 14.5 15 14.3 14.1 15.2C13.2 16 12.5 17 12 18Z" fill="#d02f37" stroke="#d02f37" stroke-width="1.35" stroke-linejoin="round"/>
+    <path d="M9.9 22C10 23.3 11.4 23.9 12.4 23.6C12.8 23.5 13 23.3 13.1 23.1L15.1 18.4C15.6 17.2 16.4 16.2 17.94 15.35C17 14.5 15 14.3 14.1 15.2C13.2 16 12.5 17 12 18Z" fill="#fff" stroke="#fff" stroke-width="0.6" stroke-linejoin="round"/>
   </g>
-  <circle cx="16" cy="12.5" r="3.2" fill="#d02f37" stroke="#fff" stroke-width="1.4"/>
 </svg>
