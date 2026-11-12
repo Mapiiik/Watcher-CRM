@@ -74,6 +74,9 @@
     --color-cakephp-blue: #2f85ae;
     --color-cakephp-lightblue: #34bdd7;
 
+    /* the colour of the application: its icon, its name in the bar and its buttons */
+    --color-accent: #db341e;
+
     /* These are additional colors */
     --color-lightgray: #606c76;
     --color-white: #ffffff;
@@ -212,8 +215,8 @@ button,
 input[type='button'],
 input[type='reset'],
 input[type='submit'] {
-    background-color: var(--color-cakephp-red);
-    border-color: var(--color-cakephp-red);
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
 }
 
 .button.button-outline,
@@ -221,7 +224,7 @@ button.button-outline,
 input[type='button'].button-outline,
 input[type='reset'].button-outline,
 input[type='submit'].button-outline {
-    color: var(--color-cakephp-red);
+    color: var(--color-accent);
 }
 
 input[type='color']:focus,
@@ -497,7 +500,7 @@ nav.top-nav {
 
 .top-nav-title a {
     font-size: 2.4rem;
-    color: var(--color-cakephp-red);
+    color: var(--color-accent);
     white-space: nowrap;
 }
 
@@ -832,7 +835,7 @@ input[type='color'] {
 .app-label {
     font-family: "Exo 2", sans-serif;
     font-size: 1.2rem;
-    border: 0.1rem solid  var(--color-cakephp-red);
+    border: 0.1rem solid  var(--color-accent);
     border-radius: 0.4rem;
     display: inline-block;
     padding: 0.6rem 1.5rem;

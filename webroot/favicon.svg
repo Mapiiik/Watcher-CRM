@@ -3,10 +3,10 @@
   the colour of the application. Watcher NMS has the same one on a tile of its own colour.
   favicon.ico and apple-touch-icon.png are made from it with ImageMagick and librsvg:
   magick -background none -density 1536 favicon.svg -define icon:auto-resize=48,32,16 favicon.ico
-  magick -background "#d02f37" -density 540 favicon.svg -flatten apple-touch-icon.png
+  magick -background "#db341e" -density 540 favicon.svg -flatten apple-touch-icon.png
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="7" fill="#d02f37"/>
+  <rect width="32" height="32" rx="7" fill="#db341e"/>
   <g transform="translate(16 16.1) scale(1.12) translate(-16 -16.2)">
     <!-- the top of the outer wave is level with the tops of the W -->
     <g fill="none" stroke="#fff" stroke-width="1.9">
@@ -18,7 +18,7 @@
       <path d="M4 8.5H7.4L11.2 18.1L9.5 21.1Z"/>
     </g>
     <!-- the ribbon crosses the strokes beside it, with a gap in the colour of the tile -->
-    <path d="M9.9 22C10 23.3 11.4 23.9 12.4 23.6C12.8 23.5 13 23.3 13.1 23.1L15.1 18.4C15.6 17.2 16.4 16.2 17.94 15.35C17 14.5 15 14.3 14.1 15.2C13.2 16 12.5 17 12 18Z" fill="#d02f37" stroke="#d02f37" stroke-width="1.35" stroke-linejoin="round"/>
+    <path d="M9.9 22C10 23.3 11.4 23.9 12.4 23.6C12.8 23.5 13 23.3 13.1 23.1L15.1 18.4C15.6 17.2 16.4 16.2 17.94 15.35C17 14.5 15 14.3 14.1 15.2C13.2 16 12.5 17 12 18Z" fill="#db341e" stroke="#db341e" stroke-width="1.35" stroke-linejoin="round"/>
     <path d="M9.9 22C10 23.3 11.4 23.9 12.4 23.6C12.8 23.5 13 23.3 13.1 23.1L15.1 18.4C15.6 17.2 16.4 16.2 17.94 15.35C17 14.5 15 14.3 14.1 15.2C13.2 16 12.5 17 12 18Z" fill="#fff" stroke="#fff" stroke-width="0.6" stroke-linejoin="round"/>
   </g>
 </svg>
