@@ -129,6 +129,12 @@ class AppPDF extends Canvas
     protected const HEADING_ORPHAN_GUARD = 16.0;
 
     /**
+     * What a section heading takes up: its line and the rule under it, as printSectionHeading()
+     * draws them. For measuring a block before it is printed.
+     */
+    protected const SECTION_HEADING_HEIGHT = 4.0 + 0.4 + 1.0;
+
+    /**
      * A cell, with two habits of its own.
      *
      * Bordered cells centre their text vertically, because a frame drawn round text sitting
@@ -527,6 +533,23 @@ class AppPDF extends Canvas
         $this->keepTogether($this->getNumLines($body, static::TEXT_WIDTH) * static::LINE_HEIGHT);
         $this->MultiCell(static::TEXT_WIDTH, static::LINE_HEIGHT, $body, align: $align);
         $this->Ln($gap ?? static::PARAGRAPH_GAP);
+    }
+
+    /**
+     * How much room printParagraph() takes for a text in the face that is set, its gap included.
+     *
+     * The lines are as tall as the face makes them, not the line height asked for, which is only
+     * the least a one-line paragraph takes.
+     *
+     * @param string $text The paragraph
+     * @param float $width Width it is set in, or null for the text column
+     * @return float
+     */
+    protected function paragraphHeight(string $text, ?float $width = null): float
+    {
+        $lines = $this->getNumLines($text, $width ?? static::TEXT_WIDTH);
+
+        return max(static::LINE_HEIGHT, $lines * $this->minimumCellHeight()) + static::PARAGRAPH_GAP;
     }
 
     /**

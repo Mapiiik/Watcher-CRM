@@ -164,11 +164,21 @@ class ContractSummaryPDF extends AppPDF
      */
     private function printCustomerSignature(): void
     {
-        if (!(bool)Settings::get('core.documents.contracts.summary.customer_signature', false)) {
+        if (!$this->signedByTheCustomer()) {
             return;
         }
 
         $this->printSignatureSection('single-right');
+    }
+
+    /**
+     * Whether the deployment has the customer sign the summary.
+     *
+     * @return bool
+     */
+    private function signedByTheCustomer(): bool
+    {
+        return (bool)Settings::get('core.documents.contracts.summary.customer_signature', false);
     }
 
     /**
@@ -642,6 +652,20 @@ class ContractSummaryPDF extends AppPDF
      */
     private function printOtherInformation(): void
     {
+        // A signature alone on a page signs nothing that can be seen, so where the customer signs,
+        // the last section goes over the fold with the line rather than leave it there by itself.
+        if ($this->signedByTheCustomer()) {
+            $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+
+            $height = self::SECTION_HEADING_HEIGHT + self::PARAGRAPH_GAP + static::SIGNATURE_BLOCK;
+            foreach ($this->summaryList('other_information') as $document) {
+                $height += $this->paragraphHeight($document, self::TEXT_WIDTH - 4) - self::PARAGRAPH_GAP;
+            }
+            $height += $this->paragraphHeight($this->summaryText('other_information_note'));
+
+            $this->keepTogether($height);
+        }
+
         $this->printSummaryHeading('other');
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);

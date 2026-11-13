@@ -113,19 +113,33 @@ class ContractPDF extends ContractPaperPDF
             return;
         }
 
-        $this->Ln(3);
-
-        $heading = $this->contractText('sections.withdrawal');
-        if ($withdrawal !== '' && $heading !== '') {
-            $this->printSectionHeading($heading);
-        }
-
+        $paragraphs = [];
         foreach ([$withdrawal, $consent] as $text) {
             foreach (preg_split('/\R\s*\R/', $text) ?: [] as $paragraph) {
                 if (trim($paragraph) !== '') {
-                    $this->printParagraph(trim($paragraph));
+                    $paragraphs[] = trim($paragraph);
                 }
             }
+        }
+
+        $heading = $withdrawal !== '' ? $this->contractText('sections.withdrawal') : '';
+
+        // What the signatures cover goes over the fold with them, never leaving them alone on a page.
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+        $height = 3 + ($heading !== '' ? self::SECTION_HEADING_HEIGHT : 0) + static::SIGNATURE_BLOCK;
+        foreach ($paragraphs as $paragraph) {
+            $height += $this->paragraphHeight($paragraph);
+        }
+        $this->keepTogether($height);
+
+        $this->Ln(3);
+
+        if ($heading !== '') {
+            $this->printSectionHeading($heading);
+        }
+
+        foreach ($paragraphs as $paragraph) {
+            $this->printParagraph($paragraph);
         }
     }
 
