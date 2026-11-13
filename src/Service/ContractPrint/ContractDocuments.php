@@ -183,10 +183,9 @@ final class ContractDocuments
         $base = $this->onFile($data, DocumentVariant::Generated)
             ?? $this->keep($data, $this->draw($data, false), DocumentVariant::Generated);
 
-        // A paper with nowhere to sign is handed over as it is. The summary is the one: it says
-        // what is on offer before anybody is bound by it, so it carries no signature block and no
-        // mark to put one in. Asked of the paper rather than of a list of which papers those are,
-        // because the paper is what knows.
+        // A paper with nowhere for our signature is handed over as it is. The summary is the one:
+        // at most it has a line for the customer, and no mark for us. Asked of the paper rather
+        // than of a list of which papers those are, because the paper is what knows.
         if ($wanted === DocumentVariant::Generated || !$this->maySignIt($base)) {
             return $base;
         }

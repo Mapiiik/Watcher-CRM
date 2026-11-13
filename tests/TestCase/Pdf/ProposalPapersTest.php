@@ -15,11 +15,14 @@ use App\Model\Enum\CustomerLegalStatus;
 use App\Model\Enum\ProposalPurpose;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
+use App\Pdf\SignatureAnchors;
 use App\Service\ContractPrint\ContractPrintData;
 use App\Test\Traits\ContractPapersTrait;
+use Cake\Cache\Cache;
 use Cake\TestSuite\TestCase;
 use PhpCollective\DecimalObject\Decimal;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Settings\Service\SettingsService;
 use Settings\Utility\Settings;
 
 /**
@@ -80,6 +83,19 @@ class ProposalPapersTest extends TestCase
         'app.IpNetworks',
         'plugin.Settings.Settings',
     ];
+
+    /**
+     * Forgets the texts a test set: the database is rolled back, but the settings' caches are not.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        Settings::setInstance(new SettingsService());
+        Cache::clear('default');
+
+        parent::tearDown();
+    }
 
     /**
      * A contract replacing an earlier one takes the connection over as it is, so its papers print
@@ -325,6 +341,110 @@ class ProposalPapersTest extends TestCase
                 ($legalStatus->value ?? 'nobody') . ' printed a clause for a legal entity.',
             );
         }
+    }
+
+    /**
+     * The summary carries a line for the customer to sign only where the deployment asks for one,
+     * and never one for the provider.
+     *
+     * @return void
+     */
+    public function testTheSummaryHasALineForTheCustomerOnlyWhereAsked(): void
+    {
+        $this->furnishTheContract();
+
+        $anchors = fn(): SignatureAnchors => SignatureAnchors::fromPdf($this->printedForACustomer(
+            ContractDocumentType::ContractSummary,
+            CustomerLegalStatus::NaturalPerson,
+        ));
+
+        $this->assertNull($anchors()->find(SignatureAnchors::CUSTOMER_SIGNATURE));
+
+        Settings::set('core.documents.contracts.summary.customer_signature', true);
+
+        $signed = $anchors();
+        $this->assertNotNull($signed->find(SignatureAnchors::CUSTOMER_SIGNATURE));
+        $this->assertNull($signed->find(SignatureAnchors::PROVIDER_SIGNATURE));
+    }
+
+    /**
+     * A consumer is told about withdrawing and asked for consent on the papers that make or change
+     * a contract. A sole trader, a legal entity and an ending get none of it.
+     *
+     * @return void
+     */
+    public function testOnlyAConsumerIsToldAboutWithdrawal(): void
+    {
+        $this->furnishTheContract();
+
+        $papers = fn(): array => [
+            'natural person, new' => $this->printedForACustomer(
+                ContractDocumentType::ContractNew,
+                CustomerLegalStatus::NaturalPerson,
+            ),
+            'nobody, new' => $this->printedForACustomer(ContractDocumentType::ContractNew, null),
+            'natural person, amendment' => $this->printedForACustomer(
+                ContractDocumentType::ContractAmendment,
+                CustomerLegalStatus::NaturalPerson,
+            ),
+            'sole trader, new' => $this->printedForACustomer(
+                ContractDocumentType::ContractNew,
+                CustomerLegalStatus::SoleTrader,
+            ),
+            'legal entity, new' => $this->printedForACustomer(
+                ContractDocumentType::ContractNew,
+                CustomerLegalStatus::LegalEntity,
+            ),
+            'natural person, termination' => $this->printedForACustomer(
+                ContractDocumentType::ContractTermination,
+                CustomerLegalStatus::NaturalPerson,
+            ),
+        ];
+
+        $without = $papers();
+
+        Settings::set('core.documents.contracts.contract.sections.withdrawal', 'Lorem ipsum');
+        Settings::set(
+            'core.documents.contracts.contract.texts.withdrawal_text',
+            "Lorem ipsum dolor sit amet.\n\n▢ yes / ▢ no - consectetur adipiscing elit.",
+        );
+        Settings::set(
+            'core.documents.contracts.contract.texts.special_status_consent_text',
+            '▢ yes / ▢ no - sed do eiusmod tempor.',
+        );
+        Settings::set('core.documents.contracts.contract.texts.withdrawal_attachment_html', '<p>Lorem ipsum.</p>');
+
+        $with = $papers();
+
+        foreach (['natural person, new', 'nobody, new', 'natural person, amendment'] as $paper) {
+            $this->assertNotSame($without[$paper], $with[$paper], $paper . ' was not told about withdrawal.');
+        }
+
+        foreach (['sole trader, new', 'legal entity, new', 'natural person, termination'] as $paper) {
+            $this->assertSame($without[$paper], $with[$paper], $paper . ' was told about withdrawal.');
+        }
+    }
+
+    /**
+     * The notice with its form takes a page of its own, so that the form can be sent back, and
+     * nothing else makes the paper longer.
+     *
+     * @return void
+     */
+    public function testTheWithdrawalFormIsAPageOfItsOwn(): void
+    {
+        $this->furnishTheContract();
+
+        $pages = fn(): int => (int)preg_match_all('#/Type\s*/Page\b(?!s)#', $this->printedForACustomer(
+            ContractDocumentType::ContractNew,
+            CustomerLegalStatus::NaturalPerson,
+        ));
+
+        $before = $pages();
+
+        Settings::set('core.documents.contracts.contract.texts.withdrawal_attachment_html', '<p>Lorem ipsum.</p>');
+
+        $this->assertSame($before + 1, $pages());
     }
 
     /**

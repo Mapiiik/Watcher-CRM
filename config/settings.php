@@ -570,6 +570,8 @@ return [
                             'service_terms' => 'Ujednání pro tyto služby',
                             'individual_terms' => 'Individuální ujednání',
                             'final_statements' => 'Závěrečná ustanovení',
+                            // over the consumer's statements below, when there is a withdrawal text
+                            'withdrawal' => '',
                     ],
 
                     'texts' => [
@@ -642,6 +644,17 @@ return [
                         'terms_precedence' => 'V případě rozporu mají tato ujednání přednost před Dokumenty uvedenými v závěrečných ustanoveních této Smlouvy.',
                         'final_prices' => 'Všechny ceny uvedené v této smlouvě jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.',
                         'final_copies' => 'Tato smlouva (č. {contract_number}) je vyhotovena ve dvou stejnopisech.',
+
+                        // For a consumer only, on a new contract and an amendment, and only where
+                        // filled in. Above the signatures: the right to withdraw from a contract made
+                        // away from the office and the request to start the service sooner, then
+                        // a consent such as the Croatian one to record a disability or old age.
+                        // Blank lines separate paragraphs.
+                        'withdrawal_text' => '',
+                        'special_status_consent_text' => '',
+                        // The notice on withdrawal with its form, on a page after the signatures.
+                        // {contract_number} names the contract the form belongs to.
+                        'withdrawal_attachment_html' => '',
                     ],
 
                     'tables' => [
@@ -839,6 +852,12 @@ return [
                 'summary' => [
                     'title' => 'SHRNUTÍ SMLOUVY',
                     'subtitle' => 'ke Smlouvě o poskytování služeb',
+
+                    'customer_signature' => new BoolType(
+                        default: false,
+                        hint: __('Prints a line for the customer to sign the summary on, where the law'
+                            . ' concludes the contract by signing it, as in Croatia.'),
+                    ),
 
                     'intro_bullets' => ListType::ofStrings(
                         default: [

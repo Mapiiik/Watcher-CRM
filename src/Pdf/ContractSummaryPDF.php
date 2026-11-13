@@ -151,6 +151,24 @@ class ContractSummaryPDF extends AppPDF
         $this->printDuration($data, $contractVersion);
         $this->printAccessibility();
         $this->printOtherInformation();
+        $this->printCustomerSignature();
+    }
+
+    /**
+     * The customer's signature, where the law of the deployment concludes the contract by it.
+     *
+     * The template asks for none, but Croatia, for one, takes the signed summary as the moment the
+     * contract is made (čl. 140 st. 9 ZEK). The provider signs the contract, never the summary.
+     *
+     * @return void
+     */
+    private function printCustomerSignature(): void
+    {
+        if (!(bool)Settings::get('core.documents.contracts.summary.customer_signature', false)) {
+            return;
+        }
+
+        $this->printSignatureSection('single-right');
     }
 
     /**

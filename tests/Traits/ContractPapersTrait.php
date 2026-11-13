@@ -144,8 +144,9 @@ trait ContractPapersTrait
     }
 
     /**
-     * The document, as bytes, with the parts that differ between two runs of the same data taken
-     * out - the creation stamp and the file identifier.
+     * The document, as bytes, with the parts that differ between two runs of the same data blanked
+     * out - the file identifier and the document's own uuid. Blanked at the same length, so the
+     * offsets still hold and the document can still be taken apart.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What to print.
      * @return string
@@ -171,9 +172,9 @@ trait ContractPapersTrait
 
         $printed = $pdf->Output('test.pdf', 'S');
 
-        return (string)preg_replace(
+        return (string)preg_replace_callback(
             ['#/ID\s*\[[^\]]*\]#', '#uuid:[0-9a-f-]{36}#'],
-            ['/ID []', 'uuid:0'],
+            fn(array $found): string => (string)preg_replace('#[0-9a-fA-F]#', '0', $found[0]),
             $printed,
         );
     }

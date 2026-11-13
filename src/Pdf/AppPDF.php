@@ -734,12 +734,14 @@ class AppPDF extends Canvas
      * already on file be countersigned rather than drawn again. Where the drawing goes is written
      * down here, as marks the finished document carries.
      *
+     * It is set in the document's own body type, so the summary's stays at the size it must keep.
+     *
      * @param string $layout Layout identifier: 'single-right' or 'double'.
      * @return void
      */
     protected function printSignatureSection(string $layout = 'double'): void
     {
-        $this->SetFont('DejaVuSerif', '', 8);
+        $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
 
         // The whole block or none of it. Asked as the room it actually needs rather than as a
         // height the page happens to have reached: a block that starts low enough to be split

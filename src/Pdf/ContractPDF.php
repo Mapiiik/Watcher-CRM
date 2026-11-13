@@ -7,6 +7,7 @@ use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\ContractDocumentType;
+use App\Model\Enum\CustomerLegalStatus;
 use App\Pdf\Trait\BillingTableTrait;
 use App\Pdf\Trait\ContractDurationTrait;
 use App\Service\ContractPrint\ContractPrintData;
@@ -53,10 +54,104 @@ class ContractPDF extends ContractPaperPDF
         $this->printBillingAndPayment($data);
         $this->printAmendmentClosing($data->type);
         $this->printEquipmentAndFinalStatements($data);
+        $this->printConsumerStatements($data);
 
         $this->printSignatureSection('double');
 
+        $this->printWithdrawalAttachment($data);
+
         $this->Close();
+    }
+
+    /**
+     * Whether the paper is one a consumer may withdraw from, and the customer is one.
+     *
+     * Consumer law gives that right to a natural person outside their trade, so a sole trader and
+     * a legal entity are left out. A contract is made or changed by the paper; an ending is not.
+     *
+     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
+     * @return bool
+     */
+    private function speaksToAConsumer(ContractPrintData $data): bool
+    {
+        if (
+            !in_array($data->type, [
+                ContractDocumentType::ContractNew,
+                ContractDocumentType::ContractNewX,
+                ContractDocumentType::ContractAmendment,
+            ], true)
+        ) {
+            return false;
+        }
+
+        return in_array($data->contract->customer->legal_status, [
+            CustomerLegalStatus::NaturalPerson,
+            null,
+        ], true);
+    }
+
+    /**
+     * What a consumer is told and asked above the signatures, so that signing covers it.
+     *
+     * The right to withdraw and the request to start the service before the period runs out, then
+     * the consent to record a status that gives the customer rights. Each prints only when the
+     * deployment has a text for it.
+     *
+     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
+     * @return void
+     */
+    private function printConsumerStatements(ContractPrintData $data): void
+    {
+        if (!$this->speaksToAConsumer($data)) {
+            return;
+        }
+
+        $withdrawal = trim($this->contractText('texts.withdrawal_text'));
+        $consent = trim($this->contractText('texts.special_status_consent_text'));
+
+        if ($withdrawal === '' && $consent === '') {
+            return;
+        }
+
+        $this->Ln(3);
+
+        $heading = $this->contractText('sections.withdrawal');
+        if ($withdrawal !== '' && $heading !== '') {
+            $this->printSectionHeading($heading);
+        }
+
+        foreach ([$withdrawal, $consent] as $text) {
+            foreach (preg_split('/\R\s*\R/', $text) ?: [] as $paragraph) {
+                if (trim($paragraph) !== '') {
+                    $this->printParagraph(trim($paragraph));
+                }
+            }
+        }
+    }
+
+    /**
+     * The notice on withdrawal and the form for it, on a page of their own after the signatures.
+     *
+     * A page of its own, because the form is meant to be cut off and sent back.
+     *
+     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
+     * @return void
+     */
+    private function printWithdrawalAttachment(ContractPrintData $data): void
+    {
+        $html = trim($this->contractText('texts.withdrawal_attachment_html'));
+
+        if ($html === '' || !$this->speaksToAConsumer($data)) {
+            return;
+        }
+
+        $this->AddPage();
+
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+        $this->setListIndentWidth(4);
+        $this->writeHTML(strtr($html, [
+            '{contract_number}' => (string)$data->contract->number,
+        ]), true, false, false, true, '');
     }
 
     /**

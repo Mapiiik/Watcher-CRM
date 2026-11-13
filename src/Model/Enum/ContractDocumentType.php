@@ -221,8 +221,8 @@ enum ContractDocumentType: string implements EnumLabelInterface
     /**
      * Indicates whether this document has anywhere for our signature to go.
      *
-     * Everything that binds somebody does. The summary does not: it says what is on offer before
-     * anybody is bound by it, so it carries no signature block at all.
+     * Everything that binds somebody does. The summary does not: it says what is on offer, and
+     * where a deployment has it signed at all, the line is the customer's alone.
      *
      * Only what the operator is offered. What actually happens is decided by the paper itself,
      * which carries the marks that say where it is signed - so a document added later that
