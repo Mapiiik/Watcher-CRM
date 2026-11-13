@@ -713,8 +713,9 @@ class AppPDF extends Canvas
         $this->frameLeft();
         $this->Cell(30, 4);
         $this->Cell(60, 4, Settings::getString('core.company.address_line_1'));
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
-        $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
+        // Room for a label longer than "IČ:" - the Croatian VAT one reads "PDV ID:".
+        $this->Cell(14, 4, Settings::getString('core.documents.common.labels.identity_number'));
+        $this->Cell(36, 4, Settings::getString('core.company.identity_number'));
         $this->Cell(15, 4, Settings::getString('core.documents.common.labels.mobile'));
         $this->Cell(40, 4, Settings::getString('core.company.mobile'));
         $this->Ln();
@@ -722,8 +723,8 @@ class AppPDF extends Canvas
         $this->frameLeft();
         $this->Cell(30, 4);
         $this->Cell(60, 4, Settings::getString('core.company.address_line_2'));
-        $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
-        $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
+        $this->Cell(14, 4, Settings::getString('core.documents.common.labels.vat_number'));
+        $this->Cell(36, 4, Settings::getString('core.company.vat_number'));
         $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'));
         $this->Cell(40, 4, Settings::getString('core.company.email'));
         $this->Ln();

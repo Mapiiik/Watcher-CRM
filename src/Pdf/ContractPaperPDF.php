@@ -104,8 +104,8 @@ abstract class ContractPaperPDF extends AppPDF
                     [
                         'label' => $this->label('identity_number'),
                         'value' => $this->strOrX($contract->customer->identity_number),
-                        'label_width' => 10,
-                        'value_width' => 30,
+                        'label_width' => 14,
+                        'value_width' => 26,
                     ],
                 ],
                 [
@@ -124,8 +124,8 @@ abstract class ContractPaperPDF extends AppPDF
                     [
                         'label' => $this->label('vat_number'),
                         'value' => $this->strOrX($contract->customer->vat_number),
-                        'label_width' => 10,
-                        'value_width' => 30,
+                        'label_width' => 14,
+                        'value_width' => 26,
                     ],
                 ],
                 [
