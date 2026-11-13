@@ -64,50 +64,65 @@ class ContractPDF extends ContractPaperPDF
     }
 
     /**
-     * Whether the paper is one a consumer may withdraw from, and the customer is one.
-     *
-     * Consumer law gives that right to a natural person outside their trade, so a sole trader and
-     * a legal entity are left out. A contract is made or changed by the paper; an ending is not.
+     * Whether the paper makes or changes a contract, which is what one can withdraw from.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
      * @return bool
      */
-    private function speaksToAConsumer(ContractPrintData $data): bool
+    private function makesOrChangesTheContract(ContractPrintData $data): bool
     {
-        if (
-            !in_array($data->type, [
-                ContractDocumentType::ContractNew,
-                ContractDocumentType::ContractNewX,
-                ContractDocumentType::ContractAmendment,
-            ], true)
-        ) {
-            return false;
-        }
-
-        return in_array($data->contract->customer->legal_status, [
-            CustomerLegalStatus::NaturalPerson,
-            null,
+        return in_array($data->type, [
+            ContractDocumentType::ContractNew,
+            ContractDocumentType::ContractNewX,
+            ContractDocumentType::ContractAmendment,
         ], true);
     }
 
     /**
-     * What a consumer is told and asked above the signatures, so that signing covers it.
+     * Whether the customer is told about withdrawing, as who they are in law.
      *
-     * The right to withdraw and the request to start the service before the period runs out, then
-     * the consent to record a status that gives the customer rights. Each prints only when the
-     * deployment has a text for it.
+     * Who may withdraw is the law of the deployment's to say: consumer law gives the right to a
+     * natural person, and the Czech law on electronic communications to a sole trader too. So each
+     * of the three is switched on or off, and a customer nobody has said anything about counts as
+     * a natural person.
+     *
+     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
+     * @return bool
+     */
+    private function toldAboutWithdrawal(ContractPrintData $data): bool
+    {
+        if (!$this->makesOrChangesTheContract($data)) {
+            return false;
+        }
+
+        $who = match ($data->contract->customer->legal_status) {
+            CustomerLegalStatus::NaturalPerson, null => 'natural_persons',
+            CustomerLegalStatus::SoleTrader => 'sole_traders',
+            CustomerLegalStatus::LegalEntity => 'legal_entities',
+        };
+
+        return (bool)Settings::get('core.documents.contracts.contract.withdrawal_for.' . $who, false);
+    }
+
+    /**
+     * What the customer is told and asked above the signatures, so that signing covers it.
+     *
+     * The right to withdraw and the request to start the service before the period runs out, to
+     * those it is printed for, then a consent to record a status that gives a person rights, to a
+     * natural person. Each prints only when the deployment has a text for it.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
      * @return void
      */
     private function printConsumerStatements(ContractPrintData $data): void
     {
-        if (!$this->speaksToAConsumer($data)) {
-            return;
-        }
-
-        $withdrawal = trim($this->contractText('texts.withdrawal_text'));
-        $consent = trim($this->contractText('texts.special_status_consent_text'));
+        $withdrawal = $this->toldAboutWithdrawal($data)
+            ? trim($this->contractText('texts.withdrawal_text'))
+            : '';
+        $consent = $this->makesOrChangesTheContract($data)
+            && in_array($data->contract->customer->legal_status, [CustomerLegalStatus::NaturalPerson, null], true)
+            ? trim($this->contractText('texts.special_status_consent_text'))
+            : '';
 
         if ($withdrawal === '' && $consent === '') {
             return;
@@ -155,7 +170,7 @@ class ContractPDF extends ContractPaperPDF
     {
         $html = trim($this->contractText('texts.withdrawal_attachment_html'));
 
-        if ($html === '' || !$this->speaksToAConsumer($data)) {
+        if ($html === '' || !$this->toldAboutWithdrawal($data)) {
             return;
         }
 
@@ -170,10 +185,11 @@ class ContractPDF extends ContractPaperPDF
     }
 
     /**
-     * What the withdrawal form can be filled in with already, as it goes out with the contract.
+     * What the withdrawal notice and form can be filled in with already, as they go out with the contract.
      *
-     * The customer as the contract names them, at its billing address, and the services it
-     * provides. When they ordered it is left to them: the paper is printed before it is signed.
+     * The provider and where to send it, the customer as the contract names them, at its billing
+     * address, and the services it provides. When they ordered it is left to them: the paper is
+     * printed before it is signed.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
      * @return array<string, string> Placeholder and what it stands for
@@ -189,7 +205,13 @@ class ContractPDF extends ContractPaperPDF
             }
         }
 
+        $company = fn(string $key): string => Settings::getString('core.company.' . $key);
+
         return [
+            '{company_name}' => $company('name'),
+            '{company_address}' => $company('address'),
+            '{contracts_phone}' => $company('contracts.phone'),
+            '{contracts_email}' => $company('contracts.email'),
             '{contract_number}' => (string)$data->contract->number,
             '{customer_name}' => $address->full_name,
             '{customer_address}' => implode(', ', array_filter([

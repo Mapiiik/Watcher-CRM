@@ -570,8 +570,8 @@ return [
                             'service_terms' => 'Ujednání pro tyto služby',
                             'individual_terms' => 'Individuální ujednání',
                             'final_statements' => 'Závěrečná ustanovení',
-                            // over the consumer's statements below, when there is a withdrawal text
-                            'withdrawal' => '',
+                            // over the statements on withdrawing above the signatures
+                            'withdrawal' => 'Odstoupení od smlouvy',
                     ],
 
                     'texts' => [
@@ -606,8 +606,8 @@ return [
                         // for when the contract ends early, while a legal entity is held to what was
                         // agreed. The first wording is for everybody but a legal entity, a customer
                         // nobody has said anything about included.
-                        'activation_fee_clause' => 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím {duration} od zahájení poskytování služeb, nejpozději však do 3 měsíců ode dne jejího uzavření, je proto Uživatel povinen nahradit Poskytovateli náklady zahrnuté v aktivačním poplatku, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku), nejvýše však v částce odpovídající jedné dvacetině součtu měsíčních cen, které by Uživatel skutečně platil do uplynutí {duration} od zahájení poskytování služeb.',
-                        'activation_fee_clause_legal_entity' => 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy před uplynutím {duration} od zahájení poskytování služeb je proto Uživatel povinen nahradit Poskytovateli náklady zahrnuté v aktivačním poplatku, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku).',
+                        'activation_fee_clause' => 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy z důvodu na straně Uživatele před uplynutím {duration} od zahájení poskytování služeb, nejpozději však do 3 měsíců ode dne jejího uzavření, je proto Uživatel povinen nahradit Poskytovateli náklady zahrnuté v aktivačním poplatku, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku), nejvýše však v částce odpovídající jedné dvacetině součtu měsíčních cen, které by Uživatel skutečně platil do uplynutí {duration} od zahájení poskytování služeb.',
+                        'activation_fee_clause_legal_entity' => 'Aktivační poplatek je Uživateli poskytnut Poskytovatelem za zvýhodněných podmínek. V případě zániku této smlouvy z důvodu na straně Uživatele před uplynutím {duration} od zahájení poskytování služeb je proto Uživatel povinen nahradit Poskytovateli náklady zahrnuté v aktivačním poplatku, a to v paušální částce {difference} ({full_fee} je aktivační poplatek při smlouvě bez úvazku).',
 
                         'final_statements_html' => <<<HTML
                             Uživatel prohlašuje, že se podrobně seznámil s obsahem těchto aktuálně účinných dokumentů (dále jako „Dokumenty“):
@@ -629,7 +629,7 @@ return [
                                 <li><b><i>Ceník</i></b></li>
                             </ol>
 
-                            Uživatel potvrzuje, že Dokumenty od Poskytovatele obdržel k prostudování a s jejich obsahem plně souhlasí.<br>
+                            Uživatel potvrzuje, že Dokumenty od Poskytovatele obdržel k prostudování a s jejich obsahem plně souhlasí. Před uzavřením Smlouvy obdržel též Shrnutí smlouvy.<br>
                             Uživatel je srozuměn se skutečností, že aktuální znění těchto Dokumentů, kterými se tato Smlouva řídí, je vždy dostupné na:
                             <ul>
                                 <li>poskytovatelových webových stránkách: <u>https://netair.cz</u></li>
@@ -645,17 +645,87 @@ return [
                         'final_prices' => 'Všechny ceny uvedené v této smlouvě jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.',
                         'final_copies' => 'Tato smlouva (č. {contract_number}) je vyhotovena ve dvou stejnopisech.',
 
-                        // For a consumer only, on a new contract and an amendment, and only where
-                        // filled in. Above the signatures: the right to withdraw from a contract made
-                        // away from the office and the request to start the service sooner, then
-                        // a consent such as the Croatian one to record a disability or old age.
-                        // Blank lines separate paragraphs.
-                        'withdrawal_text' => '',
+                        // On a new contract and an amendment, and only where filled in. Above the
+                        // signatures: the right to withdraw from a contract made away from the office
+                        // and the request to start the service sooner, to those withdrawal_for below
+                        // names, then a consent such as the Croatian one to record a disability or
+                        // old age, to a natural person. Blank lines separate paragraphs.
+                        'withdrawal_text' => <<<TEXT
+                            Byla-li tato smlouva nebo její změna uzavřena mimo obchodní prostory Poskytovatele nebo prostředkem komunikace na dálku, může od ní Uživatel do 14 dnů odstoupit bez udání důvodu za podmínek uvedených v poučení o odstoupení, které je spolu s formulářem pro odstoupení přílohou této smlouvy. Uživatel souhlasí s tím, že vyhotovení smlouvy a informace k ní, včetně poučení a formuláře, může obdržet i v elektronické podobě.
+
+                            ▢ ano / ▢ ne - Výslovně žádám, aby Poskytovatel začal poskytovat služby před uplynutím lhůty pro odstoupení. Beru na vědomí, že pokud od smlouvy odstoupím, uhradím poměrnou část ceny za služby poskytnuté do odstoupení, a že právo odstoupit zaniká, byly-li služby do té doby poskytnuty v plném rozsahu.
+                            TEXT,
                         'special_status_consent_text' => '',
-                        // The notice on withdrawal with its form, on a page after the signatures.
-                        // {contract_number}, {customer_name}, {customer_address} (the billing one)
-                        // and {services} fill the form in ahead of the customer.
-                        'withdrawal_attachment_html' => '',
+                        // The notice on withdrawal with its form, on a page after the signatures, after
+                        // the model in the annex of Government Regulation No. 29/2023 Coll. It says when
+                        // the right applies and when it ends, because it is printed either way and is
+                        // part of the contract.
+                        // {company_name}, {company_address}, {contracts_phone} and {contracts_email}
+                        // name the provider, {contract_number}, {customer_name}, {customer_address}
+                        // (the billing one) and {services} fill the form in ahead of the customer.
+                        'withdrawal_attachment_html' => <<<HTML
+                            <h3>PŘÍLOHA – POUČENÍ O PRÁVU NA ODSTOUPENÍ OD SMLOUVY</h3>
+                            <p>ke Smlouvě o poskytování služeb č. {contract_number}</p>
+                            <ol>
+                                <li><b>Kdy může Uživatel odstoupit</b>
+                                    <ul>
+                                        <li>Uzavřel-li Uživatel tuto smlouvu nebo její změnu (dodatek) mimo obchodní prostory Poskytovatele, například u sebe doma, nebo na dálku, například e-mailem, může od ní odstoupit bez udání důvodu.</li>
+                                        <li>Lhůta končí uplynutím 14 dnů ode dne následujícího po dni uzavření smlouvy nebo dodatku. U zboží, které Poskytovatel Uživateli prodal, ode dne následujícího po dni, kdy je Uživatel nebo jím určená třetí osoba (jiná než dopravce) převezme.</li>
+                                        <li>Právo zaniká jen u služby, kterou Poskytovatel na výslovnou žádost Uživatele poskytl v plném rozsahu ještě před uplynutím lhůty, například u jednorázové práce.</li>
+                                    </ul>
+                                </li>
+                                <li><b>Jak odstoupit</b>
+                                    <ul>
+                                        <li>Jakýmkoli jednoznačným prohlášením (například dopisem nebo e-mailem) adresovaným:<br><b>{company_name}</b>, {company_address}<br>tel. {contracts_phone}, e-mail {contracts_email}</li>
+                                        <li>Uživatel může použít přiložený vzorový formulář, není to však jeho povinností.</li>
+                                        <li>Lhůta je dodržena, odešle-li Uživatel odstoupení před jejím uplynutím.</li>
+                                    </ul>
+                                </li>
+                                <li><b>Co se stane po odstoupení</b>
+                                    <ul>
+                                        <li>Poskytovatel vrátí Uživateli všechny platby přijaté na základě smlouvy nebo dodatku nejpozději do 14 dnů ode dne, kdy odstoupení obdrží, a to stejným způsobem, jakým je Uživatel zaplatil. Platil-li Uživatel převodem, pošle mu je Poskytovatel na účet, ze kterého přišly. Jinak, například na účet uvedený ve formuláři, jen se souhlasem Uživatele.</li>
+                                        <li>Požádal-li Uživatel o zahájení služeb před uplynutím lhůty, zaplatí jen poměrnou část ceny za služby poskytnuté do dne, kdy odstoupení oznámil. Bez této žádosti za ně neplatí nic.</li>
+                                        <li>Uživatel do 14 dnů od odstoupení na své náklady zašle nebo předá na adrese uvedené výše zboží, které mu Poskytovatel prodal. Lhůta je dodržena, odešle-li zboží před jejím uplynutím. Platby za zboží Poskytovatel vrátí, až zboží obdrží nebo až Uživatel prokáže, že je odeslal. Uživatel odpovídá jen za snížení hodnoty zboží, které vzniklo jiným nakládáním, než je nutné k seznámení se s jeho povahou, vlastnostmi a funkčností.</li>
+                                        <li>Zapůjčená zařízení si Poskytovatel vyzvedne a demontuje na své náklady.</li>
+                                        <li>Odstoupí-li Uživatel od dodatku, platí smlouva dál ve znění před ním.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                            <br>
+                            <h3>VZOROVÝ FORMULÁŘ PRO ODSTOUPENÍ OD SMLOUVY</h3>
+                            <p>(vyplňte tento formulář a pošlete jej zpět pouze v případě, že chcete odstoupit od smlouvy)</p>
+                            <br>
+                            <ul>
+                                <li>Adresát: <b>{company_name}, {company_address}, e-mail: {contracts_email}</b><br><br></li>
+                                <li>Jméno a příjmení / obchodní firma Uživatele: <b>{customer_name}</b></li>
+                                <li>Adresa Uživatele: <b>{customer_address}</b><br><br></li>
+                                <li>Oznamuji, že tímto odstupuji od smlouvy č. <b>{contract_number}</b> (případně od jejího dodatku č. ______) o poskytnutí těchto služeb: <b>{services}</b><br><br></li>
+                                <li>Datum objednání (uzavření smlouvy nebo dodatku): ______________________________<br><br></li>
+                                <li>Číslo účtu pro vrácení plateb: ______________________________<br><br></li>
+                                <li>Datum: ______________________________<br><br><br></li>
+                                <li>Podpis Uživatele (pouze pokud je tento formulář zasílán na listině): ______________________________</li>
+                            </ul>
+                            HTML,
+                    ],
+
+                    // Who is told about withdrawing, by who they are in law - the law of the
+                    // deployment decides: consumer law covers a natural person, the Czech law on
+                    // electronic communications a sole trader as well. All off until a deployment
+                    // has checked the texts above against its own terms.
+                    'withdrawal_for' => [
+                        'natural_persons' => new BoolType(
+                            default: false,
+                            hint: __('Print the withdrawal texts for a natural person, and for a customer whose'
+                                . ' legal status is not filled in.'),
+                        ),
+                        'sole_traders' => new BoolType(
+                            default: false,
+                            hint: __('Print the withdrawal texts for a sole trader.'),
+                        ),
+                        'legal_entities' => new BoolType(
+                            default: false,
+                            hint: __('Print the withdrawal texts for a legal entity.'),
+                        ),
                     ],
 
                     'tables' => [
@@ -757,8 +827,6 @@ return [
                             _______________________________________________________________________________________________________
 
                             Nebyla-li zkouška funkčnosti provedena při předání, bude provedena následně v provozovně Poskytovatele.
-
-                            V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.
                             TEXT,
 
                         'uninstallation_cash_payment_text' => 'Placeno hotově: ____________________,- Kč, podpis příjemce: ____________________',
@@ -769,7 +837,7 @@ return [
                         'uninstallation_final_statements_text' => <<<TEXT
                             Poskytovatel svým podpisem stvrzuje, že zařízení, která mu byla vrácena, převzal ve stavu popsaném výše.
 
-                            Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).
+                            Uživatel se zavazuje uhradit hodnotu zařízení uvedenou výše, pokud zařízení nevrátil nebo pokud má vadu či poškození, které způsobil, nad rámec běžného opotřebení, a to nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).
 
                             Byla-li deinstalace provedena Poskytovatelem, Uživatel potvrzuje, že s jejím provedením souhlasí a nemá vůči ní žádné námitky.
 
@@ -801,8 +869,6 @@ return [
                             _______________________________________________________________________________________________________
 
                             Nebyla-li zkouška funkčnosti provedena při předání, bude provedena následně v provozovně Poskytovatele.
-
-                            V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.
                             TEXT,
 
                         'exchange_date_line' => 'Datum výměny: ____________________',
@@ -817,7 +883,7 @@ return [
 
                             Uživatel se zavazuje uhradit částky uvedené v části Aktivační poplatek, prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).
 
-                            Uživatel se zavazuje uhradit hodnotu vrácených zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti).
+                            Uživatel se zavazuje uhradit hodnotu vráceného zařízení uvedenou výše, pokud má vadu či poškození, které způsobil, nad rámec běžného opotřebení, a to nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti).
 
                             Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
 

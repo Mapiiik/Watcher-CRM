@@ -369,66 +369,119 @@ class ProposalPapersTest extends TestCase
     }
 
     /**
-     * A consumer is told about withdrawing and asked for consent on the papers that make or change
-     * a contract. A sole trader, a legal entity and an ending get none of it.
+     * The texts on withdrawing are printed for each kind of customer only once it is switched on,
+     * on the papers that make or change a contract and never on an ending. A customer nobody has
+     * said anything about counts as a natural person.
      *
      * @return void
      */
-    public function testOnlyAConsumerIsToldAboutWithdrawal(): void
+    public function testWithdrawalIsPrintedOnlyForThoseSwitchedOn(): void
+    {
+        $this->furnishTheContract();
+
+        $switches = 'core.documents.contracts.contract.withdrawal_for.';
+        $customers = [
+            'natural person' => CustomerLegalStatus::NaturalPerson,
+            'nobody' => null,
+            'sole trader' => CustomerLegalStatus::SoleTrader,
+            'legal entity' => CustomerLegalStatus::LegalEntity,
+        ];
+        $papers = function () use ($customers): array {
+            $papers = [];
+            foreach ($customers as $who => $legalStatus) {
+                $papers[$who] = $this->printedForACustomer(ContractDocumentType::ContractNew, $legalStatus);
+            }
+
+            return $papers;
+        };
+
+        $off = $papers();
+
+        foreach (
+            [
+                'natural_persons' => ['natural person', 'nobody'],
+                'sole_traders' => ['sole trader'],
+                'legal_entities' => ['legal entity'],
+            ] as $switch => $told
+        ) {
+            Settings::set($switches . $switch, true);
+
+            foreach ($papers() as $who => $paper) {
+                if (in_array($who, $told, true)) {
+                    $this->assertNotSame($off[$who], $paper, $who . ' was not told with ' . $switch . ' on.');
+                } else {
+                    $this->assertSame($off[$who], $paper, $who . ' was told with ' . $switch . ' on.');
+                }
+            }
+
+            Settings::set($switches . $switch, false);
+        }
+
+        $amendment = fn(): string => $this->printedForACustomer(
+            ContractDocumentType::ContractAmendment,
+            CustomerLegalStatus::NaturalPerson,
+        );
+        $termination = fn(): string => $this->printedForACustomer(
+            ContractDocumentType::ContractTermination,
+            CustomerLegalStatus::NaturalPerson,
+        );
+        $amendmentOff = $amendment();
+        $terminationOff = $termination();
+
+        Settings::set($switches . 'natural_persons', true);
+
+        $this->assertNotSame($amendmentOff, $amendment(), 'An amendment did not tell about withdrawal.');
+        $this->assertSame($terminationOff, $termination(), 'An ending told about withdrawal.');
+    }
+
+    /**
+     * The consent to record a disability or old age is asked of a natural person, whoever is told
+     * about withdrawing.
+     *
+     * @return void
+     */
+    public function testTheConsentIsAskedOfANaturalPerson(): void
     {
         $this->furnishTheContract();
 
         $papers = fn(): array => [
-            'natural person, new' => $this->printedForACustomer(
+            'natural person' => $this->printedForACustomer(
                 ContractDocumentType::ContractNew,
                 CustomerLegalStatus::NaturalPerson,
             ),
-            'nobody, new' => $this->printedForACustomer(ContractDocumentType::ContractNew, null),
-            'natural person, amendment' => $this->printedForACustomer(
-                ContractDocumentType::ContractAmendment,
-                CustomerLegalStatus::NaturalPerson,
-            ),
-            'sole trader, new' => $this->printedForACustomer(
+            'nobody' => $this->printedForACustomer(ContractDocumentType::ContractNew, null),
+            'sole trader' => $this->printedForACustomer(
                 ContractDocumentType::ContractNew,
                 CustomerLegalStatus::SoleTrader,
             ),
-            'legal entity, new' => $this->printedForACustomer(
+            'legal entity' => $this->printedForACustomer(
                 ContractDocumentType::ContractNew,
                 CustomerLegalStatus::LegalEntity,
-            ),
-            'natural person, termination' => $this->printedForACustomer(
-                ContractDocumentType::ContractTermination,
-                CustomerLegalStatus::NaturalPerson,
             ),
         ];
 
         $without = $papers();
 
-        Settings::set('core.documents.contracts.contract.sections.withdrawal', 'Lorem ipsum');
-        Settings::set(
-            'core.documents.contracts.contract.texts.withdrawal_text',
-            "Lorem ipsum dolor sit amet.\n\n▢ yes / ▢ no - consectetur adipiscing elit.",
-        );
         Settings::set(
             'core.documents.contracts.contract.texts.special_status_consent_text',
             '▢ yes / ▢ no - sed do eiusmod tempor.',
         );
-        Settings::set('core.documents.contracts.contract.texts.withdrawal_attachment_html', '<p>Lorem ipsum.</p>');
 
         $with = $papers();
 
-        foreach (['natural person, new', 'nobody, new', 'natural person, amendment'] as $paper) {
-            $this->assertNotSame($without[$paper], $with[$paper], $paper . ' was not told about withdrawal.');
+        foreach (['natural person', 'nobody'] as $who) {
+            $this->assertNotSame($without[$who], $with[$who], $who . ' was not asked.');
         }
 
-        foreach (['sole trader, new', 'legal entity, new', 'natural person, termination'] as $paper) {
-            $this->assertSame($without[$paper], $with[$paper], $paper . ' was told about withdrawal.');
+        foreach (['sole trader', 'legal entity'] as $who) {
+            $this->assertSame($without[$who], $with[$who], $who . ' was asked.');
         }
     }
 
     /**
-     * The withdrawal form comes filled in with what the contract already says: the customer as it
-     * names them, their billing address and the services it provides.
+     * The withdrawal notice and form come filled in with what is known already: the provider and
+     * where to send it, the customer as the contract names them, their billing address and the
+     * services it provides.
      *
      * Told apart by writing the same details in by hand: the papers have to come out the same.
      *
@@ -437,6 +490,7 @@ class ProposalPapersTest extends TestCase
     public function testTheWithdrawalFormIsFilledInFromTheContract(): void
     {
         $this->furnishTheContract();
+        Settings::set('core.documents.contracts.contract.withdrawal_for.natural_persons', true);
 
         $path = 'core.documents.contracts.contract.texts.withdrawal_attachment_html';
         $form = fn(string $html): string => $this->printedWith($path, $html);
@@ -451,12 +505,17 @@ class ProposalPapersTest extends TestCase
 
         $this->assertSame(
             $form('<p>' . implode(' | ', [
+                h(Settings::getString('core.company.name')),
+                h(Settings::getString('core.company.address')),
+                h(Settings::getString('core.company.contracts.phone')),
+                h(Settings::getString('core.company.contracts.email')),
                 h($address->full_name),
                 h($address->street_and_number_extra . ', ' . $address->zip_and_city),
                 h(implode(', ', $services)),
                 h((string)$data->contract->number),
             ]) . '</p>'),
-            $form('<p>{customer_name} | {customer_address} | {services} | {contract_number}</p>'),
+            $form('<p>{company_name} | {company_address} | {contracts_phone} | {contracts_email} | '
+                . '{customer_name} | {customer_address} | {services} | {contract_number}</p>'),
         );
     }
 
@@ -483,17 +542,16 @@ class ProposalPapersTest extends TestCase
     public function testTheWithdrawalFormIsAPageOfItsOwn(): void
     {
         $this->furnishTheContract();
+        Settings::set('core.documents.contracts.contract.withdrawal_for.natural_persons', true);
 
-        $pages = fn(): int => (int)preg_match_all('#/Type\s*/Page\b(?!s)#', $this->printedForACustomer(
-            ContractDocumentType::ContractNew,
-            CustomerLegalStatus::NaturalPerson,
-        ));
+        $path = 'core.documents.contracts.contract.texts.withdrawal_attachment_html';
+        $pages = fn(string $html): int => (int)preg_match_all(
+            '#/Type\s*/Page\b(?!s)#',
+            $this->printedWith($path, $html),
+        );
 
-        $before = $pages();
-
-        Settings::set('core.documents.contracts.contract.texts.withdrawal_attachment_html', '<p>Lorem ipsum.</p>');
-
-        $this->assertSame($before + 1, $pages());
+        // an emptied text falls back to the shipped one, so a blank is what leaves the page out
+        $this->assertSame($pages(' ') + 1, $pages('<p>Lorem ipsum.</p>'));
     }
 
     /**
