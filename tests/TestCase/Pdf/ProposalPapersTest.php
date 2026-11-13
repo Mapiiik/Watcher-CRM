@@ -17,6 +17,7 @@ use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
 use App\Pdf\SignatureAnchors;
 use App\Service\ContractPrint\ContractPrintData;
+use App\Service\ContractPrint\ContractPrintDataEnricher;
 use App\Test\Traits\ContractPapersTrait;
 use Cake\Cache\Cache;
 use Cake\TestSuite\TestCase;
@@ -426,6 +427,54 @@ class ProposalPapersTest extends TestCase
     }
 
     /**
+     * The withdrawal form comes filled in with what the contract already says: the customer as it
+     * names them, their billing address and the services it provides.
+     *
+     * Told apart by writing the same details in by hand: the papers have to come out the same.
+     *
+     * @return void
+     */
+    public function testTheWithdrawalFormIsFilledInFromTheContract(): void
+    {
+        $this->furnishTheContract();
+
+        $path = 'core.documents.contracts.contract.texts.withdrawal_attachment_html';
+        $form = fn(string $html): string => $this->printedWith($path, $html);
+
+        $data = $this->forACustomer(ContractDocumentType::ContractNew, CustomerLegalStatus::NaturalPerson);
+        (new ContractPrintDataEnricher())->enrich($data);
+        $address = $data->contract->billing_address;
+        $services = array_values(array_unique(array_filter($data->activeBillings->extract('name')->toList())));
+
+        $this->assertNotSame('', $address->full_name);
+        $this->assertNotSame([], $services);
+
+        $this->assertSame(
+            $form('<p>' . implode(' | ', [
+                h($address->full_name),
+                h($address->street_and_number_extra . ', ' . $address->zip_and_city),
+                h(implode(', ', $services)),
+                h((string)$data->contract->number),
+            ]) . '</p>'),
+            $form('<p>{customer_name} | {customer_address} | {services} | {contract_number}</p>'),
+        );
+    }
+
+    /**
+     * A new contract for a natural person, printed with one of its texts set as given.
+     *
+     * @param string $path Path of the text.
+     * @param string $text What it says.
+     * @return string
+     */
+    private function printedWith(string $path, string $text): string
+    {
+        Settings::set($path, $text);
+
+        return $this->printedForACustomer(ContractDocumentType::ContractNew, CustomerLegalStatus::NaturalPerson);
+    }
+
+    /**
      * The notice with its form takes a page of its own, so that the form can be sent back, and
      * nothing else makes the paper longer.
      *
@@ -486,6 +535,22 @@ class ProposalPapersTest extends TestCase
         ?CustomerLegalStatus $legalStatus,
         bool $definite = false,
     ): string {
+        return $this->print($this->forACustomer($type, $legalStatus, $definite));
+    }
+
+    /**
+     * What printedForACustomer() prints, before it is printed.
+     *
+     * @param \App\Model\Enum\ContractDocumentType $type Which paper.
+     * @param \App\Model\Enum\CustomerLegalStatus|null $legalStatus Who the customer is in law.
+     * @param bool $definite Whether the term is a fixed one rather than a minimum one.
+     * @return \App\Service\ContractPrint\ContractPrintData
+     */
+    private function forACustomer(
+        ContractDocumentType $type,
+        ?CustomerLegalStatus $legalStatus,
+        bool $definite = false,
+    ): ContractPrintData {
         $contract = $this->liveContract();
         $contract->customer->legal_status = $legalStatus;
         $contract->set('sold_equipments', [
@@ -509,7 +574,7 @@ class ProposalPapersTest extends TestCase
         $data = $this->printData($type, $contract, $version);
         $data->proposal = new ContractProposal(['purpose' => ProposalPurpose::NewContract]);
 
-        return $this->print($data);
+        return $data;
     }
 
     /**

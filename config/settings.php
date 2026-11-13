@@ -653,7 +653,8 @@ return [
                         'withdrawal_text' => '',
                         'special_status_consent_text' => '',
                         // The notice on withdrawal with its form, on a page after the signatures.
-                        // {contract_number} names the contract the form belongs to.
+                        // {contract_number}, {customer_name}, {customer_address} (the billing one)
+                        // and {services} fill the form in ahead of the customer.
                         'withdrawal_attachment_html' => '',
                     ],
 

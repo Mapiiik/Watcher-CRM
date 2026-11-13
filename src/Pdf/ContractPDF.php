@@ -163,9 +163,41 @@ class ContractPDF extends ContractPaperPDF
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         $this->setListIndentWidth(4);
-        $this->writeHTML(strtr($html, [
+        $this->writeHTML(strtr($html, array_map(
+            fn(string $value): string => htmlspecialchars($value, ENT_QUOTES | ENT_HTML5),
+            $this->withdrawalFormDetails($data),
+        )), true, false, false, true, '');
+    }
+
+    /**
+     * What the withdrawal form can be filled in with already, as it goes out with the contract.
+     *
+     * The customer as the contract names them, at its billing address, and the services it
+     * provides. When they ordered it is left to them: the paper is printed before it is signed.
+     *
+     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
+     * @return array<string, string> Placeholder and what it stands for
+     */
+    private function withdrawalFormDetails(ContractPrintData $data): array
+    {
+        $address = $data->contract->billing_address;
+
+        $services = [];
+        foreach ($data->activeBillings as $billing) {
+            if ($billing->name !== '' && !in_array($billing->name, $services, true)) {
+                $services[] = $billing->name;
+            }
+        }
+
+        return [
             '{contract_number}' => (string)$data->contract->number,
-        ]), true, false, false, true, '');
+            '{customer_name}' => $address->full_name,
+            '{customer_address}' => implode(', ', array_filter([
+                $address->street_and_number_extra,
+                $address->zip_and_city,
+            ])),
+            '{services}' => implode(', ', $services),
+        ];
     }
 
     /**
