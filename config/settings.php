@@ -42,6 +42,7 @@
  *   is for can be read off the line it stands on.
  */
 
+use App\Model\Enum\ContractPeriodSource;
 use App\Model\Enum\UnsignedDeadlineAnchor;
 use Settings\ValueObject\Type\BoolType;
 use Settings\ValueObject\Type\ChoiceType;
@@ -451,6 +452,11 @@ return [
                 'obligation_within_days' => NumberType::ofInt(
                     default: 60,
                     hint: __('How far ahead the end of a minimum term is pointed out.'),
+                ),
+                'period_source' => new ChoiceType(
+                    default: ContractPeriodSource::Versions,
+                    hint: __('Which dates the statistics count contracts and customers by.'
+                        . ' A contract without them is left out.'),
                 ),
             ],
         ],

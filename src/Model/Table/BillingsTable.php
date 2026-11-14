@@ -124,6 +124,27 @@ class BillingsTable extends AppTable
     }
 
     /**
+     * Billings running on the given day: begun on it or before, and not ended before it.
+     *
+     * Asked of the last day of a month, it is the state a regulator wants reported.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Billing> $query Query to restrict.
+     * @param \Cake\I18n\Date $on The day.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Billing>
+     */
+    public function findActiveOn(SelectQuery $query, Date $on): SelectQuery
+    {
+        return $query
+            ->where(['Billings.billing_from <=' => $on])
+            ->andWhere([
+                'OR' => [
+                    'Billings.billing_until IS NULL',
+                    'Billings.billing_until >=' => $on,
+                ],
+            ]);
+    }
+
+    /**
      * The last day invoicing has settled.
      *
      * Nothing in the data says which months were invoiced - invoicing reads the billings for a

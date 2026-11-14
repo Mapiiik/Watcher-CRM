@@ -56,17 +56,11 @@ class ConnectionPointCollector
         $this->problems = [];
 
         /** @var list<\App\Model\Entity\Billing> $billings */
-        $billings = $this->fetchTable(BillingsTable::class)->find()
+        $billings = $this->fetchTable(BillingsTable::class)
+            ->find('activeOn', on: $month->lastOfMonth())
             ->contain('Customers')
             ->contain(['Contracts' => ['InstallationAddresses']])
             ->contain(['Services' => ['ServiceTypes', 'ConnectionProfiles']])
-            ->where(['Billings.billing_from <=' => $month->lastOfMonth()])
-            ->andWhere([
-                'OR' => [
-                    'Billings.billing_until IS NULL',
-                    'Billings.billing_until >=' => $month->lastOfMonth(),
-                ],
-            ])
             ->where(['ConnectionProfiles.speed_down IS NOT NULL'])
             ->where(['ConnectionProfiles.speed_up IS NOT NULL'])
             ->where(['ConnectionProfiles.access_technology IN' => $this->reportedTechnologies()])

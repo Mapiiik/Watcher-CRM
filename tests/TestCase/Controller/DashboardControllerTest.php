@@ -1158,6 +1158,23 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
+     * The statistics go to whoever may open the overview their numbers lead to.
+     *
+     * @param string $role Role to sign in as.
+     * @param bool $offered Whether that role is offered the card.
+     * @return void
+     * @link \App\Dashboard\Card\StatisticsCard::roles()
+     */
+    #[DataProvider('addressProblemRoles')]
+    public function testTheStatisticsAreOfferedToTheRolesOfTheOverviews(string $role, bool $offered): void
+    {
+        $this->login($role);
+        $this->get('/dashboard/card/statistics');
+
+        $this->assertResponseCode($offered ? 200 : 404);
+    }
+
+    /**
      * Where the outages are asked for, spelled the way the client asks for them.
      *
      * @return string

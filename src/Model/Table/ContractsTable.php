@@ -11,6 +11,7 @@ use App\Model\Rule\ExistingAccessPointRule;
 use App\Model\Validation\ContractStateValidator;
 use ArrayObject;
 use Cake\Core\Plugin;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\I18n\Date;
@@ -370,6 +371,74 @@ class ContractsTable extends AppTable
         Date $to,
     ): SelectQuery {
         return $this->withinPeriod($query, 'ends_on', $source->endsOnSql(), $from, $to);
+    }
+
+    /**
+     * Customers whose first contract begins within the period, one row each.
+     *
+     * A contract with no day it begins on - under the versions, one with none - is not counted
+     * either way: it cannot make a customer new, nor make them older than they are.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query Query to narrow.
+     * @param \App\Model\Enum\ContractPeriodSource $source Which dates the period is read from.
+     * @param \Cake\I18n\Date $from First day of the period, counted in.
+     * @param \Cake\I18n\Date $to Last day of the period, counted in.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    public function findCustomersStartingBetween(
+        SelectQuery $query,
+        ContractPeriodSource $source,
+        Date $from,
+        Date $to,
+    ): SelectQuery {
+        $start = $query->expr($source->startsOnSql());
+
+        return $this->perCustomer($query, $start)
+            ->having($query->expr()->between($query->func()->min($start), $from, $to, 'date'));
+    }
+
+    /**
+     * Customers whose last contract ends within the period and who have none left running, one
+     * row each.
+     *
+     * A contract without an end is still running and keeps its customer. One with no day it
+     * begins on is left out, as above - so under the versions, a customer whose versioned
+     * contract ended counts as gone even while one without versions still runs.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query Query to narrow.
+     * @param \App\Model\Enum\ContractPeriodSource $source Which dates the period is read from.
+     * @param \Cake\I18n\Date $from First day of the period, counted in.
+     * @param \Cake\I18n\Date $to Last day of the period, counted in.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    public function findCustomersEndingBetween(
+        SelectQuery $query,
+        ContractPeriodSource $source,
+        Date $from,
+        Date $to,
+    ): SelectQuery {
+        $end = $query->expr($source->endsOnSql());
+
+        return $this->perCustomer($query, $query->expr($source->startsOnSql()))
+            ->having([
+                $query->expr()->eq($query->func()->count('*'), $query->func()->count($end)),
+                $query->expr()->between($query->func()->max($end), $from, $to, 'date'),
+            ]);
+    }
+
+    /**
+     * The contracts that have a day they begin on, gathered by customer.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query Query to narrow.
+     * @param \Cake\Database\Expression\QueryExpression $start The day a contract begins on.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    private function perCustomer(SelectQuery $query, QueryExpression $start): SelectQuery
+    {
+        return $query
+            ->select(['Contracts.customer_id'])
+            ->where($query->expr()->isNotNull($start))
+            ->groupBy(['Contracts.customer_id']);
     }
 
     /**

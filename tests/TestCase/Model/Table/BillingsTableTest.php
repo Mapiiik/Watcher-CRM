@@ -767,6 +767,32 @@ class BillingsTableTest extends TestCase
     }
 
     /**
+     * Running on a day means begun on it or before and not ended before it, both days counted in.
+     *
+     * The fixture has a billing of a single day, 2021-11-05, and two open ones from 2022-01-01.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::findActiveOn()
+     */
+    public function testRunningOnADayCountsBothOfItsEnds(): void
+    {
+        $running = fn(string $day): array => $this->Billings
+            ->find('activeOn', on: new Date($day))
+            ->orderBy(['Billings.id'])
+            ->all()
+            ->extract('id')
+            ->toList();
+
+        $this->assertSame([], $running('2021-11-04'));
+        $this->assertSame(['b1000000-0000-4000-8000-000000000001'], $running('2021-11-05'));
+        $this->assertSame([], $running('2021-12-31'));
+        $this->assertSame(
+            ['b2000000-0000-4000-8000-000000000002', 'b3000000-0000-4000-8000-000000000003'],
+            $running('2022-01-01'),
+        );
+    }
+
+    /**
      * A billing from the fixture that started years ago and has not been given an end.
      *
      * Where the start is behind the line and the end is not, so a rule about one of them is not

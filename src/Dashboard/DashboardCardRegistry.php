@@ -22,7 +22,9 @@ use App\Dashboard\Card\EndingObligationsCard;
 use App\Dashboard\Card\LabelsCard;
 use App\Dashboard\Card\ManualShutoffDebtorsCard;
 use App\Dashboard\Card\PowerOutagesCard;
+use App\Dashboard\Card\StatisticsCard;
 use App\Dashboard\Card\UnsignedDocumentsCard;
+use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractProposalsTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractStatesTable;
@@ -120,17 +122,22 @@ final class DashboardCardRegistry implements CardRegistryInterface
                 new UnfiledCustomerProposalCheck($customer_proposals),
             );
 
+        /** @var \App\Model\Table\ContractsTable $contracts */
+        $contracts = $this->fetchTable(ContractsTable::class);
+
         // The debtor cards read the accounting records, which only exist with the plugin.
         // They come last, so that what the whole office looks at stands ahead of what only
         // the bookkeepers do.
         if (Plugin::isLoaded('Bookkeeping')) {
-            /** @var \App\Model\Table\ContractsTable $contracts */
-            $contracts = $this->fetchTable(ContractsTable::class);
-
             $this->factories['debtors'] = fn(): DashboardCardInterface => new DebtorsCard();
             $this->factories['manual_shutoff_debtors'] =
                 fn(): DashboardCardInterface => new ManualShutoffDebtorsCard($contracts);
         }
+
+        // How the month went rather than what is waiting, so after all the work.
+        /** @var \App\Model\Table\BillingsTable $billings */
+        $billings = $this->fetchTable(BillingsTable::class);
+        $this->factories['statistics'] = fn(): DashboardCardInterface => new StatisticsCard($contracts, $billings);
 
         // Last of all, because it is the only card here whose answer is somebody else's: it is
         // read over the network, it is the one that can fail to arrive, and what it reports is

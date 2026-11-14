@@ -6,6 +6,7 @@ namespace App\Model\Enum;
 use App\Model\Enum\Trait\EnumOptionsTrait;
 use Cake\Database\Type\EnumLabelInterface;
 use Override;
+use Settings\ValueObject\SettingChoices;
 
 /**
  * Which pair of dates a contract's life is read from.
@@ -24,7 +25,7 @@ use Override;
  * The fragments below name the `Contracts` alias outright, so they only work on a query
  * rooted at the contracts - not on one that reached them through a `contain`.
  */
-enum ContractPeriodSource: string implements EnumLabelInterface
+enum ContractPeriodSource: string implements EnumLabelInterface, SettingChoices
 {
     use EnumOptionsTrait;
 

@@ -31,6 +31,16 @@ class ContractsTablePeriodFindersTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * The other contract of the same customer, for the cases that count customers.
+     */
+    private const OTHER_CONTRACT_ID = '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90';
+
+    /**
+     * The customer both contracts belong to.
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -289,16 +299,76 @@ class ContractsTablePeriodFindersTest extends TestCase
     }
 
     /**
-     * Put a version in force over the contract every case here is built on.
+     * A customer is new when their first contract begins, not when a later one does.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractsTable::findCustomersStartingBetween()
+     */
+    public function testACustomerIsNewWithTheirFirstContract(): void
+    {
+        $this->inForce('2026-03-01', null);
+        $this->inForce('2026-07-01', null, self::OTHER_CONTRACT_ID);
+
+        $this->assertSame([self::CUSTOMER_ID], $this->customersStarting('2026-03-01', '2026-03-31'));
+        $this->assertSame([], $this->customersStarting('2026-07-01', '2026-07-31'), 'A second contract.');
+    }
+
+    /**
+     * A customer leaves with the last of their contracts to end.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractsTable::findCustomersEndingBetween()
+     */
+    public function testACustomerLeavesWithTheirLastContract(): void
+    {
+        $this->inForce('2026-01-01', '2026-07-15');
+        $this->inForce('2026-02-01', '2026-08-20', self::OTHER_CONTRACT_ID);
+
+        $this->assertSame([], $this->customersEnding('2026-07-01', '2026-07-31'), 'One is still running.');
+        $this->assertSame([self::CUSTOMER_ID], $this->customersEnding('2026-08-01', '2026-08-31'));
+    }
+
+    /**
+     * A contract that has not ended keeps its customer, however long ago the other one ended.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractsTable::findCustomersEndingBetween()
+     */
+    public function testAContractStillRunningKeepsTheCustomer(): void
+    {
+        $this->inForce('2026-01-01', '2026-07-15');
+        $this->inForce('2026-02-01', null, self::OTHER_CONTRACT_ID);
+
+        $this->assertSame([], $this->customersEnding('2026-07-01', '2026-07-31'));
+    }
+
+    /**
+     * A contract with no day it begins on is not counted at all: under the versions the other
+     * contract here has none, so it neither keeps the customer nor makes them new.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractsTable::findCustomersEndingBetween()
+     */
+    public function testAContractWithoutABeginningIsLeftOut(): void
+    {
+        $this->inForce('2026-07-01', '2026-07-15');
+
+        $this->assertSame([self::CUSTOMER_ID], $this->customersStarting('2026-07-01', '2026-07-31'));
+        $this->assertSame([self::CUSTOMER_ID], $this->customersEnding('2026-07-01', '2026-07-31'));
+    }
+
+    /**
+     * Put a version in force over the contract every case here is built on, or another.
      *
      * @param string $from The day it begins.
      * @param string|null $until The day it ends, or null where it has not.
+     * @param string $contractId The contract.
      * @return void
      */
-    private function inForce(string $from, ?string $until): void
+    private function inForce(string $from, ?string $until, string $contractId = self::CONTRACT_ID): void
     {
         $this->ContractVersions->saveOrFail($this->ContractVersions->newEntity([
-            'contract_id' => self::CONTRACT_ID,
+            'contract_id' => $contractId,
             'valid_from' => $from,
             'valid_until' => $until,
             'number_of_amendments' => 0,
@@ -333,10 +403,35 @@ class ContractsTablePeriodFindersTest extends TestCase
     }
 
     /**
+     * The ids of the customers whose first contract begins within the period.
+     *
+     * @param string $from First day of the period.
+     * @param string $to Last day of the period.
+     * @return list<string>
+     */
+    private function customersStarting(string $from, string $to): array
+    {
+        return $this->idsFrom('customersStartingBetween', $from, $to, null, 'customer_id');
+    }
+
+    /**
+     * The ids of the customers whose last contract ends within the period.
+     *
+     * @param string $from First day of the period.
+     * @param string $to Last day of the period.
+     * @return list<string>
+     */
+    private function customersEnding(string $from, string $to): array
+    {
+        return $this->idsFrom('customersEndingBetween', $from, $to, null, 'customer_id');
+    }
+
+    /**
      * @param string $finder Which end of the contract's life to ask about.
      * @param string $from First day of the period.
      * @param string $to Last day of the period.
      * @param \App\Model\Enum\ContractPeriodSource|null $source Which dates to read.
+     * @param string $field Which id to read off the rows.
      * @return list<string>
      */
     private function idsFrom(
@@ -344,6 +439,7 @@ class ContractsTablePeriodFindersTest extends TestCase
         string $from,
         string $to,
         ?ContractPeriodSource $source,
+        string $field = 'id',
     ): array {
         /** @var list<string> $ids */
         $ids = $this->Contracts
@@ -354,7 +450,7 @@ class ContractsTablePeriodFindersTest extends TestCase
                 to: new Date($to),
             )
             ->all()
-            ->extract('id')
+            ->extract($field)
             ->toList();
 
         return $ids;
