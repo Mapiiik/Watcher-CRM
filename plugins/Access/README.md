@@ -72,6 +72,10 @@ Signing in, failures and refusals are written to the log scope `auth`. Unless th
 configures a log of that name, they go to syslog with the facility `auth`, under the name
 `watcher-` followed by `APP_NAME`. Passwords, codes and tokens are never written.
 
+Watcher CRM and NMS configure it in `config/app.php`, as their other logs: `logs/auth.log`, or
+`LOG_AUTH_URL`. A container has no syslog to write to, so there it is
+`console:///?stream=php://stdout`, and the log driver of Docker takes the lines on.
+
 Two-step verification asks for a verification code from an authenticator application where
 `access.security` requires it of the account, or where its owner turned it on of their own accord.
 The codes are TOTP of RFC 6238, made here; the QR code is drawn by `tecnickcom/tc-lib-barcode`, so

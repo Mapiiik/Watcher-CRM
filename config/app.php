@@ -678,6 +678,16 @@ return [
             'scopes' => null,
             'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         ],
+        // Signing in, failures and refusals (plugin Access). In a container,
+        // `console:///?stream=php://stdout` hands the lines to the log driver of Docker.
+        'auth' => [
+            'className' => FileLog::class,
+            'path' => LOGS,
+            'file' => 'auth',
+            'url' => env('LOG_AUTH_URL', null),
+            'scopes' => ['auth'],
+            'levels' => [],
+        ],
         // To enable this dedicated query log, you need to set your datasource's log flag to true
         'queries' => [
             'className' => FileLog::class,
