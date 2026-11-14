@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-11 10:35+0100\n"
+"POT-Creation-Date: 2026-11-14 16:06+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,193 +14,213 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./config/settings.php:102
+#: ./config/settings.php:103
 msgid "The Czech business register. It is public and asks for no credentials."
 msgstr ""
 
-#: ./config/settings.php:109
+#: ./config/settings.php:110
 msgid "The Croatian court register. It answers to an OIB, never to a name, and only with the credentials issued at sudreg-data.gov.hr."
 msgstr ""
 
-#: ./config/settings.php:119
+#: ./config/settings.php:120
 msgid "The European VAT number check. It answers to a number, never to a name."
 msgstr ""
 
-#: ./config/settings.php:128
+#: ./config/settings.php:129
 msgid "How long a minimum term usually runs, offered when one is agreed."
 msgstr ""
 
-#: ./config/settings.php:138
+#: ./config/settings.php:139
 msgid "The suggestions offered under the access description on a contract."
 msgstr ""
 
-#: ./config/settings.php:147
+#: ./config/settings.php:148
 msgid "A date before this one is pointed out as mistyped."
 msgstr ""
 
-#: ./config/settings.php:151
+#: ./config/settings.php:152
 msgid "How far ahead a date may still reach before it is pointed out as mistyped."
 msgstr ""
 
-#: ./config/settings.php:155
+#: ./config/settings.php:156
 msgid "Days that stand for \"not known\" rather than for a day. The checks pass over them."
 msgstr ""
 
-#: ./config/settings.php:159
+#: ./config/settings.php:160
 msgid "How long before a contract version takes effect it may have been concluded before the date is pointed out."
 msgstr ""
 
-#: ./config/settings.php:163
+#: ./config/settings.php:164
 msgid "How long after a contract version takes effect it may still have been concluded before the date is pointed out."
 msgstr ""
 
-#: ./config/settings.php:174
+#: ./config/settings.php:175
 msgid "Records taking effect before this day are left alone. What an import left behind is not work anybody is going to do, and mailing about it would be worse than leaving it."
 msgstr ""
 
-#: ./config/settings.php:178
+#: ./config/settings.php:179
 msgid "What the wait for a signature is counted from."
 msgstr ""
 
-#: ./config/settings.php:186
+#: ./config/settings.php:187
 msgid "Whether a service that is charged for with no contract version behind it counts as unsigned as well. It is the ordinary case while the papers wait on a proposal."
 msgstr ""
 
-#: ./config/settings.php:194
+#: ./config/settings.php:195
 msgid "Whether the customer is written to at all about documents nobody has signed."
 msgstr ""
 
-#: ./config/settings.php:199
+#: ./config/settings.php:200
 msgid "Days after the day the wait is counted from before the customer is reminded."
 msgstr ""
 
-#: ./config/settings.php:203
+#: ./config/settings.php:204
 msgid "Days after what is running took effect before the customer is reminded. Both waits have to be up."
 msgstr ""
 
-#: ./config/settings.php:207
+#: ./config/settings.php:208
 msgid "Which days after the wait runs out to write on. 0 is the day it runs out."
 msgstr ""
 
-#: ./config/settings.php:211
+#: ./config/settings.php:212
 msgid "Once the days above are used up, keep writing every day until the signed contract comes in."
 msgstr ""
 
-#: ./config/settings.php:237
+#: ./config/settings.php:233
 msgid "Whether unsigned documents cut the service off, the same way an unpaid invoice does."
 msgstr ""
 
-#: ./config/settings.php:242
+#: ./config/settings.php:238
 msgid "Days after the day the wait is counted from before the service is cut off."
 msgstr ""
 
-#: ./config/settings.php:246
+#: ./config/settings.php:242
 msgid "Days after what is running took effect before the service is cut off. Both waits have to be up."
 msgstr ""
 
-#: ./config/settings.php:324
+#: ./config/settings.php:320
 msgid "How far ahead a proposal nobody has sent is worth raising. It has to be sent before the day it speaks about."
 msgstr ""
 
-#: ./config/settings.php:331
-#: ./config/settings.php:369
+#: ./config/settings.php:327
+#: ./config/settings.php:365
 msgid "Days after the proposal was sent before a missing signature is raised."
 msgstr ""
 
-#: ./config/settings.php:338
-#: ./config/settings.php:376
+#: ./config/settings.php:334
+#: ./config/settings.php:372
 msgid "Days after the signature was written down before the missing scan is raised."
 msgstr ""
 
-#: ./config/settings.php:344
+#: ./config/settings.php:340
 msgid "How far ahead a signed proposal whose changes nobody has applied is worth raising. Until its day comes there is nothing to do about it."
 msgstr ""
 
-#: ./config/settings.php:358
+#: ./config/settings.php:354
 msgid "Proposals taking effect before this day are left alone."
 msgstr ""
 
-#: ./config/settings.php:363
+#: ./config/settings.php:359
 msgid "How far ahead a proposal nobody has sent is worth raising."
 msgstr ""
 
-#: ./config/settings.php:384
+#: ./config/settings.php:380
 msgid "Labels that say the missing details are known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:388
+#: ./config/settings.php:384
 msgid "Labels that say the missing e-mail address is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:392
+#: ./config/settings.php:388
 msgid "Labels that say the missing consent is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:402
+#: ./config/settings.php:398
 msgid "How long a customer stays signed in to the customer portal."
 msgstr ""
 
-#: ./config/settings.php:406
+#: ./config/settings.php:402
 msgid "Failed sign-ins of one login from one address before more are refused for a while."
 msgstr ""
 
-#: ./config/settings.php:410
+#: ./config/settings.php:406
 msgid "Failed sign-ins from one address, whatever the login, before more are refused."
 msgstr ""
 
-#: ./config/settings.php:414
+#: ./config/settings.php:410
 msgid "Failed sign-ins of one login, from anywhere, before more are refused."
 msgstr ""
 
-#: ./config/settings.php:418
+#: ./config/settings.php:414
 msgid "How long failed sign-ins are remembered and refusals last."
 msgstr ""
 
-#: ./config/settings.php:422
+#: ./config/settings.php:418
 msgid "The shortest password a customer may set in the customer portal."
 msgstr ""
 
-#: ./config/settings.php:426
+#: ./config/settings.php:422
 msgid "Links for a new password or a new login one customer number may ask for in an hour."
 msgstr ""
 
-#: ./config/settings.php:430
+#: ./config/settings.php:426
 msgid "Links for a new password or a new login one address may ask for in an hour, whatever the customer."
 msgstr ""
 
-#: ./config/settings.php:434
+#: ./config/settings.php:430
 msgid "Addresses a service may look up in a minute before more are refused."
 msgstr ""
 
-#: ./config/settings.php:441
+#: ./config/settings.php:437
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 
-#: ./config/settings.php:447
+#: ./config/settings.php:443
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr ""
 
-#: ./config/settings.php:451
+#: ./config/settings.php:447
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 
-#: ./config/settings.php:458
+#: ./config/settings.php:454
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:854
+#: ./config/settings.php:458
+msgid "Which dates the statistics count contracts and customers by. A contract without them is left out."
+msgstr ""
+
+#: ./config/settings.php:724
+msgid "Print the withdrawal texts for a natural person, and for a customer whose legal status is not filled in."
+msgstr ""
+
+#: ./config/settings.php:729
+msgid "Print the withdrawal texts for a sole trader."
+msgstr ""
+
+#: ./config/settings.php:733
+msgid "Print the withdrawal texts for a legal entity."
+msgstr ""
+
+#: ./config/settings.php:931
+msgid "Prints a line for the customer to sign the summary on, where the law concludes the contract by signing it, as in Croatia."
+msgstr ""
+
+#: ./config/settings.php:941
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:905
+#: ./config/settings.php:992
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:910
+#: ./config/settings.php:997
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:989
+#: ./config/settings.php:1076
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -371,7 +391,7 @@ msgstr ""
 #: ./src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: ./src/Controller/Api/CustomersController.php:182
 #: ./src/Controller/OverviewsController.php:93
-#: ./src/RegulatoryReporting/ConnectionPointCollector.php:193
+#: ./src/RegulatoryReporting/ConnectionPointCollector.php:187
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr ""
 
@@ -817,7 +837,7 @@ msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:216
 #: ./src/Command/ProcessSmsCommand.php:257
-#: ./src/Command/ProcessUnsignedContractsCommand.php:148
+#: ./src/Command/ProcessUnsignedContractsCommand.php:146
 #: ./templates/CustomerMessages/add_bulk/step_done.php:44
 msgid "Done"
 msgstr ""
@@ -855,51 +875,51 @@ msgstr ""
 msgid "Error getting message status with ID {0}: {1}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:107
+#: ./src/Command/ProcessUnsignedContractsCommand.php:105
 msgid "Do not write any e-mails, the operation will be skipped."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:112
+#: ./src/Command/ProcessUnsignedContractsCommand.php:110
 msgid "Do not write any SMS, the operation will be skipped."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:129
+#: ./src/Command/ProcessUnsignedContractsCommand.php:127
 msgid "Notifications about unsigned contracts are switched off in the settings."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:137
+#: ./src/Command/ProcessUnsignedContractsCommand.php:135
 msgid "Nobody is due to hear about unsigned documents today."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:154
+#: ./src/Command/ProcessUnsignedContractsCommand.php:152
 msgid "Error while processing unsigned contracts: {0}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:157
+#: ./src/Command/ProcessUnsignedContractsCommand.php:155
 msgid "Processing of unsigned contracts failed"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:161
+#: ./src/Command/ProcessUnsignedContractsCommand.php:159
 msgid "Processing of unsigned contracts failed.\n\nError: {0}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:283
+#: ./src/Command/ProcessUnsignedContractsCommand.php:306
 msgid "{0} email has been generated for customer {1}, recipients: {2}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:295
+#: ./src/Command/ProcessUnsignedContractsCommand.php:318
 msgid "{0} SMS has been generated for customer {1}, recipients: {2}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:305
+#: ./src/Command/ProcessUnsignedContractsCommand.php:328
 msgid "Customer {0} has unsigned documents but nobody to tell about it."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:451
+#: ./src/Command/ProcessUnsignedContractsCommand.php:472
 msgid "in effect since"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:451
+#: ./src/Command/ProcessUnsignedContractsCommand.php:472
 msgid "provided since"
 msgstr ""
 
@@ -2501,7 +2521,7 @@ msgstr ""
 msgid "The period ends before it begins, so nothing falls inside it."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:905
+#: ./src/Controller/OverviewsController.php:906
 msgid "unknown dealer"
 msgstr ""
 
@@ -2810,6 +2830,40 @@ msgstr ""
 msgid "Planned Power Outages"
 msgstr ""
 
+#: ./src/Dashboard/Card/StatisticsCard.php:48
+msgid "Statistics"
+msgstr ""
+
+#: ./src/Dashboard/Card/StatisticsCard.php:116
+msgid "New Contracts"
+msgstr ""
+
+#: ./src/Dashboard/Card/StatisticsCard.php:117
+msgid "Ended Contracts"
+msgstr ""
+
+#: ./src/Dashboard/Card/StatisticsCard.php:119
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:76
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:76
+msgid "Net Change"
+msgstr ""
+
+#: ./src/Dashboard/Card/StatisticsCard.php:123
+msgid "New Customers"
+msgstr ""
+
+#: ./src/Dashboard/Card/StatisticsCard.php:124
+msgid "Departed Customers"
+msgstr ""
+
+#: ./src/Dashboard/Card/StatisticsCard.php:125
+#: ./templates/Overviews/overview_of_croatian_connection_points.php:40
+#: ./templates/Overviews/overview_of_czech_customer_connection_points.php:50
+#: ./templates/Overviews/overview_of_czech_customer_connection_speeds.php:35
+#: ./templates/Overviews/overview_of_czech_customer_connection_speeds.php:42
+msgid "Active Connections"
+msgstr ""
+
 #: ./src/Dashboard/Card/UnsignedDocumentsCard.php:86
 msgid "Unsigned Documents"
 msgstr ""
@@ -3095,15 +3149,15 @@ msgstr ""
 msgid "Other document"
 msgstr ""
 
-#: ./src/Model/Enum/ContractPeriodSource.php:67
+#: ./src/Model/Enum/ContractPeriodSource.php:68
 msgid "From the contract versions"
 msgstr ""
 
-#: ./src/Model/Enum/ContractPeriodSource.php:68
+#: ./src/Model/Enum/ContractPeriodSource.php:69
 msgid "From the installation and termination dates"
 msgstr ""
 
-#: ./src/Model/Enum/ContractPeriodSource.php:69
+#: ./src/Model/Enum/ContractPeriodSource.php:70
 msgid "From the installation and uninstallation dates"
 msgstr ""
 
@@ -3675,23 +3729,23 @@ msgstr ""
 msgid "This address point already has a record of this technology."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:462
+#: ./src/Model/Table/BillingsTable.php:483
 msgid "The billing cannot end before it starts."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:482
+#: ./src/Model/Table/BillingsTable.php:503
 msgid "The billing may not start in a period that has already been invoiced."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:501
+#: ./src/Model/Table/BillingsTable.php:522
 msgid "The billing may not end before {0}, the last day that has been invoiced."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:524
+#: ./src/Model/Table/BillingsTable.php:545
 msgid "What has already been invoiced for is not changed here. End this billing and start a new one from the day the change takes effect."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:573
+#: ./src/Model/Table/BillingsTable.php:594
 msgid "The billing has been invoiced for and may not be deleted. Give it an end date instead, or ask an administrator."
 msgstr ""
 
@@ -3828,24 +3882,24 @@ msgstr ""
 msgid "The minimum term cannot run out before the version it belongs to begins."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:456
+#: ./src/Model/Table/ContractsTable.php:525
 #: ./src/Model/Table/TasksTable.php:126
 msgid "The specified access point is not one Watcher NMS keeps."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:479
+#: ./src/Model/Table/ContractsTable.php:548
 msgid "The specified service type requires the assignment of an installation address."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:502
+#: ./src/Model/Table/ContractsTable.php:571
 msgid "The specified service type requires the assignment of an access point."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:529
+#: ./src/Model/Table/ContractsTable.php:598
 msgid "The contract still has a RADIUS account."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:550
+#: ./src/Model/Table/ContractsTable.php:619
 msgid "The minimum connection price has already been set, and you may not change it."
 msgstr ""
 
@@ -4094,11 +4148,11 @@ msgstr ""
 msgid "Only papers handed over in person can be taken back, because papers sent any other way may already be with the customer. To agree on something else, revoke this proposal and draw up a new one."
 msgstr ""
 
-#: ./src/RegulatoryReporting/ConnectionPointCollector.php:208
+#: ./src/RegulatoryReporting/ConnectionPointCollector.php:202
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractDocuments.php:241
+#: ./src/Service/ContractPrint/ContractDocuments.php:240
 msgid "The customer has no legal status, and the clauses of the papers follow it. Choose it on the customer and recreate the contract proposal."
 msgstr ""
 
@@ -8216,13 +8270,6 @@ msgstr ""
 msgid "Infrastructure Type"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_croatian_connection_points.php:40
-#: ./templates/Overviews/overview_of_czech_customer_connection_points.php:50
-#: ./templates/Overviews/overview_of_czech_customer_connection_speeds.php:35
-#: ./templates/Overviews/overview_of_czech_customer_connection_speeds.php:42
-msgid "Active Connections"
-msgstr ""
-
 #: ./templates/Overviews/overview_of_croatian_connection_points.php:41
 #: ./templates/Overviews/overview_of_czech_customer_connection_points.php:51
 msgid "Active Connections (nonbusiness)"
@@ -8358,11 +8405,6 @@ msgstr ""
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:75
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:92
 msgid "Ending"
-msgstr ""
-
-#: ./templates/Overviews/overview_of_new_and_ending_billings.php:76
-#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:76
-msgid "Net Change"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_new_and_ending_billings.php:78
@@ -9585,6 +9627,10 @@ msgstr ""
 
 #: ./templates/element/Dashboard/power_outages.php:56
 msgid "Customer connections affected"
+msgstr ""
+
+#: ./templates/element/Dashboard/statistics.php:37
+msgid "Active connections today, and on the last day of the month before."
 msgstr ""
 
 #: ./templates/element/Dashboard/unsigned_documents.php:50

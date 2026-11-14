@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-11 10:35+0100\n"
+"POT-Creation-Date: 2026-11-14 16:06+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -15,13 +15,13 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: config/settings.php:102
+#: config/settings.php:103
 msgid "The Czech business register. It is public and asks for no credentials."
 msgstr ""
 "Český obchodní rejstřík. Je veřejně přístupný a nevyžaduje žádné "
 "přihlašovací údaje."
 
-#: config/settings.php:109
+#: config/settings.php:110
 msgid ""
 "The Croatian court register. It answers to an OIB, never to a name, and only "
 "with the credentials issued at sudreg-data.gov.hr."
@@ -29,37 +29,37 @@ msgstr ""
 "Chorvatský soudní rejstřík. Vždy se vztahuje k OIB, nikdy k názvu, a "
 "odpovídá jen s přihlašovacími údaji vydanými na sudreg-data.gov.hr."
 
-#: config/settings.php:119
+#: config/settings.php:120
 msgid "The European VAT number check. It answers to a number, never to a name."
 msgstr ""
 "Ověření evropského čísla pro účely DPH. Vždy se vztahuje k číslu, nikdy k "
 "jménu."
 
-#: config/settings.php:128
+#: config/settings.php:129
 msgid "How long a minimum term usually runs, offered when one is agreed."
 msgstr "Jak dlouho obvykle běží závazek. Nabídne se, když se nějaký sjednává."
 
-#: config/settings.php:138
+#: config/settings.php:139
 msgid "The suggestions offered under the access description on a contract."
 msgstr "Návrhy uvedené v části „Popis přístupu“ na smlouvě."
 
-#: config/settings.php:147
+#: config/settings.php:148
 msgid "A date before this one is pointed out as mistyped."
 msgstr "Datum starší než toto se hlásí jako překlep."
 
-#: config/settings.php:151
+#: config/settings.php:152
 msgid ""
 "How far ahead a date may still reach before it is pointed out as mistyped."
 msgstr "Jak daleko dopředu smí datum sahat, než se ohlásí jako překlep."
 
-#: config/settings.php:155
+#: config/settings.php:156
 msgid ""
 "Days that stand for \"not known\" rather than for a day. The checks pass "
 "over them."
 msgstr ""
 "Dny, které znamenají „nevíme“ místo konkrétního dne. Kontroly je přeskakují."
 
-#: config/settings.php:159
+#: config/settings.php:160
 msgid ""
 "How long before a contract version takes effect it may have been concluded "
 "before the date is pointed out."
@@ -67,7 +67,7 @@ msgstr ""
 "Jak dlouho před začátkem platnosti smí být verze smlouvy uzavřená, než se "
 "datum ohlásí."
 
-#: config/settings.php:163
+#: config/settings.php:164
 msgid ""
 "How long after a contract version takes effect it may still have been "
 "concluded before the date is pointed out."
@@ -75,7 +75,7 @@ msgstr ""
 "Jak dlouho po začátku platnosti smí být verze smlouvy ještě uzavřená, než se "
 "datum ohlásí."
 
-#: config/settings.php:174
+#: config/settings.php:175
 msgid ""
 "Records taking effect before this day are left alone. What an import left "
 "behind is not work anybody is going to do, and mailing about it would be "
@@ -85,11 +85,11 @@ msgstr ""
 "zanechal import, stejně nikdo dohánět nebude, a obesílat kvůli tomu "
 "zákazníky by bylo horší než to nechat být."
 
-#: config/settings.php:178
+#: config/settings.php:179
 msgid "What the wait for a signature is counted from."
 msgstr "Od čeho se počítá čekání na podpis."
 
-#: config/settings.php:186
+#: config/settings.php:187
 msgid ""
 "Whether a service that is charged for with no contract version behind it "
 "counts as unsigned as well. It is the ordinary case while the papers wait on "
@@ -98,17 +98,17 @@ msgstr ""
 "Jestli se za nepodepsanou počítá i služba, která se fakturuje a nestojí za "
 "ní žádná verze smlouvy. Dokud papíry čekají na návrh, je to běžný případ."
 
-#: config/settings.php:194
+#: config/settings.php:195
 msgid ""
 "Whether the customer is written to at all about documents nobody has signed."
 msgstr "Zda se zákazníkům vůbec píše o nepodepsaných dokumentech."
 
-#: config/settings.php:199
+#: config/settings.php:200
 msgid ""
 "Days after the day the wait is counted from before the customer is reminded."
 msgstr "Za kolik dní od počátku lhůty se zákazníkovi připomene."
 
-#: config/settings.php:203
+#: config/settings.php:204
 msgid ""
 "Days after what is running took effect before the customer is reminded. Both "
 "waits have to be up."
@@ -116,12 +116,12 @@ msgstr ""
 "Za kolik dní od nabytí účinnosti toho, co běží, se zákazníkovi připomene. "
 "Musí uplynout obě lhůty."
 
-#: config/settings.php:207
+#: config/settings.php:208
 msgid ""
 "Which days after the wait runs out to write on. 0 is the day it runs out."
 msgstr "Ve které dny po uplynutí lhůty psát. 0 je den, kdy lhůta uplynula."
 
-#: config/settings.php:211
+#: config/settings.php:212
 msgid ""
 "Once the days above are used up, keep writing every day until the signed "
 "contract comes in."
@@ -129,18 +129,18 @@ msgstr ""
 "Po vyčerpání dnů uvedených výše psát každý další den, dokud podepsaná "
 "smlouva nedojde."
 
-#: config/settings.php:237
+#: config/settings.php:233
 msgid ""
 "Whether unsigned documents cut the service off, the same way an unpaid "
 "invoice does."
 msgstr "Zda nepodepsané dokumenty omezí službu stejně jako neuhrazená faktura."
 
-#: config/settings.php:242
+#: config/settings.php:238
 msgid ""
 "Days after the day the wait is counted from before the service is cut off."
 msgstr "Za kolik dní od počátku lhůty se služba omezí."
 
-#: config/settings.php:246
+#: config/settings.php:242
 msgid ""
 "Days after what is running took effect before the service is cut off. Both "
 "waits have to be up."
@@ -148,7 +148,7 @@ msgstr ""
 "Za kolik dní od nabytí účinnosti toho, co běží, se služba omezí. Musí "
 "uplynout obě lhůty."
 
-#: config/settings.php:324
+#: config/settings.php:320
 msgid ""
 "How far ahead a proposal nobody has sent is worth raising. It has to be sent "
 "before the day it speaks about."
@@ -156,16 +156,16 @@ msgstr ""
 "Jak dlouho dopředu hlásit návrh, který nikdo neodeslal. Musí být odeslán "
 "dřív, než nastane den, o kterém mluví."
 
-#: config/settings.php:331 config/settings.php:369
+#: config/settings.php:327 config/settings.php:365
 msgid "Days after the proposal was sent before a missing signature is raised."
 msgstr "Kolik dní po odeslání návrhu se začne hlásit chybějící podpis."
 
-#: config/settings.php:338 config/settings.php:376
+#: config/settings.php:334 config/settings.php:372
 msgid ""
 "Days after the signature was written down before the missing scan is raised."
 msgstr "Kolik dní po zapsání podpisu se chybějící sken začne hlásit."
 
-#: config/settings.php:344
+#: config/settings.php:340
 msgid ""
 "How far ahead a signed proposal whose changes nobody has applied is worth "
 "raising. Until its day comes there is nothing to do about it."
@@ -173,31 +173,31 @@ msgstr ""
 "Jak dlouho dopředu upozorňovat na podepsaný návrh, jehož změny nikdo "
 "neaplikoval. Dokud jeho den nenastane, není co řešit."
 
-#: config/settings.php:358
+#: config/settings.php:354
 msgid "Proposals taking effect before this day are left alone."
 msgstr "Návrhy, které nabyly účinnosti před tímto dnem, se neřeší."
 
-#: config/settings.php:363
+#: config/settings.php:359
 msgid "How far ahead a proposal nobody has sent is worth raising."
 msgstr "Jak dlouho dopředu hlásit návrh, který nikdo neodeslal."
 
-#: config/settings.php:384
+#: config/settings.php:380
 msgid "Labels that say the missing details are known about and accepted."
 msgstr "Štítky, které říkají, že o chybějících údajích víme a je to v pořádku."
 
-#: config/settings.php:388
+#: config/settings.php:384
 msgid "Labels that say the missing e-mail address is known about and accepted."
 msgstr "Štítky, které říkají, že o chybějícím e-mailu víme a je to v pořádku."
 
-#: config/settings.php:392
+#: config/settings.php:388
 msgid "Labels that say the missing consent is known about and accepted."
 msgstr "Štítky, které říkají, že o chybějícím souhlasu víme a je to v pořádku."
 
-#: config/settings.php:402
+#: config/settings.php:398
 msgid "How long a customer stays signed in to the customer portal."
 msgstr "Jak dlouho zůstává zákazník přihlášený do zákaznického portálu."
 
-#: config/settings.php:406
+#: config/settings.php:402
 msgid ""
 "Failed sign-ins of one login from one address before more are refused for a "
 "while."
@@ -205,7 +205,7 @@ msgstr ""
 "Počet neúspěšných přihlášení jednoho loginu z jedné adresy, po kterém se "
 "další na čas odmítají."
 
-#: config/settings.php:410
+#: config/settings.php:406
 msgid ""
 "Failed sign-ins from one address, whatever the login, before more are "
 "refused."
@@ -213,23 +213,23 @@ msgstr ""
 "Počet neúspěšných přihlášení z jedné adresy k jakýmkoli loginům, po kterém "
 "se další odmítají."
 
-#: config/settings.php:414
+#: config/settings.php:410
 msgid "Failed sign-ins of one login, from anywhere, before more are refused."
 msgstr ""
 "Počet neúspěšných přihlášení jednoho loginu odkudkoli, po kterém se další "
 "odmítají."
 
-#: config/settings.php:418
+#: config/settings.php:414
 msgid "How long failed sign-ins are remembered and refusals last."
 msgstr ""
 "Jak dlouho se neúspěšná přihlášení pamatují a jak dlouho odmítání trvá."
 
-#: config/settings.php:422
+#: config/settings.php:418
 msgid "The shortest password a customer may set in the customer portal."
 msgstr ""
 "Nejkratší heslo, které si zákazník může nastavit v zákaznickém portálu."
 
-#: config/settings.php:426
+#: config/settings.php:422
 msgid ""
 "Links for a new password or a new login one customer number may ask for in "
 "an hour."
@@ -237,7 +237,7 @@ msgstr ""
 "Kolik odkazů pro nové heslo nebo nový přístup si může jedno číslo zákazníka "
 "vyžádat za hodinu."
 
-#: config/settings.php:430
+#: config/settings.php:426
 msgid ""
 "Links for a new password or a new login one address may ask for in an hour, "
 "whatever the customer."
@@ -245,45 +245,77 @@ msgstr ""
 "Kolik odkazů pro nové heslo nebo nový přístup si může jedna adresa vyžádat "
 "za hodinu, ať je zákazník kdokoli."
 
-#: config/settings.php:434
+#: config/settings.php:430
 msgid "Addresses a service may look up in a minute before more are refused."
 msgstr ""
 "Počet adres, které služba může vyhledat za minutu, než se další odmítnou."
 
-#: config/settings.php:441
+#: config/settings.php:437
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 "Kolik řádků karta uvádí, než se zobrazí pouze informace o tom, kolik dalších "
 "zbývá."
 
-#: config/settings.php:447
+#: config/settings.php:443
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr "Jak dlouho před termínem řešení úkolu se již považuje za naléhavé."
 
-#: config/settings.php:451
+#: config/settings.php:447
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 "Jak dlouho může nedokončený úkol zůstat bez povšimnutí, než se na něj "
 "upozorní."
 
-#: config/settings.php:458
+#: config/settings.php:454
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr "Jak dlouho před koncem závazku se na něj upozorňuje."
 
-#: config/settings.php:854
+#: config/settings.php:458
+msgid ""
+"Which dates the statistics count contracts and customers by. A contract "
+"without them is left out."
+msgstr ""
+"Podle kterých dat statistiky počítají smlouvy a zákazníky. Smlouva bez nich "
+"se nezapočítá."
+
+#: config/settings.php:724
+msgid ""
+"Print the withdrawal texts for a natural person, and for a customer whose "
+"legal status is not filled in."
+msgstr ""
+"Tisknout texty o odstoupení od smlouvy pro nepodnikající fyzickou osobu a "
+"pro zákazníka, který nemá vyplněné právní postavení."
+
+#: config/settings.php:729
+msgid "Print the withdrawal texts for a sole trader."
+msgstr "Tisknout texty o odstoupení od smlouvy pro podnikající fyzickou osobu."
+
+#: config/settings.php:733
+msgid "Print the withdrawal texts for a legal entity."
+msgstr "Tisknout texty o odstoupení od smlouvy pro právnickou osobu."
+
+#: config/settings.php:931
+msgid ""
+"Prints a line for the customer to sign the summary on, where the law "
+"concludes the contract by signing it, as in Croatia."
+msgstr ""
+"Vytiskne řádek pro podpis shrnutí smlouvy zákazníkem tam, kde zákon smlouvu "
+"uzavírá až tímto podpisem, jako v Chorvatsku."
+
+#: config/settings.php:941
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr "Tři úvodní odrážky předepsané šablonou shrnutí smlouvy."
 
-#: config/settings.php:905
+#: config/settings.php:992
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 "Podíl inzerované rychlosti, který se bere jako běžně dostupná rychlost."
 
-#: config/settings.php:910
+#: config/settings.php:997
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
 
-#: config/settings.php:989
+#: config/settings.php:1076
 msgid "Documents the summary points the customer to."
 msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
 
@@ -455,7 +487,7 @@ msgstr "Adresa instalace (registr)"
 #: src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: src/Controller/Api/CustomersController.php:182
 #: src/Controller/OverviewsController.php:93
-#: src/RegulatoryReporting/ConnectionPointCollector.php:193
+#: src/RegulatoryReporting/ConnectionPointCollector.php:187
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr "Nepodařilo se načíst adresy z národního adresního registru: {0}"
 
@@ -893,7 +925,7 @@ msgstr "Chyba při odesílání e-mailové zprávy s ID {0}"
 
 #: src/Command/ProcessEmailsCommand.php:216
 #: src/Command/ProcessSmsCommand.php:257
-#: src/Command/ProcessUnsignedContractsCommand.php:148
+#: src/Command/ProcessUnsignedContractsCommand.php:146
 #: templates/CustomerMessages/add_bulk/step_done.php:44
 msgid "Done"
 msgstr "Hotovo"
@@ -930,32 +962,32 @@ msgstr "Chyba při získávání stavu SMS zprávy s ID {0}"
 msgid "Error getting message status with ID {0}: {1}"
 msgstr "Chyba při získávání stavu zprávy s ID {0}: {1}"
 
-#: src/Command/ProcessUnsignedContractsCommand.php:107
+#: src/Command/ProcessUnsignedContractsCommand.php:105
 msgid "Do not write any e-mails, the operation will be skipped."
 msgstr "Nevytvářet e-maily, operace bude přeskočena."
 
-#: src/Command/ProcessUnsignedContractsCommand.php:112
+#: src/Command/ProcessUnsignedContractsCommand.php:110
 msgid "Do not write any SMS, the operation will be skipped."
 msgstr "Nevytvářet SMS, operace bude přeskočena."
 
-#: src/Command/ProcessUnsignedContractsCommand.php:129
+#: src/Command/ProcessUnsignedContractsCommand.php:127
 msgid ""
 "Notifications about unsigned contracts are switched off in the settings."
 msgstr "Upozorňování na nepodepsané smlouvy je v nastavení vypnuté."
 
-#: src/Command/ProcessUnsignedContractsCommand.php:137
+#: src/Command/ProcessUnsignedContractsCommand.php:135
 msgid "Nobody is due to hear about unsigned documents today."
 msgstr "Dnes není komu psát o nepodepsaných dokumentech."
 
-#: src/Command/ProcessUnsignedContractsCommand.php:154
+#: src/Command/ProcessUnsignedContractsCommand.php:152
 msgid "Error while processing unsigned contracts: {0}"
 msgstr "Chyba při zpracování nepodepsaných smluv: {0}"
 
-#: src/Command/ProcessUnsignedContractsCommand.php:157
+#: src/Command/ProcessUnsignedContractsCommand.php:155
 msgid "Processing of unsigned contracts failed"
 msgstr "Zpracování nepodepsaných smluv selhalo"
 
-#: src/Command/ProcessUnsignedContractsCommand.php:161
+#: src/Command/ProcessUnsignedContractsCommand.php:159
 msgid ""
 "Processing of unsigned contracts failed.\n"
 "\n"
@@ -965,23 +997,23 @@ msgstr ""
 "\n"
 "Chyba: {0}"
 
-#: src/Command/ProcessUnsignedContractsCommand.php:283
+#: src/Command/ProcessUnsignedContractsCommand.php:306
 msgid "{0} email has been generated for customer {1}, recipients: {2}"
 msgstr "Byl vytvořen e-mail typu {0} pro zákazníka {1}, příjemci: {2}"
 
-#: src/Command/ProcessUnsignedContractsCommand.php:295
+#: src/Command/ProcessUnsignedContractsCommand.php:318
 msgid "{0} SMS has been generated for customer {1}, recipients: {2}"
 msgstr "Byla vytvořena SMS typu {0} pro zákazníka {1}, příjemci: {2}"
 
-#: src/Command/ProcessUnsignedContractsCommand.php:305
+#: src/Command/ProcessUnsignedContractsCommand.php:328
 msgid "Customer {0} has unsigned documents but nobody to tell about it."
 msgstr "Zákazník {0} má nepodepsané dokumenty, ale není komu to sdělit."
 
-#: src/Command/ProcessUnsignedContractsCommand.php:451
+#: src/Command/ProcessUnsignedContractsCommand.php:472
 msgid "in effect since"
 msgstr "platná od"
 
-#: src/Command/ProcessUnsignedContractsCommand.php:451
+#: src/Command/ProcessUnsignedContractsCommand.php:472
 msgid "provided since"
 msgstr "poskytováno od"
 
@@ -2727,7 +2759,7 @@ msgstr "Přihlášení nelze odstranit. Zkuste to prosím znovu."
 msgid "The period ends before it begins, so nothing falls inside it."
 msgstr "Období končí dříve, než začíná, takže do něj nic nespadá."
 
-#: src/Controller/OverviewsController.php:905
+#: src/Controller/OverviewsController.php:906
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
@@ -3035,6 +3067,40 @@ msgstr "Dluhy mimo automatické blokování"
 msgid "Planned Power Outages"
 msgstr "Plánované odstávky elektřiny"
 
+#: src/Dashboard/Card/StatisticsCard.php:48
+msgid "Statistics"
+msgstr "Statistiky"
+
+#: src/Dashboard/Card/StatisticsCard.php:116
+msgid "New Contracts"
+msgstr "Nové smlouvy"
+
+#: src/Dashboard/Card/StatisticsCard.php:117
+msgid "Ended Contracts"
+msgstr "Ukončené smlouvy"
+
+#: src/Dashboard/Card/StatisticsCard.php:119
+#: templates/Overviews/overview_of_new_and_ending_billings.php:76
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:76
+msgid "Net Change"
+msgstr "Čistá změna"
+
+#: src/Dashboard/Card/StatisticsCard.php:123
+msgid "New Customers"
+msgstr "Noví zákazníci"
+
+#: src/Dashboard/Card/StatisticsCard.php:124
+msgid "Departed Customers"
+msgstr "Odchozí zákazníci"
+
+#: src/Dashboard/Card/StatisticsCard.php:125
+#: templates/Overviews/overview_of_croatian_connection_points.php:40
+#: templates/Overviews/overview_of_czech_customer_connection_points.php:50
+#: templates/Overviews/overview_of_czech_customer_connection_speeds.php:35
+#: templates/Overviews/overview_of_czech_customer_connection_speeds.php:42
+msgid "Active Connections"
+msgstr "Aktivní připojení"
+
 #: src/Dashboard/Card/UnsignedDocumentsCard.php:86
 msgid "Unsigned Documents"
 msgstr "Nepodepsané dokumenty"
@@ -3317,15 +3383,15 @@ msgstr "Úmrtní list"
 msgid "Other document"
 msgstr "Jiný dokument"
 
-#: src/Model/Enum/ContractPeriodSource.php:67
+#: src/Model/Enum/ContractPeriodSource.php:68
 msgid "From the contract versions"
 msgstr "Podle verzí smlouvy"
 
-#: src/Model/Enum/ContractPeriodSource.php:68
+#: src/Model/Enum/ContractPeriodSource.php:69
 msgid "From the installation and termination dates"
 msgstr "Podle data instalace/zřízení a ukončení poskytování služeb"
 
-#: src/Model/Enum/ContractPeriodSource.php:69
+#: src/Model/Enum/ContractPeriodSource.php:70
 msgid "From the installation and uninstallation dates"
 msgstr "Podle data instalace/zřízení a deinstalace/zrušení"
 
@@ -3810,21 +3876,21 @@ msgstr "Vyberte adresu z národního registru adres."
 msgid "This address point already has a record of this technology."
 msgstr "Toto adresní místo už u této technologie záznam má."
 
-#: src/Model/Table/BillingsTable.php:462
+#: src/Model/Table/BillingsTable.php:483
 msgid "The billing cannot end before it starts."
 msgstr "Fakturace nemůže skončit dřív, než začne."
 
-#: src/Model/Table/BillingsTable.php:482
+#: src/Model/Table/BillingsTable.php:503
 msgid "The billing may not start in a period that has already been invoiced."
 msgstr "Fakturace nesmí začínat v období, které už bylo vyfakturováno."
 
-#: src/Model/Table/BillingsTable.php:501
+#: src/Model/Table/BillingsTable.php:522
 msgid ""
 "The billing may not end before {0}, the last day that has been invoiced."
 msgstr ""
 "Fakturace nesmí skončit dřív než {0}, což je poslední vyfakturovaný den."
 
-#: src/Model/Table/BillingsTable.php:524
+#: src/Model/Table/BillingsTable.php:545
 msgid ""
 "What has already been invoiced for is not changed here. End this billing and "
 "start a new one from the day the change takes effect."
@@ -3832,7 +3898,7 @@ msgstr ""
 "Co už bylo vyfakturováno, se tady nemění. Ukončete toto fakturační pravidlo "
 "a od data změny založte nové."
 
-#: src/Model/Table/BillingsTable.php:573
+#: src/Model/Table/BillingsTable.php:594
 msgid ""
 "The billing has been invoiced for and may not be deleted. Give it an end "
 "date instead, or ask an administrator."
@@ -4019,25 +4085,25 @@ msgid ""
 "The minimum term cannot run out before the version it belongs to begins."
 msgstr "Závazek nemůže skončit dřív, než začne verze smlouvy, ke které patří."
 
-#: src/Model/Table/ContractsTable.php:456 src/Model/Table/TasksTable.php:126
+#: src/Model/Table/ContractsTable.php:525 src/Model/Table/TasksTable.php:126
 msgid "The specified access point is not one Watcher NMS keeps."
 msgstr "Uvedený přístupový bod není součástí databáze systému Watcher NMS."
 
-#: src/Model/Table/ContractsTable.php:479
+#: src/Model/Table/ContractsTable.php:548
 msgid ""
 "The specified service type requires the assignment of an installation "
 "address."
 msgstr "Zadaný typ služby vyžaduje přiřazení instalační adresy."
 
-#: src/Model/Table/ContractsTable.php:502
+#: src/Model/Table/ContractsTable.php:571
 msgid "The specified service type requires the assignment of an access point."
 msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 
-#: src/Model/Table/ContractsTable.php:529
+#: src/Model/Table/ContractsTable.php:598
 msgid "The contract still has a RADIUS account."
 msgstr "Smlouva má stále účet RADIUS."
 
-#: src/Model/Table/ContractsTable.php:550
+#: src/Model/Table/ContractsTable.php:619
 msgid ""
 "The minimum connection price has already been set, and you may not change it."
 msgstr "Minimální cena za připojení už je nastavená a nelze ji změnit."
@@ -4351,11 +4417,11 @@ msgstr ""
 "zákazník může mít. Pokud se má dohodnout něco jiného, návrh zrušte a "
 "vytvořte nový."
 
-#: src/RegulatoryReporting/ConnectionPointCollector.php:208
+#: src/RegulatoryReporting/ConnectionPointCollector.php:202
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 
-#: src/Service/ContractPrint/ContractDocuments.php:241
+#: src/Service/ContractPrint/ContractDocuments.php:240
 msgid ""
 "The customer has no legal status, and the clauses of the papers follow it. "
 "Choose it on the customer and recreate the contract proposal."
@@ -8201,13 +8267,6 @@ msgstr "Export"
 msgid "Infrastructure Type"
 msgstr "Typ infrastruktury"
 
-#: templates/Overviews/overview_of_croatian_connection_points.php:40
-#: templates/Overviews/overview_of_czech_customer_connection_points.php:50
-#: templates/Overviews/overview_of_czech_customer_connection_speeds.php:35
-#: templates/Overviews/overview_of_czech_customer_connection_speeds.php:42
-msgid "Active Connections"
-msgstr "Aktivní připojení"
-
 #: templates/Overviews/overview_of_croatian_connection_points.php:41
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:51
 msgid "Active Connections (nonbusiness)"
@@ -8356,11 +8415,6 @@ msgstr "Začíná"
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:92
 msgid "Ending"
 msgstr "Končí"
-
-#: templates/Overviews/overview_of_new_and_ending_billings.php:76
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:76
-msgid "Net Change"
-msgstr "Čistá změna"
 
 #: templates/Overviews/overview_of_new_and_ending_billings.php:78
 msgid "A billing that begins and ends within the period is in both listings."
@@ -9653,6 +9707,10 @@ msgstr "U žádného našeho přístupového bodu není známa plánovaná odst�
 #: templates/element/Dashboard/power_outages.php:56
 msgid "Customer connections affected"
 msgstr "Dotčené zákaznické přípojky"
+
+#: templates/element/Dashboard/statistics.php:37
+msgid "Active connections today, and on the last day of the month before."
+msgstr "Aktivní připojení dnes a k poslednímu dni předchozího měsíce."
 
 #: templates/element/Dashboard/unsigned_documents.php:50
 msgid "Open the contract proposals nobody has sent"

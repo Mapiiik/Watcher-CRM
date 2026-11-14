@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-10 14:52+0100\n"
+"POT-Creation-Date: 2026-11-14 16:06+0100\n"
 "PO-Revision-Date: 2026-11-10 15:00+0100\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,21 +14,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 
-#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:66
+#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:63
+#: plugins/Scheduler/src/Dashboard/Card/SchedulerCard.php:81
 msgid "The scheduler needs attention"
 msgstr "Plánovač potřebuje pozornost"
-
-#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:92
-msgid "Job {0} ({1}) was started at {2} and has not finished."
-msgstr "Úloha {0} ({1}) byla spuštěna {2} a dosud neskončila."
-
-#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:120
-msgid "Row {0} was due at {1} and has not run."
-msgstr "Řádek plánu {0} měl běžet {1} a nespustil se."
-
-#: plugins/Scheduler/src/Command/SchedulerCheckCommand.php:146
-msgid "The dispatcher last ran at {0}."
-msgstr "Plánovač naposledy běžel {0}."
 
 #: plugins/Scheduler/src/Command/SchedulerEnableCommand.php:60
 msgid "There is no row of that name: {0}"
@@ -67,6 +56,27 @@ msgstr "Změněno v plánu: {0}"
 msgid "Left alone, it is switched on: {0}"
 msgstr "Ponecháno beze změny, je zapnutý: {0}"
 
+#: plugins/Scheduler/src/Dashboard/Card/SchedulerCard.php:45
+msgid "Scheduler"
+msgstr "Plánovač"
+
+#: plugins/Scheduler/src/Dashboard/Card/SchedulerCard.php:84
+#: plugins/Scheduler/src/Service/SchedulerHealth.php:146
+msgid "The dispatcher last ran at {0}."
+msgstr "Plánovač naposledy běžel {0}."
+
+#: plugins/Scheduler/src/Dashboard/Card/SchedulerCard.php:88
+msgid "The dispatcher has not reported since the cache was last cleared."
+msgstr "Plánovač se od posledního vymazání cache neozval."
+
+#: plugins/Scheduler/src/Dashboard/Card/SchedulerCard.php:97
+msgid "Open the runs"
+msgstr "Otevřít běhy úloh"
+
+#: plugins/Scheduler/src/Dashboard/Card/SchedulerCard.php:101
+msgid "Open the schedule"
+msgstr "Otevřít plán"
+
 #: plugins/Scheduler/src/Event/FailedJobListener.php:57
 msgid "Job failed: {0}"
 msgstr "Úloha selhala: {0}"
@@ -80,3 +90,11 @@ msgstr ""
 "Úloha {0} selhala.\n"
 "\n"
 "Chyba: {1}"
+
+#: plugins/Scheduler/src/Service/SchedulerHealth.php:125
+msgid "Job {0} ({1}) was started at {2} and has not finished."
+msgstr "Úloha {0} ({1}) byla spuštěna {2} a dosud neskončila."
+
+#: plugins/Scheduler/src/Service/SchedulerHealth.php:135
+msgid "Row {0} was due at {1} and has not run."
+msgstr "Řádek plánu {0} měl běžet {1} a nespustil se."
