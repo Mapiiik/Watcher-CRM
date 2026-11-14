@@ -282,6 +282,31 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
+     * The scheduler card is the administrator's alone, and stands first where it is offered.
+     *
+     * @return void
+     * @link \App\Dashboard\DashboardCardRegistry::forRole()
+     */
+    public function testTheSchedulerCardIsTheAdministratorsAndComesFirst(): void
+    {
+        $this->login();
+        $this->get('/dashboard/cards');
+
+        /** @var list<\Dashboard\Card\DashboardCardInterface> $cards */
+        $cards = $this->viewVariable('cards');
+        $this->assertSame('scheduler', $cards[0]->id());
+        // fetched on its own, as it asks the cache and the queue before it can say anything
+        $this->assertResponseContains('data-url="/dashboard/card/scheduler"');
+
+        $this->login('manager');
+        $this->get('/dashboard/cards');
+
+        /** @var list<\Dashboard\Card\DashboardCardInterface> $cards */
+        $cards = $this->viewVariable('cards');
+        $this->assertNotContains('scheduler', array_map(fn($card): string => $card->id(), $cards));
+    }
+
+    /**
      * The cards meant for the whole office reach all of it.
      *
      * @return void

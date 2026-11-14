@@ -8,12 +8,9 @@ use Cake\Cache\Cache;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
-use Cake\Core\Configure;
 use Cake\I18n\Date;
-use Cake\I18n\DateTime;
 use Override;
-use Queue\Model\Table\QueuedJobsTable;
-use QueueScheduler\Command\RunCommand;
+use Scheduler\Service\SchedulerHealth;
 
 /**
  * Notices what the failure of a job does not report: a worker that died, a job that never ends,
@@ -50,7 +47,7 @@ class SchedulerCheckCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io): int
     {
-        $problems = [...$this->stuckJobs(), ...$this->overdueRows(), ...$this->quietDispatcher()];
+        $problems = (new SchedulerHealth())->problems();
 
         if ($problems === []) {
             return static::CODE_SUCCESS;
@@ -67,83 +64,6 @@ class SchedulerCheckCommand extends Command
         }
 
         return static::CODE_ERROR;
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function stuckJobs(): array
-    {
-        $since = DateTime::now()->subSeconds((int)Configure::read('Scheduler.stuckAfter'));
-
-        /** @var iterable<\Queue\Model\Entity\QueuedJob> $jobs */
-        $jobs = $this->fetchTable('Queue.QueuedJobs')
-            ->find()
-            ->where([
-                'fetched <' => $since,
-                'completed IS' => null,
-                'OR' => ['status IS' => null, 'status !=' => QueuedJobsTable::STATUS_ABORTED],
-            ])
-            ->all();
-
-        $problems = [];
-
-        foreach ($jobs as $job) {
-            $problems[] = __d(
-                'scheduler',
-                'Job {0} ({1}) was started at {2} and has not finished.',
-                $job->id,
-                $job->reference ?? $job->job_task,
-                (string)$job->fetched,
-            );
-        }
-
-        return $problems;
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function overdueRows(): array
-    {
-        $since = DateTime::now()->subSeconds((int)Configure::read('Scheduler.overdueAfter'));
-
-        /** @var iterable<\QueueScheduler\Model\Entity\SchedulerRow> $rows */
-        $rows = $this->fetchTable('QueueScheduler.SchedulerRows')
-            ->find()
-            ->where(['enabled' => true, 'next_run <' => $since])
-            ->all();
-
-        $problems = [];
-
-        foreach ($rows as $row) {
-            $problems[] = __d(
-                'scheduler',
-                'Row {0} was due at {1} and has not run.',
-                $row->name,
-                (string)$row->next_run,
-            );
-        }
-
-        return $problems;
-    }
-
-    /**
-     * Nothing known says nothing: the cache is emptied by every deployment, and an overdue row
-     * tells of a dispatcher that has been gone for long.
-     *
-     * @return list<string>
-     */
-    private function quietDispatcher(): array
-    {
-        $config = (string)(Configure::read('QueueScheduler.cacheConfig') ?? 'default');
-        $beat = Cache::read(RunCommand::HEARTBEAT_KEY, $config);
-
-        if (!is_int($beat) || time() - $beat < (int)Configure::read('Scheduler.silentDispatcherAfter')) {
-            return [];
-        }
-
-        return [__d('scheduler', 'The dispatcher last ran at {0}.', (string)DateTime::createFromTimestamp($beat))];
     }
 
     /**

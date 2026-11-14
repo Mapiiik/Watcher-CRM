@@ -77,6 +77,11 @@ The first failure of a row is mailed to `ERROR_EMAILS`, and the next after it ha
 `scheduler check`, also from the crontab, reports what no failure ever announces: a worker that was
 killed, a job that never ends, a row that does not run, a dispatcher gone quiet.
 
+The check runs in the scheduler, so a scheduler that has stopped altogether reports nothing. The
+dashboard card `Scheduler\Dashboard\Card\SchedulerCard` shows administrators the same problems and,
+when there are none, the time of the last pass. It reads the heartbeat the dispatcher writes, so the
+web server and the scheduler have to share the cache, as they do with one Redis.
+
 ## Tasks of the queue
 
 The worker runs anything in the queue, not only what the schedule puts there. Something that should

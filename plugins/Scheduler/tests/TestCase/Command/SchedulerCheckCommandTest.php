@@ -17,6 +17,7 @@ use QueueScheduler\Command\RunCommand;
 use QueueScheduler\Model\Table\SchedulerRowsTable;
 use Scheduler\Command\SchedulerCheckCommand;
 use Scheduler\Service\Schedule;
+use Scheduler\Service\SchedulerHealth;
 
 /**
  * Scheduler\Command\SchedulerCheckCommand Test Case
@@ -26,6 +27,7 @@ use Scheduler\Service\Schedule;
  */
 #[UsesClass(SchedulerCheckCommand::class)]
 #[UsesClass(Schedule::class)]
+#[UsesClass(SchedulerHealth::class)]
 class SchedulerCheckCommandTest extends TestCase
 {
     use ConfigureTestTrait;
