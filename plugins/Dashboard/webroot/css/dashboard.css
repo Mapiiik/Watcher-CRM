@@ -65,8 +65,9 @@
     vertical-align: top;
 }
 
-/* The date, the priority and the count only need the room they take. */
-.dashboard-table td + td {
+/* The date, the priority and the count only need the room they take, and so do their headings. */
+.dashboard-table td + td,
+.dashboard-table th + th {
     width: 1%;
     white-space: nowrap;
 }
