@@ -56,14 +56,14 @@ class MissingGdprConsentCheckTest extends TestCase
     }
 
     /**
-     * Nothing said about the consent is no consent: the comparison used to leave such a customer out.
+     * A consent not given, with no refusal labelled, is a customer nobody has asked yet.
      *
      * @return void
      * @link \App\Customers\Check\MissingGdprConsentCheck::find()
      */
     public function testACustomerWhoNeverAnsweredIsReported(): void
     {
-        $this->Customers->updateAll(['agree_gdpr' => null], ['id' => self::CUSTOMER_ID]);
+        $this->Customers->updateAll(['agree_gdpr' => false], ['id' => self::CUSTOMER_ID]);
 
         $this->assertContains(self::CUSTOMER_ID, $this->found());
     }

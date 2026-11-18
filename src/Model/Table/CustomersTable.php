@@ -336,21 +336,23 @@ class CustomersTable extends AppTable
             ->integer('individual_maturity_period')
             ->allowEmptyString('individual_maturity_period');
 
+        // a yes or a no, and left out on a new customer the schema gives what the paper consent
+        // says holds where nothing is ticked
         $validator
             ->boolean('agree_gdpr')
-            ->allowEmptyString('agree_gdpr');
+            ->notEmptyString('agree_gdpr');
 
         $validator
             ->boolean('agree_mailing_outages')
-            ->allowEmptyString('agree_mailing_outages');
+            ->notEmptyString('agree_mailing_outages');
 
         $validator
             ->boolean('agree_mailing_commercial')
-            ->allowEmptyString('agree_mailing_commercial');
+            ->notEmptyString('agree_mailing_commercial');
 
         $validator
             ->boolean('agree_mailing_billing')
-            ->allowEmptyString('agree_mailing_billing');
+            ->notEmptyString('agree_mailing_billing');
 
         // every customer is billed under an accounting profile and the column says so, so a record
         // without one has to be refused here - left to the database it is an error page rather than

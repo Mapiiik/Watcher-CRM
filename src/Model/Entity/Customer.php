@@ -40,10 +40,10 @@ use RuntimeException;
  * @property string|null $identity_card_number
  * @property \Cake\I18n\Date|null $date_of_birth
  * @property int $individual_maturity_period
- * @property bool|null $agree_gdpr
- * @property bool|null $agree_mailing_outages
- * @property bool|null $agree_mailing_commercial
- * @property bool|null $agree_mailing_billing
+ * @property bool $agree_gdpr
+ * @property bool $agree_mailing_outages
+ * @property bool $agree_mailing_commercial
+ * @property bool $agree_mailing_billing
  * @property string $email
  * @property string $billing_email
  * @property string $phone

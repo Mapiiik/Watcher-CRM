@@ -694,6 +694,64 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * The form for a new customer opens with the mailing the paper consent gives where nothing is
+     * ticked: the billing and the outages yes, the commercial communications no.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddOpensWithTheMailingTheConsentGivesWithoutATick(): void
+    {
+        $this->login();
+        $this->get('/customers/add');
+
+        $this->assertResponseOk();
+        foreach (['agree_mailing_billing', 'agree_mailing_outages'] as $field) {
+            $this->assertResponseContains(sprintf(
+                '<input type="checkbox" name="%s" value="1" id="%s" checked="checked">',
+                $field,
+                str_replace('_', '-', $field),
+            ));
+        }
+        $this->assertResponseContains(
+            '<input type="checkbox" name="agree_mailing_commercial" value="1" id="agree-mailing-commercial">',
+        );
+    }
+
+    /**
+     * A customer stored without anything said about the mailing gets what the paper consent gives
+     * where nothing is ticked, as one made through anything but the form would.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddStoresTheMailingTheConsentGivesWithoutATick(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        // the fixtures write the identity column with the values they carry, which leaves the
+        // identity itself where it started
+        $this->advanceIdentity('customers', 'nid');
+
+        $this->post('/customers/add', [
+            'last_name' => 'Carter',
+            'legal_status' => CustomerLegalStatus::NaturalPerson->value,
+            'dealer' => CustomerDealer::Never->value,
+            'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
+            'accounting_profile_id' => self::ACCOUNTING_PROFILE_ID,
+        ]);
+
+        $this->assertRedirect();
+        $customers = $this->getTableLocator()->get('Customers');
+        /** @var \App\Model\Entity\Customer $stored */
+        $stored = $customers->find()->where(['last_name' => 'Carter'])->firstOrFail();
+        $this->assertTrue($stored->agree_mailing_billing);
+        $this->assertTrue($stored->agree_mailing_outages);
+        $this->assertFalse($stored->agree_mailing_commercial);
+    }
+
+    /**
      * A box somebody unticks is really stored unticked. It is the whole of what the flag does - the
      * partner is then theirs to keep right in the accounting system - so a save that quietly put it
      * back would send them to the accounting system anyway.
