@@ -124,6 +124,27 @@ class BillingsTable extends AppTable
     }
 
     /**
+     * Billings that had not ended by the given day, whether or not they have begun yet.
+     *
+     * Unlike "active or future", which keeps a billing for the rest of the month it ended in, this
+     * lets it go the day after. That is what tells a service still charged for from one that has
+     * stopped and is waiting to be switched off.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Billing> $query Query to restrict.
+     * @param \Cake\I18n\Date $on The day.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Billing>
+     */
+    public function findNotEndedBy(SelectQuery $query, Date $on): SelectQuery
+    {
+        return $query->where([
+            'OR' => [
+                'Billings.billing_until IS' => null,
+                'Billings.billing_until >=' => $on,
+            ],
+        ]);
+    }
+
+    /**
      * Billings running on the given day: begun on it or before, and not ended before it.
      *
      * Asked of the last day of a month, it is the state a regulator wants reported.

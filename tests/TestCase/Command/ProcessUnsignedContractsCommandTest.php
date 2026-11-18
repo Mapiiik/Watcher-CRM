@@ -190,6 +190,42 @@ class ProcessUnsignedContractsCommandTest extends TestCase
     }
 
     /**
+     * A contract that ended yesterday - its signed version and its charging both - under a state
+     * nobody has switched yet. The customer has nothing left to sign and is not told otherwise.
+     *
+     * @return void
+     * @link \App\Command\ProcessUnsignedContractsCommand::execute()
+     */
+    public function testAContractThatHasEndedIsNotWrittenAbout(): void
+    {
+        Settings::set('core.contracts.paperwork.unsigned.thresholds.without_version', true);
+        $this->emailFor(self::CUSTOMER_ID);
+        $this->chargedSince('2026-04-01', '2026-05-31');
+        $this->ContractVersions->saveOrFail($this->ContractVersions->newEntity([
+            'contract_id' => self::CONTRACT_ID,
+            'valid_from' => '2026-04-01',
+            'valid_until' => '2026-05-31',
+            'conclusion_date' => '2026-03-25',
+            'number_of_amendments' => 0,
+            'obligations_settled' => false,
+        ]));
+
+        $this->exec('process_unsigned_contracts');
+
+        $this->assertExitSuccess();
+        // The fixture's other contract is still charged for with no version and hears about it as
+        // before, so it is the line about this one that has to be missing.
+        $this->assertSame(1, $this->CustomerMessages->find()->count());
+        /** @var \App\Model\Entity\CustomerMessage $message */
+        foreach ($this->CustomerMessages->find()->all() as $message) {
+            $this->assertStringNotContainsString(
+                sprintf('%s %s', __('provided since'), new Date('2026-04-01')),
+                (string)$message->body,
+            );
+        }
+    }
+
+    /**
      * Switched off, that kind goes unwatched and nobody hears about it - which is the way out for an
      * installation that keeps its papers some other way, or for the first night after this arrived.
      *
@@ -626,9 +662,10 @@ class ProcessUnsignedContractsCommandTest extends TestCase
      * Charge the contract for something from the given day on, and nothing before it.
      *
      * @param string $from The day the charging begins.
+     * @param string|null $until The last day charged for, or null for still going on.
      * @return void
      */
-    private function chargedSince(string $from): void
+    private function chargedSince(string $from, ?string $until = null): void
     {
         $billings = $this->getTableLocator()->get('Billings');
         $billings->deleteAll(['contract_id' => self::CONTRACT_ID]);
@@ -639,7 +676,7 @@ class ProcessUnsignedContractsCommandTest extends TestCase
                 'contract_id' => self::CONTRACT_ID,
                 'service_id' => self::SERVICE_ID,
                 'billing_from' => $from,
-                'billing_until' => null,
+                'billing_until' => $until,
                 'quantity' => 1,
                 'separate_invoice' => false,
             ]),

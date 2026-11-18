@@ -5,6 +5,7 @@ namespace App\Contracts\Check;
 
 use App\Check\CheckScope;
 use App\Model\Table\ContractsTable;
+use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 
@@ -97,8 +98,11 @@ class ActiveWithoutBillingCheck extends AbstractContractCheck
     #[Override]
     public function find(): SelectQuery
     {
+        // Held to today rather than to the month: the last month is invoiced by the state's own flag,
+        // so a billing that ended yesterday under a state still providing services is the state
+        // being wrong already.
         $billed = $this->contracts->Billings
-            ->find('activeOrFuture')
+            ->find('notEndedBy', on: Date::today())
             ->select(['Billings.contract_id'], true);
 
         $query = $this->contracts

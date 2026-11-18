@@ -296,7 +296,7 @@ final class UnsignedPaperwork
 
         return $query
             ->where([
-                $this->serviceIsRunning(),
+                $this->serviceIsRunning($today),
                 $query->expr($this->noVersionInForce($today)),
                 $query->expr()->isNotNull($query->expr(self::CHARGED_SINCE)),
             ])
@@ -520,7 +520,7 @@ final class UnsignedPaperwork
     private function serviceConditions(SelectQuery $query, Date $today): array
     {
         return [
-            $this->serviceIsRunning(),
+            $this->serviceIsRunning($today),
             // A version in force is the other source's business. Nothing in force - none ever
             // drawn, or the last of them run out - is this one's.
             $query->expr($this->noVersionInForce($today)),
@@ -543,14 +543,22 @@ final class UnsignedPaperwork
      * service type has to be one that keeps versions at all - a reseller's never has one, and
      * chasing a paper that is never going to exist is worse than not chasing.
      *
+     * A billing has to be still running as well, because the state is switched by hand and often
+     * late. A contract that has ended under a state nobody has switched yet is the office's to put
+     * right, and {@see \App\Contracts\Check\ActiveWithoutBillingCheck} tells them so.
+     *
+     * @param \Cake\I18n\Date $today The day the charging has to still be going on.
      * @return array<string, mixed>
      */
-    private function serviceIsRunning(): array
+    private function serviceIsRunning(Date $today): array
     {
         return [
             'ContractStates.active_services' => true,
             'ContractStates.billed' => true,
             'ServiceTypes.have_contract_versions' => true,
+            'Contracts.id IN' => $this->versions->Contracts->Billings
+                ->find('notEndedBy', on: $today)
+                ->select(['Billings.contract_id'], true),
         ];
     }
 

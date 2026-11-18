@@ -8,6 +8,7 @@ use App\Contracts\Check\ActiveWithoutBillingCheck;
 use App\Contracts\Check\InactiveWithBillingCheck;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractsTable;
+use Cake\Chronos\Chronos;
 use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
@@ -58,6 +59,11 @@ class BillingAgainstStateCheckTest extends TestCase
     private ContractsTable $Contracts;
 
     /**
+     * What the clock was stopped at before a case moved it.
+     */
+    private ?Chronos $clock = null;
+
+    /**
      * @return void
      */
     #[Override]
@@ -70,6 +76,19 @@ class BillingAgainstStateCheckTest extends TestCase
 
         // the fixtures leave every contract in a state that provides services
         $this->Billings->deleteAll(['1 = 1']);
+
+        $this->clock = Chronos::getTestNow();
+    }
+
+    /**
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow($this->clock);
+
+        parent::tearDown();
     }
 
     /**
@@ -106,6 +125,49 @@ class BillingAgainstStateCheckTest extends TestCase
         $this->billed('-3 years', '-2 years');
 
         $this->assertCount(1, $this->givenAwayService());
+    }
+
+    /**
+     * The billing ended earlier this month and the state still provides services. The last month
+     * is invoiced by the state's own flag, so this is the state left unswitched and the office
+     * hears of it the next day, not once the month is over.
+     *
+     * @return void
+     * @link \App\Contracts\Check\ActiveWithoutBillingCheck::find()
+     */
+    public function testABillingThatEndedEarlierThisMonthNoLongerCounts(): void
+    {
+        Chronos::setTestNow(new Chronos('2026-11-18 09:00:00'));
+        $this->billed('-1 year', '-5 days');
+
+        $this->assertCount(1, $this->givenAwayService());
+    }
+
+    /**
+     * On its last day a billing is still charging.
+     *
+     * @return void
+     * @link \App\Contracts\Check\ActiveWithoutBillingCheck::find()
+     */
+    public function testABillingEndingTodayStillCounts(): void
+    {
+        Chronos::setTestNow(new Chronos('2026-11-18 09:00:00'));
+        $this->billed('-1 year', '+0 days');
+
+        $this->assertSame([], $this->givenAwayService());
+    }
+
+    /**
+     * A contract whose charging is yet to begin is not being given anything away.
+     *
+     * @return void
+     * @link \App\Contracts\Check\ActiveWithoutBillingCheck::find()
+     */
+    public function testABillingYetToBeginCounts(): void
+    {
+        $this->billed('+1 month', null);
+
+        $this->assertSame([], $this->givenAwayService());
     }
 
     /**

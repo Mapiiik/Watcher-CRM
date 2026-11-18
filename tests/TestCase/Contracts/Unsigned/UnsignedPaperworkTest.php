@@ -494,6 +494,44 @@ class UnsignedPaperworkTest extends TestCase
     }
 
     /**
+     * Once the charging has ended as well, the contract has ended and only its state has not been
+     * switched yet. The customer is neither written to nor cut off for that; the office hears of
+     * it from the check on contracts providing services nobody is charged for.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testAServiceNoLongerChargedForIsLeftAlone(): void
+    {
+        $this->chargedSince('2026-05-01', '2026-05-25');
+        $this->agreed('2026-05-01', '2026-05-25', '2026-04-28');
+
+        $this->assertNotContains(self::CONTRACT_ID, $this->servicesDue());
+        $this->assertArrayNotHasKey(
+            self::CONTRACT_ID,
+            $this->paperwork->contractIdsToBlock(new UnsignedWaits(), new Date(self::TODAY)),
+        );
+        $this->assertNotContains(
+            self::CONTRACT_ID,
+            $this->paperwork->findEveryServiceWithoutAVersion()->all()->extract('id')->toList(),
+        );
+    }
+
+    /**
+     * On the last day it is charged for, the service is still running.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testAServiceChargedForUntilTodayIsStillWatched(): void
+    {
+        $this->chargedSince('2026-05-01', self::TODAY);
+        $this->agreed('2026-05-01', '2026-05-25', '2026-04-28');
+
+        $this->assertContains(self::CONTRACT_ID, $this->servicesDue());
+    }
+
+    /**
      * A service type that keeps no versions never has one to sign, and chasing a paper that is
      * never going to exist is worse than not chasing.
      *
@@ -609,9 +647,10 @@ class UnsignedPaperworkTest extends TestCase
      * Charge the fixture contract for something from the given day on.
      *
      * @param string $from The day the charging begins.
+     * @param string|null $until The last day charged for, or null for still going on.
      * @return void
      */
-    private function chargedSince(string $from): void
+    private function chargedSince(string $from, ?string $until = null): void
     {
         $billings = $this->getTableLocator()->get('Billings');
 
@@ -625,7 +664,7 @@ class UnsignedPaperworkTest extends TestCase
                 'contract_id' => self::CONTRACT_ID,
                 'service_id' => self::SERVICE_ID,
                 'billing_from' => $from,
-                'billing_until' => null,
+                'billing_until' => $until,
                 'quantity' => 1,
                 'separate_invoice' => false,
             ]),

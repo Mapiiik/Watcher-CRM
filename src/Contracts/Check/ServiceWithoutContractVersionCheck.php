@@ -21,6 +21,8 @@ use Override;
  *
  * The other way is a contract whose last version ran out while the service kept running, which no
  * other check reports either: the gap between versions is only looked for where a later one exists.
+ * Kept running means still charged for. Once the billing ends too, the contract has ended and only
+ * its state is wrong, which is ActiveWithoutBillingCheck's to report.
  *
  * Like its neighbour about versions, this answers two different questions:
  *
