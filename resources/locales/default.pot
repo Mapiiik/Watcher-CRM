@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-14 16:06+0100\n"
+"POT-Creation-Date: 2026-11-19 00:17+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -204,23 +204,23 @@ msgstr ""
 msgid "Print the withdrawal texts for a legal entity."
 msgstr ""
 
-#: ./config/settings.php:931
+#: ./config/settings.php:935
 msgid "Prints a line for the customer to sign the summary on, where the law concludes the contract by signing it, as in Croatia."
 msgstr ""
 
-#: ./config/settings.php:941
+#: ./config/settings.php:945
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:992
+#: ./config/settings.php:996
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:997
+#: ./config/settings.php:1001
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:1076
+#: ./config/settings.php:1080
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -1099,11 +1099,11 @@ msgstr ""
 msgid "Wrapped: {0}"
 msgstr ""
 
-#: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:73
+#: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:74
 msgid "Providing Services Without Billing"
 msgstr ""
 
-#: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:82
+#: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:83
 msgid "Every contract providing services is billed for."
 msgstr ""
 
@@ -1227,11 +1227,11 @@ msgstr ""
 msgid "Everything the customers have agreed to was applied in full."
 msgstr ""
 
-#: ./src/Contracts/Check/ServiceWithoutContractVersionCheck.php:72
+#: ./src/Contracts/Check/ServiceWithoutContractVersionCheck.php:74
 msgid "Running Service Without a Contract Version"
 msgstr ""
 
-#: ./src/Contracts/Check/ServiceWithoutContractVersionCheck.php:81
+#: ./src/Contracts/Check/ServiceWithoutContractVersionCheck.php:83
 msgid "Every service being charged for has a contract version behind it."
 msgstr ""
 
@@ -3729,23 +3729,23 @@ msgstr ""
 msgid "This address point already has a record of this technology."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:483
+#: ./src/Model/Table/BillingsTable.php:504
 msgid "The billing cannot end before it starts."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:503
+#: ./src/Model/Table/BillingsTable.php:524
 msgid "The billing may not start in a period that has already been invoiced."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:522
+#: ./src/Model/Table/BillingsTable.php:543
 msgid "The billing may not end before {0}, the last day that has been invoiced."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:545
+#: ./src/Model/Table/BillingsTable.php:566
 msgid "What has already been invoiced for is not changed here. End this billing and start a new one from the day the change takes effect."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:594
+#: ./src/Model/Table/BillingsTable.php:615
 msgid "The billing has been invoiced for and may not be deleted. Give it an end date instead, or ask an administrator."
 msgstr ""
 
@@ -3932,7 +3932,7 @@ msgstr ""
 msgid "Choose the legal status, the clauses of the contract papers follow it."
 msgstr ""
 
-#: ./src/Model/Table/CustomersTable.php:398
+#: ./src/Model/Table/CustomersTable.php:400
 msgid "The specified identification number is not valid."
 msgstr ""
 

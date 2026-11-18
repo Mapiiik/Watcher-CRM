@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-14 16:06+0100\n"
+"POT-Creation-Date: 2026-11-19 00:17+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -294,7 +294,7 @@ msgstr "Tisknout texty o odstoupení od smlouvy pro podnikající fyzickou osobu
 msgid "Print the withdrawal texts for a legal entity."
 msgstr "Tisknout texty o odstoupení od smlouvy pro právnickou osobu."
 
-#: config/settings.php:931
+#: config/settings.php:935
 msgid ""
 "Prints a line for the customer to sign the summary on, where the law "
 "concludes the contract by signing it, as in Croatia."
@@ -302,20 +302,20 @@ msgstr ""
 "Vytiskne řádek pro podpis shrnutí smlouvy zákazníkem tam, kde zákon smlouvu "
 "uzavírá až tímto podpisem, jako v Chorvatsku."
 
-#: config/settings.php:941
+#: config/settings.php:945
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr "Tři úvodní odrážky předepsané šablonou shrnutí smlouvy."
 
-#: config/settings.php:992
+#: config/settings.php:996
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 "Podíl inzerované rychlosti, který se bere jako běžně dostupná rychlost."
 
-#: config/settings.php:997
+#: config/settings.php:1001
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
 
-#: config/settings.php:1076
+#: config/settings.php:1080
 msgid "Documents the summary points the customer to."
 msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
 
@@ -1205,11 +1205,11 @@ msgstr ""
 msgid "Wrapped: {0}"
 msgstr "Obaleno: {0}"
 
-#: src/Contracts/Check/ActiveWithoutBillingCheck.php:73
+#: src/Contracts/Check/ActiveWithoutBillingCheck.php:74
 msgid "Providing Services Without Billing"
 msgstr "Poskytuje službu bez fakturace"
 
-#: src/Contracts/Check/ActiveWithoutBillingCheck.php:82
+#: src/Contracts/Check/ActiveWithoutBillingCheck.php:83
 msgid "Every contract providing services is billed for."
 msgstr "Každá smlouva, která poskytuje službu, je fakturovaná."
 
@@ -1333,11 +1333,11 @@ msgstr "Návrh smlouvy aplikovaný s něčím vynechaným"
 msgid "Everything the customers have agreed to was applied in full."
 msgstr "Všechno, co zákazníci odsouhlasili, bylo aplikováno celé."
 
-#: src/Contracts/Check/ServiceWithoutContractVersionCheck.php:72
+#: src/Contracts/Check/ServiceWithoutContractVersionCheck.php:74
 msgid "Running Service Without a Contract Version"
 msgstr "Běžící služba bez verze smlouvy"
 
-#: src/Contracts/Check/ServiceWithoutContractVersionCheck.php:81
+#: src/Contracts/Check/ServiceWithoutContractVersionCheck.php:83
 msgid "Every service being charged for has a contract version behind it."
 msgstr "Za každou fakturovanou službou stojí verze smlouvy."
 
@@ -3876,21 +3876,21 @@ msgstr "Vyberte adresu z národního registru adres."
 msgid "This address point already has a record of this technology."
 msgstr "Toto adresní místo už u této technologie záznam má."
 
-#: src/Model/Table/BillingsTable.php:483
+#: src/Model/Table/BillingsTable.php:504
 msgid "The billing cannot end before it starts."
 msgstr "Fakturace nemůže skončit dřív, než začne."
 
-#: src/Model/Table/BillingsTable.php:503
+#: src/Model/Table/BillingsTable.php:524
 msgid "The billing may not start in a period that has already been invoiced."
 msgstr "Fakturace nesmí začínat v období, které už bylo vyfakturováno."
 
-#: src/Model/Table/BillingsTable.php:522
+#: src/Model/Table/BillingsTable.php:543
 msgid ""
 "The billing may not end before {0}, the last day that has been invoiced."
 msgstr ""
 "Fakturace nesmí skončit dřív než {0}, což je poslední vyfakturovaný den."
 
-#: src/Model/Table/BillingsTable.php:545
+#: src/Model/Table/BillingsTable.php:566
 msgid ""
 "What has already been invoiced for is not changed here. End this billing and "
 "start a new one from the day the change takes effect."
@@ -3898,7 +3898,7 @@ msgstr ""
 "Co už bylo vyfakturováno, se tady nemění. Ukončete toto fakturační pravidlo "
 "a od data změny založte nové."
 
-#: src/Model/Table/BillingsTable.php:594
+#: src/Model/Table/BillingsTable.php:615
 msgid ""
 "The billing has been invoiced for and may not be deleted. Give it an end "
 "date instead, or ask an administrator."
@@ -4141,7 +4141,7 @@ msgstr ""
 msgid "Choose the legal status, the clauses of the contract papers follow it."
 msgstr "Zvolte právní postavení, řídí se podle něj doložky smluv."
 
-#: src/Model/Table/CustomersTable.php:398
+#: src/Model/Table/CustomersTable.php:400
 msgid "The specified identification number is not valid."
 msgstr "Zadané identifikační číslo není platné."
 
