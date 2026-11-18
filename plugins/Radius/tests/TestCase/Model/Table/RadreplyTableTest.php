@@ -53,7 +53,6 @@ class RadreplyTableTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Radreply);
 
         parent::tearDown();

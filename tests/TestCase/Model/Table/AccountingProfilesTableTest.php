@@ -54,7 +54,6 @@ class AccountingProfilesTableTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->AccountingProfiles);
 
         parent::tearDown();

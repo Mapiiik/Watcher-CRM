@@ -53,7 +53,6 @@ class RadgroupcheckTableTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Radgroupcheck);
 
         parent::tearDown();

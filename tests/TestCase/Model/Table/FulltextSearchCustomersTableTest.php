@@ -90,7 +90,6 @@ class FulltextSearchCustomersTableTest extends TestCase
     {
         $this->restoreConfigure();
 
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->FulltextSearchCustomers);
 
         parent::tearDown();

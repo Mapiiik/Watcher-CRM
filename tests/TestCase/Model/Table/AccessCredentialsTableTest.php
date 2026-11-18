@@ -61,7 +61,6 @@ class AccessCredentialsTableTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->AccessCredentials);
 
         parent::tearDown();

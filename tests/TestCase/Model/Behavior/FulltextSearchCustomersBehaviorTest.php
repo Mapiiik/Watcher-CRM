@@ -102,9 +102,7 @@ class FulltextSearchCustomersBehaviorTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Phones);
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Customers);
 
         parent::tearDown();

@@ -63,7 +63,6 @@ class ServiceOverridesTableTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->ServiceOverrides);
 
         parent::tearDown();

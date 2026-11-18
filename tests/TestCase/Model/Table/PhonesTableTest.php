@@ -71,7 +71,6 @@ class PhonesTableTest extends TestCase
     {
         $this->restoreConfigure();
 
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Phones);
 
         parent::tearDown();

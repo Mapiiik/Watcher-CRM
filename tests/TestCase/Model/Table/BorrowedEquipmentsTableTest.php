@@ -62,7 +62,6 @@ class BorrowedEquipmentsTableTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->BorrowedEquipments);
 
         parent::tearDown();
