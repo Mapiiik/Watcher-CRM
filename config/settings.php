@@ -798,6 +798,8 @@ return [
 
                             Uživatel dále potvrzuje, že souhlasí s provedenou instalací a nemá vůči ní žádné námitky a zároveň prohlašuje, že objednané služby jsou plně funkční.
 
+                            Uživatel dále potvrzuje, že mu Poskytovatel při instalaci nezpůsobil na majetku žádnou škodu, ledaže je uvedena výše.
+
                             Uživatel dále potvrzuje, že bere na vědomí a plně souhlasí s podmínkami uvedenými v tomto předávacím protokolu.
 
                             Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
@@ -845,7 +847,7 @@ return [
 
                             Uživatel se zavazuje uhradit hodnotu zařízení uvedenou výše, pokud zařízení nevrátil nebo pokud má vadu či poškození, které způsobil, nad rámec běžného opotřebení, a to nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).
 
-                            Byla-li deinstalace provedena Poskytovatelem, Uživatel potvrzuje, že s jejím provedením souhlasí a nemá vůči ní žádné námitky.
+                            Byla-li deinstalace provedena Poskytovatelem, Uživatel potvrzuje, že s jejím provedením souhlasí, nemá vůči ní žádné námitky a že mu Poskytovatel při ní nezpůsobil na majetku žádnou škodu, ledaže je uvedena výše.
 
                             Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
 
@@ -886,6 +888,8 @@ return [
                             Poskytovatel svým podpisem stvrzuje, že zařízení, která mu byla vrácena, převzal ve stavu popsaném výše.
 
                             Uživatel svým podpisem stvrzuje, že zařízení uvedená v části Poskytnutá zařízení po výměně má nainstalovaná a plně funkční.
+
+                            Uživatel dále potvrzuje, že mu Poskytovatel při výměně nezpůsobil na majetku žádnou škodu, ledaže je uvedena výše.
 
                             Uživatel se zavazuje uhradit částky uvedené v části Aktivační poplatek, prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).
 
