@@ -744,6 +744,8 @@ return [
      */
     'Session' => [
         'defaults' => 'database',
+        // Survives two requests of a new session at once, see the README of Access
+        'handler' => ['engine' => 'Access.DatabaseSession'],
         // Minutes without a request; every request starts the count again
         'timeout' => (int)env('APP_SESSION_TIMEOUT', '1440'),
     ],

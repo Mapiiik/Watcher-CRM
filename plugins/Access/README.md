@@ -106,3 +106,12 @@ list of accounts, the profile and the account's page say whether it is on.
 
 Failed sign-ins are counted in the cache `login_throttle`. Where an installation runs on more
 than one server, the cache has to be shared by all of them, such as one Redis database.
+
+## Sessions
+
+Sessions kept in the table `sessions` should be written by `Access\Http\Session\DatabaseSession`,
+which the application names in `config/app.php` as `'handler' => ['engine' =>
+'Access.DatabaseSession']`. The one of CakePHP looks for the row and then inserts it, so of two
+requests of a session that has no row yet, such as one that has just expired, the later one would
+fail on the primary key and show an error page. Here that request writes once more and updates the
+row.
