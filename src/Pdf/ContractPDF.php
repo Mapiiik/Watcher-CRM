@@ -10,6 +10,7 @@ use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\CustomerLegalStatus;
 use App\Pdf\Trait\BillingTableTrait;
 use App\Pdf\Trait\ContractDurationTrait;
+use App\Pdf\Trait\WithdrawalNoticeTrait;
 use App\Service\ContractPrint\ContractPrintData;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
@@ -24,6 +25,7 @@ class ContractPDF extends ContractPaperPDF
 {
     use BillingTableTrait;
     use ContractDurationTrait;
+    use WithdrawalNoticeTrait;
 
     /**
      * Generate PDF document - contract
@@ -58,50 +60,7 @@ class ContractPDF extends ContractPaperPDF
 
         $this->printSignatureSection('double');
 
-        $this->printWithdrawalAttachment($data);
-
         $this->Close();
-    }
-
-    /**
-     * Whether the paper makes or changes a contract, which is what one can withdraw from.
-     *
-     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
-     * @return bool
-     */
-    private function makesOrChangesTheContract(ContractPrintData $data): bool
-    {
-        return in_array($data->type, [
-            ContractDocumentType::ContractNew,
-            ContractDocumentType::ContractNewX,
-            ContractDocumentType::ContractAmendment,
-        ], true);
-    }
-
-    /**
-     * Whether the customer is told about withdrawing, as who they are in law.
-     *
-     * Who may withdraw is the law of the deployment's to say: consumer law gives the right to a
-     * natural person, and the Czech law on electronic communications to a sole trader too. So each
-     * of the three is switched on or off, and a customer nobody has said anything about counts as
-     * a natural person.
-     *
-     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
-     * @return bool
-     */
-    private function toldAboutWithdrawal(ContractPrintData $data): bool
-    {
-        if (!$this->makesOrChangesTheContract($data)) {
-            return false;
-        }
-
-        $who = match ($data->contract->customer->legal_status) {
-            CustomerLegalStatus::NaturalPerson, null => 'natural_persons',
-            CustomerLegalStatus::SoleTrader => 'sole_traders',
-            CustomerLegalStatus::LegalEntity => 'legal_entities',
-        };
-
-        return (bool)Settings::get('core.documents.contracts.contract.withdrawal_for.' . $who, false);
     }
 
     /**
@@ -156,70 +115,6 @@ class ContractPDF extends ContractPaperPDF
         foreach ($paragraphs as $paragraph) {
             $this->printParagraph($paragraph);
         }
-    }
-
-    /**
-     * The notice on withdrawal and the form for it, on a page of their own after the signatures.
-     *
-     * A page of its own, because the form is meant to be cut off and sent back.
-     *
-     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
-     * @return void
-     */
-    private function printWithdrawalAttachment(ContractPrintData $data): void
-    {
-        $html = trim($this->contractText('texts.withdrawal_attachment_html'));
-
-        if ($html === '' || !$this->toldAboutWithdrawal($data)) {
-            return;
-        }
-
-        $this->AddPage();
-
-        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->setListIndentWidth(4);
-        $this->writeHTML(strtr($html, array_map(
-            fn(string $value): string => htmlspecialchars($value, ENT_QUOTES | ENT_HTML5),
-            $this->withdrawalFormDetails($data),
-        )), true, false, false, true, '');
-    }
-
-    /**
-     * What the withdrawal notice and form can be filled in with already, as they go out with the contract.
-     *
-     * The provider and where to send it, the customer as the contract names them, at its billing
-     * address, and the services it provides. When they ordered it is left to them: the paper is
-     * printed before it is signed.
-     *
-     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
-     * @return array<string, string> Placeholder and what it stands for
-     */
-    private function withdrawalFormDetails(ContractPrintData $data): array
-    {
-        $address = $data->contract->billing_address;
-
-        $services = [];
-        foreach ($data->activeBillings as $billing) {
-            if ($billing->name !== '' && !in_array($billing->name, $services, true)) {
-                $services[] = $billing->name;
-            }
-        }
-
-        $company = fn(string $key): string => Settings::getString('core.company.' . $key);
-
-        return [
-            '{company_name}' => $company('name'),
-            '{company_address}' => $company('address'),
-            '{contracts_phone}' => $company('contracts.phone'),
-            '{contracts_email}' => $company('contracts.email'),
-            '{contract_number}' => (string)$data->contract->number,
-            '{customer_name}' => $address->full_name,
-            '{customer_address}' => implode(', ', array_filter([
-                $address->street_and_number_extra,
-                $address->zip_and_city,
-            ])),
-            '{services}' => implode(', ', $services),
-        ];
     }
 
     /**

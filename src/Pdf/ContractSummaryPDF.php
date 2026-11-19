@@ -6,6 +6,7 @@ namespace App\Pdf;
 use App\Model\Entity\ConnectionProfile;
 use App\Model\Entity\ContractVersion;
 use App\Pdf\Trait\ContractDurationTrait;
+use App\Pdf\Trait\WithdrawalNoticeTrait;
 use App\Service\ContractPrint\ContractPrintData;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
@@ -29,10 +30,14 @@ use Settings\Utility\Settings;
  * It is laid out as a sibling of the contract - same logo, same title block, same headed
  * sections over a rule - so the two read as one set of papers. Its own text is set two
  * points larger than the contract's, because the regulation asks for at least ten.
+ *
+ * The notice on withdrawal and its form follow it on a page of their own, under a heading of
+ * their own, so they are not a page of the summary.
  */
 class ContractSummaryPDF extends AppPDF
 {
     use ContractDurationTrait;
+    use WithdrawalNoticeTrait;
 
     /**
      * Ten points, which is the smallest allowed outright. Going under it takes a reason, and
@@ -152,6 +157,8 @@ class ContractSummaryPDF extends AppPDF
         $this->printAccessibility();
         $this->printOtherInformation();
         $this->printCustomerSignature();
+
+        $this->printWithdrawalNotice($data);
     }
 
     /**

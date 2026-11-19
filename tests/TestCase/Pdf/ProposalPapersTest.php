@@ -370,8 +370,8 @@ class ProposalPapersTest extends TestCase
 
     /**
      * The texts on withdrawing are printed for each kind of customer only once it is switched on,
-     * on the papers that make or change a contract and never on an ending. A customer nobody has
-     * said anything about counts as a natural person.
+     * on the papers that make or change a contract and on the summary, and never on an ending. A
+     * customer nobody has said anything about counts as a natural person.
      *
      * @return void
      */
@@ -389,7 +389,9 @@ class ProposalPapersTest extends TestCase
         $papers = function () use ($customers): array {
             $papers = [];
             foreach ($customers as $who => $legalStatus) {
-                $papers[$who] = $this->printedForACustomer(ContractDocumentType::ContractNew, $legalStatus);
+                foreach ([ContractDocumentType::ContractNew, ContractDocumentType::ContractSummary] as $type) {
+                    $papers[$who . ' on the ' . $type->value] = $this->printedForACustomer($type, $legalStatus);
+                }
             }
 
             return $papers;
@@ -407,7 +409,7 @@ class ProposalPapersTest extends TestCase
             Settings::set($switches . $switch, true);
 
             foreach ($papers() as $who => $paper) {
-                if (in_array($who, $told, true)) {
+                if (in_array(strstr($who, ' on the ', true), $told, true)) {
                     $this->assertNotSame($off[$who], $paper, $who . ' was not told with ' . $switch . ' on.');
                 } else {
                     $this->assertSame($off[$who], $paper, $who . ' was told with ' . $switch . ' on.');
@@ -493,9 +495,9 @@ class ProposalPapersTest extends TestCase
         Settings::set('core.documents.contracts.contract.withdrawal_for.natural_persons', true);
 
         $path = 'core.documents.contracts.contract.texts.withdrawal_attachment_html';
-        $form = fn(string $html): string => $this->printedWith($path, $html);
+        $form = fn(string $html): string => $this->summaryPrintedWith($path, $html);
 
-        $data = $this->forACustomer(ContractDocumentType::ContractNew, CustomerLegalStatus::NaturalPerson);
+        $data = $this->forACustomer(ContractDocumentType::ContractSummary, CustomerLegalStatus::NaturalPerson);
         (new ContractPrintDataEnricher())->enrich($data);
         $address = $data->contract->billing_address;
         $services = array_values(array_unique(array_filter($data->activeBillings->extract('name')->toList())));
@@ -520,22 +522,22 @@ class ProposalPapersTest extends TestCase
     }
 
     /**
-     * A new contract for a natural person, printed with one of its texts set as given.
+     * The summary of a new contract for a natural person, printed with one of the texts set as given.
      *
      * @param string $path Path of the text.
      * @param string $text What it says.
      * @return string
      */
-    private function printedWith(string $path, string $text): string
+    private function summaryPrintedWith(string $path, string $text): string
     {
         Settings::set($path, $text);
 
-        return $this->printedForACustomer(ContractDocumentType::ContractNew, CustomerLegalStatus::NaturalPerson);
+        return $this->printedForACustomer(ContractDocumentType::ContractSummary, CustomerLegalStatus::NaturalPerson);
     }
 
     /**
-     * The notice with its form takes a page of its own, so that the form can be sent back, and
-     * nothing else makes the paper longer.
+     * The notice with its form takes a page of its own after the summary, so that the form can be
+     * sent back, and nothing else makes the paper longer.
      *
      * @return void
      */
@@ -547,11 +549,40 @@ class ProposalPapersTest extends TestCase
         $path = 'core.documents.contracts.contract.texts.withdrawal_attachment_html';
         $pages = fn(string $html): int => (int)preg_match_all(
             '#/Type\s*/Page\b(?!s)#',
-            $this->printedWith($path, $html),
+            $this->summaryPrintedWith($path, $html),
         );
 
         // an emptied text falls back to the shipped one, so a blank is what leaves the page out
         $this->assertSame($pages(' ') + 1, $pages('<p>Lorem ipsum.</p>'));
+    }
+
+    /**
+     * The notice and its form go with the summary, printed once for the customer, and not with
+     * the contract, printed in two copies.
+     *
+     * @return void
+     */
+    public function testTheNoticeGoesWithTheSummaryRatherThanTheContract(): void
+    {
+        $this->furnishTheContract();
+        Settings::set('core.documents.contracts.contract.withdrawal_for.natural_persons', true);
+
+        $printed = function (ContractDocumentType $type, string $html): string {
+            Settings::set('core.documents.contracts.contract.texts.withdrawal_attachment_html', $html);
+
+            return $this->printedForACustomer($type, CustomerLegalStatus::NaturalPerson);
+        };
+
+        $this->assertSame(
+            $printed(ContractDocumentType::ContractNew, ' '),
+            $printed(ContractDocumentType::ContractNew, '<p>Lorem ipsum.</p>'),
+            'The contract carries the notice.',
+        );
+        $this->assertNotSame(
+            $printed(ContractDocumentType::ContractSummary, ' '),
+            $printed(ContractDocumentType::ContractSummary, '<p>Lorem ipsum.</p>'),
+            'The summary does not carry the notice.',
+        );
     }
 
     /**

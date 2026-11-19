@@ -657,20 +657,20 @@ return [
                         // names, then a consent such as the Croatian one to record a disability or
                         // old age, to a natural person. Blank lines separate paragraphs.
                         'withdrawal_text' => <<<TEXT
-                            Byla-li tato smlouva nebo její změna uzavřena mimo obchodní prostory Poskytovatele nebo prostředkem komunikace na dálku, může od ní Uživatel do 14 dnů odstoupit bez udání důvodu za podmínek uvedených v poučení o odstoupení, které je spolu s formulářem pro odstoupení přílohou této smlouvy. Uživatel souhlasí s tím, že vyhotovení smlouvy a informace k ní, včetně poučení a formuláře, může obdržet i v elektronické podobě.
+                            Byla-li tato smlouva nebo její změna uzavřena mimo obchodní prostory Poskytovatele nebo prostředkem komunikace na dálku, může od ní Uživatel do 14 dnů odstoupit bez udání důvodu za podmínek uvedených v poučení o odstoupení, které spolu s formulářem pro odstoupení obdržel se Shrnutím smlouvy. Uživatel souhlasí s tím, že vyhotovení smlouvy a informace k ní, včetně poučení a formuláře, může obdržet i v elektronické podobě.
 
                             ▢ ano / ▢ ne - Výslovně žádám, aby Poskytovatel začal poskytovat služby před uplynutím lhůty pro odstoupení. Beru na vědomí, že pokud od smlouvy odstoupím, uhradím poměrnou část ceny za služby poskytnuté do odstoupení, a že právo odstoupit zaniká, byly-li služby do té doby poskytnuty v plném rozsahu.
                             TEXT,
                         'special_status_consent_text' => '',
-                        // The notice on withdrawal with its form, on a page after the signatures, after
-                        // the model in the annex of Government Regulation No. 29/2023 Coll. It says when
-                        // the right applies and when it ends, because it is printed either way and is
-                        // part of the contract.
+                        // The notice on withdrawal with its form, on a page after the summary, which
+                        // is printed once and handed over before the contract is made. After the model
+                        // in the annex of Government Regulation No. 29/2023 Coll. It says when the
+                        // right applies and when it ends, because it is printed either way.
                         // {company_name}, {company_address}, {contracts_phone} and {contracts_email}
                         // name the provider, {contract_number}, {customer_name}, {customer_address}
                         // (the billing one) and {services} fill the form in ahead of the customer.
                         'withdrawal_attachment_html' => <<<HTML
-                            <h3>PŘÍLOHA – POUČENÍ O PRÁVU NA ODSTOUPENÍ OD SMLOUVY</h3>
+                            <h3>POUČENÍ O PRÁVU NA ODSTOUPENÍ OD SMLOUVY</h3>
                             <p>ke Smlouvě o poskytování služeb č. {contract_number}</p>
                             <ol>
                                 <li><b>Kdy může Uživatel odstoupit</b>
@@ -709,7 +709,7 @@ return [
                                 <li>Datum objednání (uzavření smlouvy nebo dodatku): ______________________________<br><br></li>
                                 <li>Číslo účtu pro vrácení plateb: ______________________________<br><br></li>
                                 <li>Datum: ______________________________<br><br><br></li>
-                                <li>Podpis Uživatele (pouze pokud je tento formulář zasílán na listině): ______________________________</li>
+                                <li>Podpis Uživatele: ______________________________</li>
                             </ul>
                             HTML,
                     ],
