@@ -187,8 +187,7 @@ class HandoverProtocolPDF extends ContractPaperPDF
         $this->printParagraph($this->handoverText('texts.installation_date_line'), gap: 2.0 + self::LINE_HEIGHT);
         $this->printParagraph($this->handoverText('texts.installation_received_on_site'), gap: 4.0);
 
-        $this->printSectionHeading($this->handoverText('sections.final_statements'));
-        $this->printParagraph(strtr($this->handoverText('texts.final_statements_text'), [
+        $this->printFinalStatements(strtr($this->handoverText('texts.final_statements_text'), [
             '{contract_number}' => (string)$contract->number,
         ]));
     }
@@ -205,10 +204,24 @@ class HandoverProtocolPDF extends ContractPaperPDF
      */
     private function printUninstallationProtocol(ContractPrintData $data): void
     {
-        $this->printBorrowedEquipmentForUninstallation($data->equipmentTakenBack());
+        $equipments = $data->equipmentTakenBack();
+        $page = $this->PageNo();
 
-        $this->drawCross();
-        $this->AddPage();
+        // The table and the checks on what came back are read together, so they go over the fold
+        // as one. Where they have, the rest follows them there rather than on a sheet of its own.
+        if (!$this->fitsOnThePage($this->equipmentForUninstallationHeight($equipments))) {
+            $this->drawCross();
+            $this->AddPage();
+        }
+
+        $this->printBorrowedEquipmentForUninstallation($equipments);
+
+        if ($this->PageNo() === $page) {
+            $this->drawCross();
+            $this->AddPage();
+        } else {
+            $this->Ln(self::PARAGRAPH_GAP);
+        }
 
         $this->printHandoverSection(
             'uninstallation_cash_payment',
@@ -224,8 +237,7 @@ class HandoverProtocolPDF extends ContractPaperPDF
         $this->printParagraph($this->handoverText('texts.uninstallation_date_line'), gap: 2.0 + self::LINE_HEIGHT);
         $this->printParagraph($this->handoverText('texts.uninstallation_handed_over_on_site'), gap: 4.0);
 
-        $this->printSectionHeading($this->handoverText('sections.final_statements'));
-        $this->printParagraph(strtr($this->handoverText('texts.uninstallation_final_statements_text'), [
+        $this->printFinalStatements(strtr($this->handoverText('texts.uninstallation_final_statements_text'), [
             '{contract_number}' => (string)$data->contractNumberToBeTerminated,
         ]));
     }
@@ -266,7 +278,7 @@ class HandoverProtocolPDF extends ContractPaperPDF
         $checks = $this->handoverText('texts.exchange_equipment_checks_text');
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         $this->keepTogether(
-            ($this->getNumLines($checks . PHP_EOL, self::TEXT_WIDTH) + 1) * self::LINE_HEIGHT,
+            $this->paragraphHeight($checks . PHP_EOL) - self::PARAGRAPH_GAP + self::LINE_HEIGHT,
         );
         $this->SetFont(self::FONT_FAMILY, 'U', self::BODY_FONT_SIZE);
         $this->printTableCaption($this->handoverText('texts.uninstallation_equipment_state'));
@@ -305,8 +317,7 @@ class HandoverProtocolPDF extends ContractPaperPDF
         $this->printParagraph($this->handoverText('texts.exchange_date_line'), gap: 2.0 + self::LINE_HEIGHT);
         $this->printParagraph($this->handoverText('texts.exchange_received_on_site'), gap: 4.0);
 
-        $this->printSectionHeading($this->handoverText('sections.final_statements'));
-        $this->printParagraph(strtr($this->handoverText('texts.exchange_final_statements_text'), [
+        $this->printFinalStatements(strtr($this->handoverText('texts.exchange_final_statements_text'), [
             '{contract_number}' => (string)$contract->number,
         ]));
     }
@@ -540,6 +551,56 @@ class HandoverProtocolPDF extends ContractPaperPDF
         $this->printTableCaption($this->handoverText('texts.uninstallation_equipment_state'));
 
         $this->printParagraph($this->handoverText('texts.uninstallation_equipment_checks_text'), gap: 0.0);
+    }
+
+    /**
+     * The room printBorrowedEquipmentForUninstallation() takes.
+     *
+     * @param array<\App\Model\Entity\BorrowedEquipment> $equipments What is listed
+     * @return float
+     */
+    private function equipmentForUninstallationHeight(array $equipments): float
+    {
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+        $checks = $this->handoverText('texts.uninstallation_equipment_checks_text');
+        $rows = 1 + max(count($equipments), self::BORROWED_EQUIPMENT_ROWS);
+
+        return self::SECTION_HEADING_HEIGHT
+            + 2 * self::TABLE_CAPTION_GAP
+            + $rows * self::TABLE_ROW_HEIGHT
+            + 2
+            + $this->paragraphHeight($checks . PHP_EOL) - self::PARAGRAPH_GAP;
+    }
+
+    /**
+     * The closing statements, on one page with the signatures that cover them.
+     *
+     * A signature alone on a page signs nothing that can be seen, so where the two do not fit,
+     * the statements go over the fold with the signatures.
+     *
+     * @param string $text The statements
+     * @return void
+     */
+    private function printFinalStatements(string $text): void
+    {
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+        $this->keepTogether(
+            self::SECTION_HEADING_HEIGHT + $this->paragraphHeight($text . PHP_EOL) + static::SIGNATURE_BLOCK,
+        );
+
+        $this->printSectionHeading($this->handoverText('sections.final_statements'));
+        $this->printParagraph($text);
+    }
+
+    /**
+     * Whether a block of the height given still fits above the foot of the page.
+     *
+     * @param float $height Height of the block
+     * @return bool
+     */
+    private function fitsOnThePage(float $height): bool
+    {
+        return $this->GetY() + $height <= $this->getPageHeight() - $this->getBreakMargin();
     }
 
     /**

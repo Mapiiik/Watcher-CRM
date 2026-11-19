@@ -106,6 +106,12 @@ class AppPDF extends Canvas
     protected const TABLE_ROW_HEIGHT = 5.0;
 
     /**
+     * The least room crossed out at the foot of a page. A narrower strip is left blank, as a
+     * cross over it is clutter rather than a guard against anything written in.
+     */
+    protected const CROSS_MIN_HEIGHT = 40.0;
+
+    /**
      * Air between a table's caption and the table itself.
      */
     protected const TABLE_CAPTION_GAP = 4.0;
@@ -530,7 +536,7 @@ class AppPDF extends Canvas
         $this->SetFont(static::FONT_FAMILY, ($bold ? 'B' : '') . $format, static::BODY_FONT_SIZE);
 
         $body = $text . PHP_EOL;
-        $this->keepTogether($this->getNumLines($body, static::TEXT_WIDTH) * static::LINE_HEIGHT);
+        $this->keepTogether($this->paragraphHeight($body) - static::PARAGRAPH_GAP);
         $this->MultiCell(static::TEXT_WIDTH, static::LINE_HEIGHT, $body, align: $align);
         $this->Ln($gap ?? static::PARAGRAPH_GAP);
     }
@@ -644,6 +650,8 @@ class AppPDF extends Canvas
      * Furniture, like the rules, so it is drawn from the page's left edge and stands around
      * the body rather than starting where the body does.
      *
+     * Nothing is drawn where less than CROSS_MIN_HEIGHT is left.
+     *
      * @param float $lnBefore Line break height before drawing (default 5.0)
      * @param float $width    Total width of the frame
      * @param float $bottomY  Y‑coordinate of the bottom line (default 285.0)
@@ -658,6 +666,10 @@ class AppPDF extends Canvas
 
         $x = static::FRAME_LEFT;
         $y = $this->GetY();
+
+        if ($bottomY - $y < static::CROSS_MIN_HEIGHT) {
+            return;
+        }
 
         // Top horizontal line
         $this->Line($x, $y, $x + $width, $y);

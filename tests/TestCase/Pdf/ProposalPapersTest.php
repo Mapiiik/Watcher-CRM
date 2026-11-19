@@ -241,6 +241,22 @@ class ProposalPapersTest extends TestCase
     }
 
     /**
+     * The equipment taken back and the checks on it stay together on the first page, and the rest
+     * of the uninstallation protocol follows on the second rather than spilling onto a third.
+     *
+     * @return void
+     */
+    public function testTheUninstallationProtocolTakesTwoPages(): void
+    {
+        $this->furnishTheContract();
+
+        $this->assertSame(2, (int)preg_match_all(
+            '#/Type\s*/Page\b(?!s)#',
+            $this->handoverProtocol(ContractDocumentType::HandoverUninstallation),
+        ));
+    }
+
+    /**
      * One handover protocol of the kind given, the exchange one for a box swapped for another.
      *
      * @param \App\Model\Enum\ContractDocumentType $type Which protocol.
