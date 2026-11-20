@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-19 00:17+0100\n"
+"POT-Creation-Date: 2026-11-20 04:00+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -204,23 +204,23 @@ msgstr ""
 msgid "Print the withdrawal texts for a legal entity."
 msgstr ""
 
-#: ./config/settings.php:935
+#: ./config/settings.php:936
 msgid "Prints a line for the customer to sign the summary on, where the law concludes the contract by signing it, as in Croatia."
 msgstr ""
 
-#: ./config/settings.php:945
+#: ./config/settings.php:946
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:996
+#: ./config/settings.php:997
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:1001
+#: ./config/settings.php:1002
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:1080
+#: ./config/settings.php:1081
 msgid "Documents the summary points the customer to."
 msgstr ""
 

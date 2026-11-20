@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-10 14:44+0100\n"
+"POT-Creation-Date: 2026-11-20 04:00+0100\n"
 "PO-Revision-Date: 2026-08-18 15:10+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -32,42 +32,42 @@ msgstr "Adresa za dostavu"
 msgid "Permanent Address"
 msgstr "Adresa prebivališta"
 
-#: src/Pdf/HandoverProtocolPDF.php:352
+#: src/Pdf/HandoverProtocolPDF.php:363
 msgid "Username"
 msgstr "Korisničko ime"
 
-#: src/Pdf/HandoverProtocolPDF.php:352
+#: src/Pdf/HandoverProtocolPDF.php:363
 msgid "Password"
 msgstr "Lozinka"
 
-#: src/Pdf/HandoverProtocolPDF.php:393
+#: src/Pdf/HandoverProtocolPDF.php:404
 msgid "Assigned IP Addresses"
 msgstr "Dodijeljene IP adrese"
 
-#: src/Pdf/HandoverProtocolPDF.php:397
+#: src/Pdf/HandoverProtocolPDF.php:408
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: src/Pdf/HandoverProtocolPDF.php:398 src/Pdf/HandoverProtocolPDF.php:470
+#: src/Pdf/HandoverProtocolPDF.php:409 src/Pdf/HandoverProtocolPDF.php:481
 msgid "IP Network"
 msgstr "IP mreža"
 
-#: src/Pdf/HandoverProtocolPDF.php:399 src/Pdf/HandoverProtocolPDF.php:471
+#: src/Pdf/HandoverProtocolPDF.php:410 src/Pdf/HandoverProtocolPDF.php:482
 msgid "IP Gateway"
 msgstr "IP pristupnik"
 
-#: src/Pdf/HandoverProtocolPDF.php:444
+#: src/Pdf/HandoverProtocolPDF.php:455
 msgid "Assigned IP Networks"
 msgstr "Dodijeljene IP mreže"
 
-#: src/Pdf/HandoverProtocolPDF.php:472
+#: src/Pdf/HandoverProtocolPDF.php:483
 msgid "DNS Servers"
 msgstr "DNS poslužitelji"
 
-#: src/Pdf/HandoverProtocolPDF.php:491
+#: src/Pdf/HandoverProtocolPDF.php:502
 msgid "WiFi - SSID"
 msgstr "WiFi - SSID"
 
-#: src/Pdf/HandoverProtocolPDF.php:491
+#: src/Pdf/HandoverProtocolPDF.php:502
 msgid "WiFi - Password"
 msgstr "WiFi - Lozinka"
