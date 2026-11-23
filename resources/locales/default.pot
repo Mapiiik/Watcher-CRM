@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-20 04:00+0100\n"
+"POT-Creation-Date: 2026-11-23 11:10+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -599,7 +599,7 @@ msgstr ""
 #: ./templates/AccessCredentials/index.php:32
 #: ./templates/Addresses/index.php:27
 #: ./templates/Addresses/view.php:39
-#: ./templates/Billings/index.php:27
+#: ./templates/Billings/index.php:38
 #: ./templates/Billings/service_change.php:42
 #: ./templates/Billings/view.php:46
 #: ./templates/BorrowedEquipments/index.php:31
@@ -1707,44 +1707,44 @@ msgstr ""
 msgid "The available connection could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:117
-#: ./src/Controller/BillingsController.php:205
+#: ./src/Controller/BillingsController.php:129
+#: ./src/Controller/BillingsController.php:217
 msgid "Billing text must be entered or service selected."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:126
-#: ./src/Controller/BillingsController.php:214
+#: ./src/Controller/BillingsController.php:138
+#: ./src/Controller/BillingsController.php:226
 msgid "The service type does not match the selected contract."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:129
-#: ./src/Controller/BillingsController.php:217
-#: ./src/Controller/BillingsController.php:321
-#: ./src/Controller/BillingsController.php:468
+#: ./src/Controller/BillingsController.php:141
+#: ./src/Controller/BillingsController.php:229
+#: ./src/Controller/BillingsController.php:333
+#: ./src/Controller/BillingsController.php:480
 #: ./src/Controller/ContractsController.php:861
 msgid "The billing has been saved."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:133
-#: ./src/Controller/BillingsController.php:221
-#: ./src/Controller/BillingsController.php:549
+#: ./src/Controller/BillingsController.php:145
+#: ./src/Controller/BillingsController.php:233
+#: ./src/Controller/BillingsController.php:561
 #: ./src/Controller/ContractsController.php:866
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:282
+#: ./src/Controller/BillingsController.php:294
 msgid "The billing has been deleted."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:285
+#: ./src/Controller/BillingsController.php:297
 msgid "The billing could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:456
+#: ./src/Controller/BillingsController.php:468
 msgid "No billing matches the filter, so nothing was changed."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:550
+#: ./src/Controller/BillingsController.php:562
 #: ./templates/CustomerMessages/add_bulk/step_compose.php:150
 #: ./templates/CustomerMessages/add_bulk/step_done.php:108
 #: ./templates/element/Overviews/contracts_in_period.php:21
@@ -3167,8 +3167,8 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:52
 #: ./templates/AccountingProfiles/view.php:56
 #: ./templates/Addresses/view.php:136
-#: ./templates/Billings/index.php:81
-#: ./templates/Billings/index.php:82
+#: ./templates/Billings/index.php:92
+#: ./templates/Billings/index.php:93
 #: ./templates/Billings/service_change.php:82
 #: ./templates/Billings/service_change.php:86
 #: ./templates/Billings/view.php:86
@@ -3284,8 +3284,8 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:52
 #: ./templates/AccountingProfiles/view.php:56
 #: ./templates/Addresses/view.php:136
-#: ./templates/Billings/index.php:81
-#: ./templates/Billings/index.php:82
+#: ./templates/Billings/index.php:92
+#: ./templates/Billings/index.php:93
 #: ./templates/Billings/service_change.php:82
 #: ./templates/Billings/service_change.php:86
 #: ./templates/Billings/view.php:86
@@ -4334,7 +4334,7 @@ msgstr ""
 #: ./templates/Billings/add.php:14
 #: ./templates/Billings/bulk_service_change.php:15
 #: ./templates/Billings/edit.php:16
-#: ./templates/Billings/index.php:40
+#: ./templates/Billings/index.php:51
 #: ./templates/Billings/service_change.php:13
 #: ./templates/Billings/view.php:12
 #: ./templates/BorrowedEquipments/add.php:13
@@ -4617,7 +4617,7 @@ msgstr ""
 #: ./templates/Addresses/edit.php:18
 #: ./templates/Addresses/index.php:101
 #: ./templates/Billings/edit.php:18
-#: ./templates/Billings/index.php:91
+#: ./templates/Billings/index.php:102
 #: ./templates/BorrowedEquipments/edit.php:15
 #: ./templates/BorrowedEquipments/index.php:84
 #: ./templates/Commissions/edit.php:12
@@ -4704,7 +4704,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/index.php:11
 #: ./templates/Addresses/index.php:11
 #: ./templates/AvailableConnections/index.php:13
-#: ./templates/Billings/index.php:11
+#: ./templates/Billings/index.php:12
 #: ./templates/BorrowedEquipments/index.php:11
 #: ./templates/Commissions/index.php:11
 #: ./templates/ConnectionProfiles/index.php:11
@@ -4749,7 +4749,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:112
 #: ./templates/Addresses/index.php:94
 #: ./templates/AvailableConnections/index.php:77
-#: ./templates/Billings/index.php:84
+#: ./templates/Billings/index.php:95
 #: ./templates/BorrowedEquipments/index.php:77
 #: ./templates/Commissions/index.php:35
 #: ./templates/Commissions/view.php:69
@@ -4818,7 +4818,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/view.php:116
 #: ./templates/Addresses/index.php:96
 #: ./templates/AvailableConnections/index.php:79
-#: ./templates/Billings/index.php:86
+#: ./templates/Billings/index.php:97
 #: ./templates/BorrowedEquipments/index.php:79
 #: ./templates/Commissions/index.php:37
 #: ./templates/Commissions/view.php:73
@@ -5362,7 +5362,7 @@ msgid "Allow a connection price below the minimum set on the contract"
 msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:30
-#: ./templates/Billings/index.php:21
+#: ./templates/Billings/index.php:32
 #: ./templates/Contracts/view.php:120
 #: ./templates/Contracts/view.php:278
 #: ./templates/Customers/view.php:144
@@ -5503,7 +5503,11 @@ msgstr ""
 msgid "Service Change"
 msgstr ""
 
-#: ./templates/Billings/index.php:20
+#: ./templates/Billings/index.php:21
+msgid "Active Only"
+msgstr ""
+
+#: ./templates/Billings/index.php:31
 #: ./templates/Billings/service_change.php:25
 #: ./templates/Billings/view.php:24
 #: ./templates/Contracts/view.php:261
@@ -5511,7 +5515,7 @@ msgstr ""
 msgid "New Billing"
 msgstr ""
 
-#: ./templates/Billings/index.php:35
+#: ./templates/Billings/index.php:46
 #: ./templates/Billings/service_change.php:110
 #: ./templates/Billings/view.php:114
 #: ./templates/Overviews/overview_of_dealer_commissions.php:46
@@ -5524,7 +5528,7 @@ msgstr ""
 msgid "Total Price"
 msgstr ""
 
-#: ./templates/Billings/index.php:38
+#: ./templates/Billings/index.php:49
 #: ./templates/Billings/service_change.php:81
 #: ./templates/Billings/view.php:85
 #: ./templates/ServiceOverrides/index.php:64

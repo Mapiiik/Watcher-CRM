@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-20 04:00+0100\n"
+"POT-Creation-Date: 2026-11-23 11:10+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -714,7 +714,7 @@ msgstr "Změněno:"
 #: src/Command/FillCustomerLegalStatusCommand.php:267
 #: src/Command/FillCustomerLegalStatusCommand.php:275
 #: templates/AccessCredentials/index.php:32 templates/Addresses/index.php:27
-#: templates/Addresses/view.php:39 templates/Billings/index.php:27
+#: templates/Addresses/view.php:39 templates/Billings/index.php:38
 #: templates/Billings/service_change.php:42 templates/Billings/view.php:46
 #: templates/BorrowedEquipments/index.php:31
 #: templates/BorrowedEquipments/view.php:50 templates/Contracts/index.php:39
@@ -1872,44 +1872,44 @@ msgstr "Dostupné připojení bylo uloženo."
 msgid "The available connection could not be saved. Please, try again."
 msgstr "Dostupné připojení nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/BillingsController.php:117
-#: src/Controller/BillingsController.php:205
+#: src/Controller/BillingsController.php:129
+#: src/Controller/BillingsController.php:217
 msgid "Billing text must be entered or service selected."
 msgstr "Je nutné zadat fakturační text nebo vybrat službu."
 
-#: src/Controller/BillingsController.php:126
-#: src/Controller/BillingsController.php:214
+#: src/Controller/BillingsController.php:138
+#: src/Controller/BillingsController.php:226
 msgid "The service type does not match the selected contract."
 msgstr "Typ služby neodpovídá vybrané smlouvě."
 
-#: src/Controller/BillingsController.php:129
-#: src/Controller/BillingsController.php:217
-#: src/Controller/BillingsController.php:321
-#: src/Controller/BillingsController.php:468
+#: src/Controller/BillingsController.php:141
+#: src/Controller/BillingsController.php:229
+#: src/Controller/BillingsController.php:333
+#: src/Controller/BillingsController.php:480
 #: src/Controller/ContractsController.php:861
 msgid "The billing has been saved."
 msgstr "Fakturace byla uložena."
 
-#: src/Controller/BillingsController.php:133
-#: src/Controller/BillingsController.php:221
-#: src/Controller/BillingsController.php:549
+#: src/Controller/BillingsController.php:145
+#: src/Controller/BillingsController.php:233
+#: src/Controller/BillingsController.php:561
 #: src/Controller/ContractsController.php:866
 msgid "The billing could not be saved. Please, try again."
 msgstr "Fakturace nelze uložit. Opakujte akci."
 
-#: src/Controller/BillingsController.php:282
+#: src/Controller/BillingsController.php:294
 msgid "The billing has been deleted."
 msgstr "Fakturace byla odstraněna."
 
-#: src/Controller/BillingsController.php:285
+#: src/Controller/BillingsController.php:297
 msgid "The billing could not be deleted. Please, try again."
 msgstr "Fakturace nelze odstranit. Opakujte akci."
 
-#: src/Controller/BillingsController.php:456
+#: src/Controller/BillingsController.php:468
 msgid "No billing matches the filter, so nothing was changed."
 msgstr "Filtru neodpovídá žádná fakturace, proto se nic nezměnilo."
 
-#: src/Controller/BillingsController.php:550
+#: src/Controller/BillingsController.php:562
 #: templates/CustomerMessages/add_bulk/step_compose.php:150
 #: templates/CustomerMessages/add_bulk/step_done.php:108
 #: templates/element/Overviews/contracts_in_period.php:21
@@ -3400,7 +3400,7 @@ msgstr "Podle data instalace/zřízení a deinstalace/zrušení"
 #: templates/AccountingProfiles/index.php:46
 #: templates/AccountingProfiles/view.php:52
 #: templates/AccountingProfiles/view.php:56 templates/Addresses/view.php:136
-#: templates/Billings/index.php:81 templates/Billings/index.php:82
+#: templates/Billings/index.php:92 templates/Billings/index.php:93
 #: templates/Billings/service_change.php:82
 #: templates/Billings/service_change.php:86 templates/Billings/view.php:86
 #: templates/Billings/view.php:90 templates/ConnectionProfiles/view.php:146
@@ -3470,7 +3470,7 @@ msgstr "Ne"
 #: templates/AccountingProfiles/index.php:46
 #: templates/AccountingProfiles/view.php:52
 #: templates/AccountingProfiles/view.php:56 templates/Addresses/view.php:136
-#: templates/Billings/index.php:81 templates/Billings/index.php:82
+#: templates/Billings/index.php:92 templates/Billings/index.php:93
 #: templates/Billings/service_change.php:82
 #: templates/Billings/service_change.php:86 templates/Billings/view.php:86
 #: templates/Billings/view.php:90 templates/ConnectionProfiles/view.php:146
@@ -4577,7 +4577,7 @@ msgstr ""
 #: templates/AvailableConnections/index.php:62
 #: templates/AvailableConnections/view.php:13 templates/Billings/add.php:14
 #: templates/Billings/bulk_service_change.php:15 templates/Billings/edit.php:16
-#: templates/Billings/index.php:40 templates/Billings/service_change.php:13
+#: templates/Billings/index.php:51 templates/Billings/service_change.php:13
 #: templates/Billings/view.php:12 templates/BorrowedEquipments/add.php:13
 #: templates/BorrowedEquipments/edit.php:13
 #: templates/BorrowedEquipments/index.php:37
@@ -4779,7 +4779,7 @@ msgstr "Potvrdit"
 #: templates/AccountingProfiles/index.php:58
 #: templates/AccountingProfiles/view.php:121 templates/Addresses/edit.php:18
 #: templates/Addresses/index.php:101 templates/Billings/edit.php:18
-#: templates/Billings/index.php:91 templates/BorrowedEquipments/edit.php:15
+#: templates/Billings/index.php:102 templates/BorrowedEquipments/edit.php:15
 #: templates/BorrowedEquipments/index.php:84 templates/Commissions/edit.php:12
 #: templates/Commissions/index.php:42 templates/Commissions/view.php:78
 #: templates/ConnectionProfiles/edit.php:14
@@ -4837,7 +4837,7 @@ msgstr "Upravit přístupové oprávnění"
 
 #: templates/AccessCredentials/index.php:11
 #: templates/AccountingProfiles/index.php:11 templates/Addresses/index.php:11
-#: templates/AvailableConnections/index.php:13 templates/Billings/index.php:11
+#: templates/AvailableConnections/index.php:13 templates/Billings/index.php:12
 #: templates/BorrowedEquipments/index.php:11 templates/Commissions/index.php:11
 #: templates/ConnectionProfiles/index.php:11
 #: templates/ContractStates/index.php:11
@@ -4869,7 +4869,7 @@ msgstr "Přístupová oprávnění"
 #: templates/AccessCredentials/index.php:75
 #: templates/AccountingProfiles/index.php:51
 #: templates/AccountingProfiles/view.php:112 templates/Addresses/index.php:94
-#: templates/AvailableConnections/index.php:77 templates/Billings/index.php:84
+#: templates/AvailableConnections/index.php:77 templates/Billings/index.php:95
 #: templates/BorrowedEquipments/index.php:77 templates/Commissions/index.php:35
 #: templates/Commissions/view.php:69 templates/ConnectionProfiles/index.php:61
 #: templates/ConnectionProfiles/view.php:149
@@ -4920,7 +4920,7 @@ msgstr "Zobrazit"
 #: templates/AccessCredentials/index.php:79
 #: templates/AccountingProfiles/index.php:53
 #: templates/AccountingProfiles/view.php:116 templates/Addresses/index.php:96
-#: templates/AvailableConnections/index.php:79 templates/Billings/index.php:86
+#: templates/AvailableConnections/index.php:79 templates/Billings/index.php:97
 #: templates/BorrowedEquipments/index.php:79 templates/Commissions/index.php:37
 #: templates/Commissions/view.php:73 templates/ConnectionProfiles/index.php:63
 #: templates/ConnectionProfiles/view.php:153
@@ -5383,7 +5383,7 @@ msgid "Allow a connection price below the minimum set on the contract"
 msgstr "Povolit cenu za připojení pod minimum nastavené na smlouvě"
 
 #: templates/Billings/bulk_service_change.php:30
-#: templates/Billings/index.php:21 templates/Contracts/view.php:120
+#: templates/Billings/index.php:32 templates/Contracts/view.php:120
 #: templates/Contracts/view.php:278 templates/Customers/view.php:144
 #: templates/Overviews/overview_of_active_services.php:64
 msgid "Billings"
@@ -5517,13 +5517,17 @@ msgstr "Ukončete ji a od data změny založte novou:"
 msgid "Service Change"
 msgstr "Změna služby"
 
-#: templates/Billings/index.php:20 templates/Billings/service_change.php:25
+#: templates/Billings/index.php:21
+msgid "Active Only"
+msgstr "Pouze aktivní"
+
+#: templates/Billings/index.php:31 templates/Billings/service_change.php:25
 #: templates/Billings/view.php:24 templates/Contracts/view.php:261
 #: templates/Customers/view.php:731
 msgid "New Billing"
 msgstr "Nová fakturace"
 
-#: templates/Billings/index.php:35 templates/Billings/service_change.php:110
+#: templates/Billings/index.php:46 templates/Billings/service_change.php:110
 #: templates/Billings/view.php:114
 #: templates/Overviews/overview_of_dealer_commissions.php:46
 #: templates/Overviews/overview_of_dealer_commissions.php:60
@@ -5535,7 +5539,7 @@ msgstr "Nová fakturace"
 msgid "Total Price"
 msgstr "Celková cena"
 
-#: templates/Billings/index.php:38 templates/Billings/service_change.php:81
+#: templates/Billings/index.php:49 templates/Billings/service_change.php:81
 #: templates/Billings/view.php:85 templates/ServiceOverrides/index.php:64
 #: templates/ServiceOverrides/view.php:118 templates/Services/view.php:99
 #: templates/element/Contracts/Billings.php:32
