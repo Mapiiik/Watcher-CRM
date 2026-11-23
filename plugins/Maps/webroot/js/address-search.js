@@ -126,7 +126,11 @@
                 item.textContent = suggestion.label;
                 item.setAttribute('role', 'option');
                 item.setAttribute('aria-selected', 'false');
-                item.addEventListener('click', function () {
+                item.addEventListener('click', function (event) {
+                    // Picking empties the list, and Leaflet tells a click of its controls apart by
+                    // where the clicked element sits. One no longer in the page passes for a click
+                    // into the map, which would close the bubble and move a picked point.
+                    event.stopPropagation();
                     pick(suggestion);
                 });
                 list.appendChild(item);
