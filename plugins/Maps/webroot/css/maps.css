@@ -98,6 +98,32 @@
     vertical-align: middle;
 }
 
+/*
+ * The address search inside the map. Leaflet stacks the controls of a corner one under another,
+ * and this one stands beside the zoom buttons instead. The script sets its width after the map's.
+ */
+.leaflet-left .maps-search {
+    clear: none;
+}
+
+.maps-search input[type='search'] {
+    display: block;
+    width: 48rem;
+    height: 30px;
+    margin: 0;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 4px;
+    color: #333;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.leaflet-touch .maps-search input[type='search'] {
+    border-radius: 2px;
+}
+
 /* Address search dropdown */
 .maps-search-results {
     position: absolute;
@@ -106,7 +132,6 @@
     padding: 0;
     list-style: none;
     width: 100%;
-    max-width: 40rem;
     color: #fff;
     background: #7f7f7f;
     border: 1px solid #d1d1d1;
@@ -128,6 +153,24 @@
     border-bottom: 0;
 }
 
-.maps-search-results li:hover {
+.maps-search-results li:hover,
+.maps-search-results li[aria-selected='true'] {
     background: #6f6f6f;
+}
+
+/* The address picked, drawn as a ring. Leaflet would frame it in a white box. */
+.maps-search-pin {
+    background: none;
+    border: 0;
+}
+
+/* The nearest of what the map draws, listed in the bubble of the address picked. */
+.maps-nearest {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.maps-nearest li {
+    margin: 0 0 2px;
 }

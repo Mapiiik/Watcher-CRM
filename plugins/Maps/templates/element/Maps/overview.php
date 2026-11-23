@@ -8,6 +8,8 @@
  * @var array<string, \Maps\Marker> $mapMarkers
  * @var array<string, \Maps\Polyline> $mapPolylines
  * @var string $mapHeight
+ * @var bool|null $search Whether to offer the address search
+ * @var string|null $country ISO country code to search addresses within
  */
 
 use Maps\MapProvider;
@@ -16,4 +18,6 @@ echo $this->element('Maps.Maps/' . MapProvider::current()->elementDirectory() . 
     'mapMarkers' => $mapMarkers,
     'mapPolylines' => $mapPolylines,
     'mapHeight' => $mapHeight ?? '600px',
+    'search' => $search ?? false,
+    'country' => $country ?? null,
 ]);

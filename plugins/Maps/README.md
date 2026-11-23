@@ -38,13 +38,18 @@ echo $this->element('Maps.Maps/point-picker', [
 The overview opens fitted to its markers. A marker made with `focused: false` is drawn, but left
 out of that fit, so a map may show the way on beyond what it is about without zooming out to it.
 
+An overview given `'search' => true` offers the address search too. The address picked gets a mark
+of its own, the map shows it together with the three nearest of its markers, and its bubble lists
+the five nearest with how far each one is. Only markers with a title count.
+
 The picker writes into the fields named by `latField` and `lngField`, which default to `gps-y` and
 `gps-x`.
 
 ## The address search
 
-Offered only when `Maps.geocoder` names a `\Maps\Geocoder\GeocoderInterface`. Without one the picker
-renders no search field and a point is picked by clicking the map.
+A field inside the map, beside the zoom buttons, so that it is at hand in fullscreen too. Offered
+only when `Maps.geocoder` names a `\Maps\Geocoder\GeocoderInterface`. Without one there is no search
+field, and a point is picked by clicking the map.
 
 Two come with the plugin, and an application may bring its own:
 

@@ -3,13 +3,14 @@
  * Editable map for picking a single point, rendered with Leaflet.
  *
  * Clicking the map writes the coordinates into the named form fields and moves the marker. The
- * address search is offered only when the application named a geocoder, and it asks the
- * application's own `Api/GeocoderBridge` rather than a geocoder directly.
+ * address search inside the map is offered only when the application named a geocoder, and it asks
+ * the application's own `Api/GeocoderBridge` rather than a geocoder directly.
  *
  * Render this **outside** the `<form>` it fills in, after `Form->end()`. The base layer switcher
  * is a radio group Leaflet names after a counter of its own and writes into the map at runtime,
- * so a form enclosing the map submits fields the form protection never signed and refuses the
- * whole request. The fields are found by id, so where the map stands does not matter otherwise.
+ * and the search field is written there too, so a form enclosing the map submits fields the form
+ * protection never signed and refuses the whole request. The fields are found by id, so where the
+ * map stands does not matter otherwise.
  *
  * @var \Cake\View\View $this
  * @var string|float|null $lat
@@ -29,7 +30,7 @@ $this->Html->css('Maps.vendor/leaflet/leaflet', $vendor);
 $this->Html->script('Maps.vendor/leaflet/leaflet', $vendor);
 $this->Html->css('Maps.maps', ['block' => true]);
 $this->Html->script(
-    ['Maps.map-fullscreen', 'Maps.map', 'Maps.point-picker'],
+    ['Maps.map-fullscreen', 'Maps.map', 'Maps.address-search', 'Maps.point-picker'],
     ['block' => true],
 );
 
@@ -59,7 +60,6 @@ $searchable = GeocoderFactory::create() !== null;
 $picker = [
     'latInputId' => $latField,
     'lngInputId' => $lngField,
-    'searchInputId' => 'search-on-the-map',
     'searchUrl' => $searchable
         ? $this->Url->build([
             'prefix' => 'Api',
@@ -69,13 +69,10 @@ $picker = [
         ])
         : null,
     'country' => $country,
+    'labels' => [
+        'search' => __d('maps', 'Search on the Map'),
+    ],
 ];
-
-if ($searchable) {
-    echo $this->Form->control('search_on_the_map', [
-        'label' => __d('maps', 'Search on the Map'),
-    ]);
-}
 ?>
 <div class="maps-map" style="height: <?= h($mapHeight) ?>"
      data-maps="<?= h(json_encode($described, JSON_THROW_ON_ERROR)) ?>"
