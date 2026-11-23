@@ -967,6 +967,72 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * The way on from the access point is drawn up to the last point it hangs off, and the map
+     * still opens on the two ends of the service.
+     *
+     * A point without coordinates is passed over, and a chain that comes back round ends there.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::map()
+     */
+    public function testMapDrawsTheWayOnWithoutFocusingOnIt(): void
+    {
+        Cache::write(
+            'access_points',
+            [
+                [
+                    'id' => self::ACCESS_POINT_ID,
+                    'name' => 'Mast',
+                    'gps_y' => 2.0,
+                    'gps_x' => 1.0,
+                    'parent_access_point_id' => 'relay',
+                ],
+                ['id' => 'relay', 'name' => 'Relay', 'gps_y' => 3.0, 'gps_x' => 1.0, 'parent_access_point_id' => 'roof'],
+                ['id' => 'roof', 'name' => 'Unsurveyed Roof', 'parent_access_point_id' => 'core'],
+                ['id' => 'core', 'name' => 'Core', 'gps_y' => 4.0, 'gps_x' => 1.0, 'parent_access_point_id' => 'relay'],
+                ['id' => 'elsewhere', 'name' => 'Elsewhere', 'gps_y' => 5.0, 'gps_x' => 5.0],
+            ],
+            'api_client',
+        );
+        Configure::write('Nms.url', 'https://nms.example.com');
+        Configure::write('Nms.key', 'secret');
+
+        try {
+            $this->login();
+            $this->get('/contracts/map/' . self::CONTRACT_ID);
+
+            $this->assertResponseOk();
+
+            /** @var array<string, \Maps\Marker> $markers */
+            $markers = $this->viewVariable('mapMarkers');
+            $this->assertSame(
+                ['customer', 'access_point', 'route_relay', 'route_core'],
+                array_keys($markers),
+            );
+            $this->assertSame(
+                ['customer' => true, 'access_point' => true, 'route_relay' => false, 'route_core' => false],
+                array_map(fn($marker): bool => $marker->focused, $markers),
+            );
+            $this->assertStringContainsString(
+                'https://nms.example.com/access-points/core',
+                $markers['route_core']->content,
+            );
+
+            /** @var array<string, \Maps\Polyline> $polylines */
+            $polylines = $this->viewVariable('mapPolylines');
+            $this->assertSame(['route_relay', 'route_core', 'service'], array_keys($polylines));
+            $this->assertSame(3.0, $polylines['route_core']->from->lat, 'The line skips the unsurveyed point.');
+            $this->assertSame(4.0, $polylines['route_core']->to->lat);
+
+            // still the distance between the two ends, not the length of the way on
+            $this->assertEqualsWithDelta(111194.93, $this->viewVariable('mapDistance'), 0.01);
+        } finally {
+            Cache::delete('access_points', 'api_client');
+            Configure::write('Nms.key', '');
+        }
+    }
+
+    /**
      * Winding a contract up ends the billings that were still running with it.
      *
      * @return void

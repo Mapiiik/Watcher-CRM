@@ -40,6 +40,7 @@ $described = [
             'title' => $marker->title,
             'color' => $marker->color,
             'content' => $marker->content,
+            'focused' => $marker->focused,
         ],
         $mapMarkers,
     )),

@@ -88,11 +88,17 @@
     }
 
     /**
-     * Fits the map to what is on it, or looks where it was told to.
+     * Fits the map to the markers it is focused on, or to all of them when it is focused on none,
+     * or looks where it was told to.
      */
-    function look(L, map, view, markers) {
-        if (view && view.fit && markers.length) {
-            map.fitBounds(L.featureGroup(markers).getBounds().pad(0.1));
+    function look(L, map, view, markers, described) {
+        var focused = markers.filter(function (marker, index) {
+            return (described || [])[index].focused !== false;
+        });
+        var fitted = focused.length ? focused : markers;
+
+        if (view && view.fit && fitted.length) {
+            map.fitBounds(L.featureGroup(fitted).getBounds().pad(0.1));
 
             return;
         }
@@ -110,7 +116,7 @@
 
         var markers = addMarkers(L, map, described.markers);
 
-        look(L, map, described.view || {}, markers);
+        look(L, map, described.view || {}, markers, described.markers);
 
         if (described.fullscreen && typeof window.MapsPlugin.fullscreen === 'function') {
             window.MapsPlugin.fullscreen(map, described.fullscreen);

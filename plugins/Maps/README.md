@@ -35,6 +35,9 @@ echo $this->element('Maps.Maps/point-picker', [
 ]);
 ```
 
+The overview opens fitted to its markers. A marker made with `focused: false` is drawn, but left
+out of that fit, so a map may show the way on beyond what it is about without zooming out to it.
+
 The picker writes into the fields named by `latField` and `lngField`, which default to `gps-y` and
 `gps-x`.
 
