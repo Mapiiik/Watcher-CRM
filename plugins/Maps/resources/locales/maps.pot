@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-03 00:34+0200\n"
+"POT-Creation-Date: 2026-11-23 11:50+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,18 +14,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/Maps/templates/element/Maps/leaflet/overview.php:33
-#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:46
+#: ./plugins/Maps/templates/element/Maps/leaflet/overview.php:43
+#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:47
 msgid "Fullscreen"
 msgstr ""
 
-#: ./plugins/Maps/templates/element/Maps/leaflet/overview.php:34
-#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:47
+#: ./plugins/Maps/templates/element/Maps/leaflet/overview.php:44
+#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:48
 msgid "Exit Fullscreen"
 msgstr ""
 
-#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:76
+#: ./plugins/Maps/templates/element/Maps/leaflet/overview.php:78
+#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:73
 msgid "Search on the Map"
+msgstr ""
+
+#: ./plugins/Maps/templates/element/Maps/leaflet/overview.php:79
+msgid "Nearest on the Map"
 msgstr ""
 
 #: ./plugins/Maps/templates/element/Maps/links.php:22

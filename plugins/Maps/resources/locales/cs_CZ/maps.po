@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-03 00:34+0200\n"
+"POT-Creation-Date: 2026-11-23 11:50+0100\n"
 "PO-Revision-Date: 2026-08-18 15:11+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -15,19 +15,24 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: plugins/Maps/templates/element/Maps/leaflet/overview.php:33
-#: plugins/Maps/templates/element/Maps/leaflet/point-picker.php:46
+#: plugins/Maps/templates/element/Maps/leaflet/overview.php:43
+#: plugins/Maps/templates/element/Maps/leaflet/point-picker.php:47
 msgid "Fullscreen"
 msgstr "Celá obrazovka"
 
-#: plugins/Maps/templates/element/Maps/leaflet/overview.php:34
-#: plugins/Maps/templates/element/Maps/leaflet/point-picker.php:47
+#: plugins/Maps/templates/element/Maps/leaflet/overview.php:44
+#: plugins/Maps/templates/element/Maps/leaflet/point-picker.php:48
 msgid "Exit Fullscreen"
 msgstr "Ukončit režim celé obrazovky"
 
-#: plugins/Maps/templates/element/Maps/leaflet/point-picker.php:76
+#: plugins/Maps/templates/element/Maps/leaflet/overview.php:78
+#: plugins/Maps/templates/element/Maps/leaflet/point-picker.php:73
 msgid "Search on the Map"
 msgstr "Hledat na mapě"
+
+#: plugins/Maps/templates/element/Maps/leaflet/overview.php:79
+msgid "Nearest on the Map"
+msgstr "Nejbližší na mapě"
 
 #: plugins/Maps/templates/element/Maps/links.php:22
 msgid "Google Maps"
