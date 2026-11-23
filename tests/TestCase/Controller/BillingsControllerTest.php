@@ -105,6 +105,51 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
+     * Asked for the active ones only, the listing keeps the rows its Active column says yes to:
+     * running today, on a contract in a billed state.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::index()
+     */
+    public function testIndexActiveOnly(): void
+    {
+        $this->login();
+        $this->get('/billings?active_only=1');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="active_only" value="1" checked="checked"');
+        $this->assertSame(
+            ['b2000000-0000-4000-8000-000000000002', 'b3000000-0000-4000-8000-000000000003'],
+            $this->listedBillingIds(),
+            'The one that ended long ago is listed.',
+        );
+
+        // the same billings, on contracts no longer billed
+        $this->getTableLocator()->get('ContractStates')->updateAll(['billed' => false], []);
+
+        $this->get('/billings?active_only=1');
+
+        $this->assertResponseOk();
+        $this->assertSame([], $this->listedBillingIds(), 'A billing on a contract not billed is listed.');
+    }
+
+    /**
+     * The billings the listing showed, in order of their ids.
+     *
+     * @return list<string>
+     */
+    private function listedBillingIds(): array
+    {
+        $ids = [];
+        foreach ($this->viewVariable('billings') as $billing) {
+            $ids[] = $billing->id;
+        }
+        sort($ids);
+
+        return $ids;
+    }
+
+    /**
      * The detail of a record renders.
      *
      * @return void

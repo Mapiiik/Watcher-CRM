@@ -9,6 +9,7 @@ use App\Model\Table\BillingsTable;
 use App\Service\BillingChangeRefused;
 use App\Service\BillingServiceChange;
 use Cake\Http\Response;
+use Cake\I18n\Date;
 use Cake\Validation\Validation;
 
 /**
@@ -49,10 +50,12 @@ class BillingsController extends AppController
             ];
         }
 
+        $active_only = toBool($this->getRequest()->getQuery('active_only')) ?? false;
+
         $this->paginate = [
             'sortableFields' => $this->sortableWithCustomerNumber($this->Billings),
         ];
-        $billings = $this->paginate($this->newestFirst($this->Billings->find(
+        $query = $this->Billings->find(
             'all',
             contain: [
                 'Contracts' => [
@@ -62,9 +65,18 @@ class BillingsController extends AppController
                 'Services',
             ],
             conditions: $conditions,
-        )));
+        );
 
-        $this->set(compact('billings'));
+        // the same rows the Active column says yes to
+        if ($active_only) {
+            $query
+                ->find('activeOn', on: Date::now())
+                ->where(['ContractStates.billed' => true]);
+        }
+
+        $billings = $this->paginate($this->newestFirst($query));
+
+        $this->set(compact('billings', 'active_only'));
     }
 
     /**

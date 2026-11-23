@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Billing> $billings
+ * @var bool $active_only
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -10,6 +11,16 @@
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+    </div>
+</div>
+<div class="row">
+    <div class="column">
+        <?= $this->Form->control('active_only', [
+            'label' => __('Active Only'),
+            'type' => 'checkbox',
+            'checked' => $active_only,
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
