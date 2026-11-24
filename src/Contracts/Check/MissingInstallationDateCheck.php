@@ -18,6 +18,9 @@ use Override;
  * has no day it was put in, and the flag saying an installation address is required is what
  * tells the two apart - which means a service type added later is judged by what it is rather
  * than by a list somebody has to remember to extend.
+ *
+ * Only the contract states that require the date are asked. A contract still waiting for its
+ * installation, or one that was never carried out, has nothing put in yet.
  */
 class MissingInstallationDateCheck extends AbstractContractCheck
 {
@@ -91,6 +94,7 @@ class MissingInstallationDateCheck extends AbstractContractCheck
             ->contain(['Customers', 'ServiceTypes', 'ContractStates'])
             ->where([
                 'ServiceTypes.installation_address_required' => true,
+                'ContractStates.requires_installation_date' => true,
                 'Contracts.installation_date IS' => null,
             ])
             ->orderBy(['Contracts.nid' => 'DESC']);

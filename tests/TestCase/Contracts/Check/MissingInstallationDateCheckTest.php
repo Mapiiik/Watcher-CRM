@@ -52,6 +52,7 @@ class MissingInstallationDateCheckTest extends TestCase
         parent::setUp();
 
         $this->Contracts = $this->getTableLocator()->get('Contracts', ['className' => ContractsTable::class]);
+        $this->inAState(['requires_installation_date' => true]);
     }
 
     /**
@@ -94,19 +95,63 @@ class MissingInstallationDateCheckTest extends TestCase
     }
 
     /**
+     * Waiting for its installation, the contract already counts as running, but nothing has
+     * been put in yet - its state says so by not requiring the date.
+     *
+     * @return void
+     * @link \App\Contracts\Check\MissingInstallationDateCheck::find()
+     */
+    public function testAContractWaitingForItsInstallationIsNotAsked(): void
+    {
+        $this->installedOn(null);
+        $this->inAState(['active_services' => true, 'requires_installation_date' => false]);
+
+        $this->assertSame([], $this->found());
+    }
+
+    /**
+     * A contract that was never carried out has nothing put in either, and it stays out even
+     * where the history is asked about, as on the customer's page.
+     *
+     * @return void
+     * @link \App\Contracts\Check\MissingInstallationDateCheck::find()
+     */
+    public function testAContractNeverCarriedOutIsNotAskedWithTheHistoryEither(): void
+    {
+        $this->installedOn(null);
+        $this->inAState(['active_services' => false, 'requires_installation_date' => false]);
+
+        $this->assertSame([], $this->found(false));
+    }
+
+    /**
      * Run the check and return what it found.
      *
+     * @param bool $ignore_inactive Whether to keep to what is running, as the dashboard does.
      * @return list<\App\Model\Entity\Contract>
      */
-    private function found(): array
+    private function found(bool $ignore_inactive = true): array
     {
+        $scope = new CheckScope($ignore_inactive, self::CONTRACT_ID);
+
         /** @var list<\App\Model\Entity\Contract> $records */
-        $records = (new MissingInstallationDateCheck($this->Contracts, new CheckScope(true, self::CONTRACT_ID)))
+        $records = (new MissingInstallationDateCheck($this->Contracts, $scope))
             ->find()
             ->all()
             ->toList();
 
         return $records;
+    }
+
+    /**
+     * Set the flags of the state the contract under test is in.
+     *
+     * @param array<string, bool> $flags Flags to set.
+     * @return void
+     */
+    private function inAState(array $flags): void
+    {
+        $this->getTableLocator()->get('ContractStates')->updateAll($flags, ['1 = 1']);
     }
 
     /**
