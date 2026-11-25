@@ -94,10 +94,17 @@ class ContractSummaryPDF extends AppPDF
     protected const FONT_FAMILY = 'dejavusans';
 
     /**
-     * Foot of every page kept clear, because the footnote to the opening bullet is written
-     * into it after the sections have been laid out and must not land on top of them.
+     * Air under the footnote's rule, and between the footnote and the footer below it.
      */
-    private const FOOTNOTE_RESERVE = 14.0;
+    private const FOOTNOTE_RULE_GAP = 0.8;
+    private const FOOTNOTE_FOOTER_GAP = 1.0;
+
+    /**
+     * Foot of every page kept clear, because the footnote to the opening bullet is written
+     * into it after the sections have been laid out and must not land on top of them. As tall
+     * as the footnote is, above the footer.
+     */
+    private float $footnoteReserve = 0.0;
 
     /**
      * Kilobits in a megabit, the unit the speed table is stated in. Binary, because that is
@@ -125,8 +132,6 @@ class ContractSummaryPDF extends AppPDF
             throw new InvalidArgumentException('The contract version to be executed must be provided');
         }
 
-        $this->SetAutoPageBreak(true, self::FOOTNOTE_RESERVE);
-
         // The template asks for the name of the service on offer directly above the title and
         // the provider's name directly below it, so that two summaries laid side by side name
         // what they are describing in the same place. The provider is named once, in the block
@@ -137,6 +142,11 @@ class ContractSummaryPDF extends AppPDF
             $this->summaryText('subtitle'),
             $this->serviceNames($data),
         );
+
+        // Measured once there is a page to set the face on. The header is at the top of it, so
+        // it is laid out the same whichever foot the page keeps.
+        $this->footnoteReserve = $this->measureFootnoteReserve();
+        $this->SetAutoPageBreak(true, $this->footnoteReserve);
 
         $this->printContractIdentification($contract->number, $contractVersion);
         $this->printIntro();
@@ -205,6 +215,7 @@ class ContractSummaryPDF extends AppPDF
             [$this->label('contract_number'), $contractNumber],
             [$this->label('start_date'), (string)$contractVersion->valid_from],
         ]);
+        $this->setFooterReference([[$this->label('contract_number'), $contractNumber]]);
     }
 
     /**
@@ -341,13 +352,37 @@ class ContractSummaryPDF extends AppPDF
         $resume = $this->GetY();
 
         $this->SetAutoPageBreak(false);
-        $this->SetY(-self::FOOTNOTE_RESERVE);
-        $this->drawSeparator(width: 60.0, lnAfter: 0.8);
+        $this->SetY(-$this->footnoteReserve);
+        $this->drawSeparator(width: 60.0, lnAfter: self::FOOTNOTE_RULE_GAP);
         $this->SetFont(self::FONT_FAMILY, '', self::NOTE_FONT_SIZE);
         $this->MultiCell(self::TEXT_WIDTH, self::FOOTNOTE_LINE_HEIGHT, $footnote, align: 'L');
 
-        $this->SetAutoPageBreak(true, self::FOOTNOTE_RESERVE);
+        $this->SetAutoPageBreak(true, $this->footnoteReserve);
         $this->SetY($resume);
+    }
+
+    /**
+     * How much of the foot of every page the body leaves free: the footer, and above it the
+     * footnote with its rule, measured so that a longer footnote does not run into the footer.
+     *
+     * @return float
+     */
+    private function measureFootnoteReserve(): float
+    {
+        $reserve = static::FOOTER_RESERVE + self::FOOTNOTE_FOOTER_GAP;
+
+        $footnote = $this->summaryText('intro_footnote');
+        if ($footnote === '') {
+            return $reserve;
+        }
+
+        // As MultiCell() sets it: at least the height asked for, otherwise a line of the face each.
+        $this->SetFont(self::FONT_FAMILY, '', self::NOTE_FONT_SIZE);
+        $lines = $this->getNumLines($footnote, self::TEXT_WIDTH);
+
+        return $reserve
+            + self::FOOTNOTE_RULE_GAP
+            + max(self::FOOTNOTE_LINE_HEIGHT, $lines * $this->minimumCellHeight());
     }
 
     /**

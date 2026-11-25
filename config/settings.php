@@ -513,6 +513,8 @@ return [
                     'personal_data' => 'Osobní údaje:',
                     'business_data' => 'Obchodní údaje:',
                     'customer_number' => 'číslo zákazníka:',
+                    // Footer of every page
+                    'page_of_pages' => 'strana {page} z {pages}',
                 ],
 
                 // The table of services, printed on the contract and on the list of services alike.

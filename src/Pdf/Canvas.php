@@ -193,6 +193,23 @@ class Canvas
     }
 
     /**
+     * Goes back to a page already drawn, so that what is drawn next lands on it.
+     *
+     * @param int $number Which page, counting from one.
+     * @return void
+     */
+    protected function turnToPage(int $number): void
+    {
+        $page = $this->pdf()->setCurrentPage($number - 1);
+        $this->pages = $number;
+
+        $this->pageWidth = $page['width'];
+        $this->pageHeight = $page['height'];
+        $this->x = $this->lMargin;
+        $this->y = $this->tMargin;
+    }
+
+    /**
      * When the pages say they were written. Overridden where a document must come out as the
      * same bytes twice.
      *
@@ -1095,6 +1112,16 @@ class Canvas
     }
 
     /**
+     * Draws what can only be drawn once every page is set, such as which page of how many. Called
+     * each time the document is asked for, so whatever it draws must be drawn only once.
+     *
+     * @return void
+     */
+    protected function finishPages(): void
+    {
+    }
+
+    /**
      * The finished document.
      *
      * @param string $name What the file is called
@@ -1103,6 +1130,7 @@ class Canvas
      */
     public function Output(string $name = 'doc.pdf', string $dest = 'I'): string
     {
+        $this->finishPages();
         $this->pdf()->setPDFFilename($name);
 
         // Written last, so that everything the document was going to say about where it is signed

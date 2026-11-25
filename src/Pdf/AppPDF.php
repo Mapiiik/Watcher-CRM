@@ -141,6 +141,35 @@ class AppPDF extends Canvas
     protected const SECTION_HEADING_HEIGHT = 4.0 + 0.4 + 1.0;
 
     /**
+     * How far above the foot of the paper the footer line starts. Below the page break and the
+     * cross, and far enough from the edge for an office printer to reach.
+     */
+    protected const FOOTER_RESERVE = 9.0;
+
+    /**
+     * What stands between the parts of the footer that say which paper this is.
+     */
+    private const FOOTER_SEPARATOR = ' · ';
+
+    /**
+     * The document's title and subtitle, as its header prints them.
+     */
+    private string $documentName = '';
+
+    /**
+     * The figures that tell this paper from another of its kind, as label and value pairs.
+     *
+     * @var array<int, array{0:string, 1:string}>
+     */
+    private array $footerReference = [];
+
+    /**
+     * Whether the footers are on the pages, so that asking for the document twice does not draw
+     * them twice.
+     */
+    private bool $footersPrinted = false;
+
+    /**
      * A cell, with two habits of its own.
      *
      * Bordered cells centre their text vertically, because a frame drawn round text sitting
@@ -249,6 +278,8 @@ class AppPDF extends Canvas
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
 
+        $this->documentName = trim($title . ' ' . $subtitle);
+
         $this->AddPage();
         $this->frameBody();
 
@@ -282,6 +313,77 @@ class AppPDF extends Canvas
         $drawing = K_PATH_IMAGES . 'logo-contract.svg';
 
         return is_readable($drawing) ? $drawing : K_PATH_IMAGES . 'logo-contract.png';
+    }
+
+    /**
+     * Says which figures the footer of every page names the paper by, after its title.
+     *
+     * They are the figures the paper is identified by at its head, so a page that has come loose
+     * says what the first page says.
+     *
+     * @param array<int, array{0:string, 1:string}> $pairs Label and value pairs
+     * @return void
+     */
+    protected function setFooterReference(array $pairs): void
+    {
+        $this->footerReference = $pairs;
+    }
+
+    /**
+     * Writes at the foot of every page which paper it is and which page of how many.
+     *
+     * Drawn once the document is set, because only then is it known how many pages it has. A page
+     * that has come loose from a stack, or one signed and handed back on its own, still says where
+     * it belongs.
+     *
+     * @return void
+     */
+    #[Override]
+    protected function finishPages(): void
+    {
+        if ($this->footersPrinted) {
+            return;
+        }
+        $this->footersPrinted = true;
+
+        $pages = $this->PageNo();
+        $reference = $this->footerReferenceText();
+        $pageOf = $this->label('page_of_pages');
+
+        // The footer is below where a page breaks, and a cell drawn there would start a new one.
+        $breaks = $this->autoPageBreak;
+        $this->autoPageBreak = false;
+
+        for ($page = 1; $page <= $pages; $page++) {
+            $this->turnToPage($page);
+            $this->SetFont(static::FONT_FAMILY, '', static::NOTE_FONT_SIZE);
+
+            $pageText = strtr($pageOf, ['{page}' => (string)$page, '{pages}' => (string)$pages]);
+            $pageWidth = $this->GetStringWidth($pageText) + (2 * $this->paddingX);
+
+            // A reference too long for what the page number leaves it is condensed rather than
+            // run into the number.
+            $this->SetXY(static::FRAME_LEFT, $this->getPageHeight() - static::FOOTER_RESERVE);
+            $this->Cell(static::PAGE_WIDTH - $pageWidth, 0, $reference);
+            $this->Cell($pageWidth, 0, $pageText, align: 'R');
+        }
+
+        $this->autoPageBreak = $breaks;
+    }
+
+    /**
+     * The left part of the footer: the paper's title, then the figures it is told apart by.
+     *
+     * @return string
+     */
+    private function footerReferenceText(): string
+    {
+        $parts = [$this->documentName];
+        foreach ($this->footerReference as [$label, $value]) {
+            $parts[] = trim($label . ' ' . $value);
+        }
+
+        return implode(self::FOOTER_SEPARATOR, array_filter($parts, fn(string $part): bool => $part !== ''));
     }
 
     /**

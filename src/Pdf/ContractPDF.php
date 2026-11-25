@@ -243,7 +243,10 @@ class ContractPDF extends ContractPaperPDF
     {
         $contract = $data->contract;
 
-        [$columns, $width, $separatorOffset, $between] = match ($data->type) {
+        // The last of each is which columns the foot of every page repeats: the number, and for an
+        // amendment which one it is, since two amendments to one contract are otherwise the same
+        // paper there.
+        [$columns, $width, $separatorOffset, $between, $inFooter] = match ($data->type) {
             ContractDocumentType::ContractNew,
             ContractDocumentType::ContractNewX => [
                 [
@@ -253,6 +256,7 @@ class ContractPDF extends ContractPaperPDF
                 90.0,
                 AppPDF::SEPARATOR_OFFSET_X,
                 'between_new',
+                [0],
             ],
             ContractDocumentType::ContractAmendment => [
                 [
@@ -267,6 +271,7 @@ class ContractPDF extends ContractPaperPDF
                 45.0,
                 AppPDF::SEPARATOR_OFFSET_X,
                 'between_amendment',
+                [0, 2],
             ],
             ContractDocumentType::ContractTermination => [
                 [
@@ -277,12 +282,14 @@ class ContractPDF extends ContractPaperPDF
                 60.0,
                 AppPDF::SEPARATOR_OFFSET_X,
                 'between_termination',
+                [0],
             ],
             default => throw new InvalidArgumentException('Unsupported contract print type: ' . $data->type->value),
         };
 
         $this->printLabelledRow($columns, $width, $separatorOffset);
         $this->printBetween($this->label($between));
+        $this->setFooterReference(array_values(array_intersect_key($columns, array_flip($inFooter))));
     }
 
     /**

@@ -61,6 +61,7 @@ class CustomerPDF extends AppPDF
             ],
             62.0,
         );
+        $this->setFooterReference([[$this->label('agreement_number'), (string)$customer->number]]);
 
         // Controller section
         $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
@@ -178,6 +179,7 @@ class CustomerPDF extends AppPDF
             [$this->label('customer_number'), (string)$customer->number],
             [$this->overviewText('labels.as_of'), (string)$day],
         ]);
+        $this->setFooterReference([[$this->label('customer_number'), (string)$customer->number]]);
 
         $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
         $this->printFullWidth($this->label('between'), 2);

@@ -143,6 +143,7 @@ class HandoverProtocolPDF extends ContractPaperPDF
         };
 
         $this->printLabelledRow($columns, 90.0);
+        $this->setFooterReference([$columns[0]]);
     }
 
     /**
