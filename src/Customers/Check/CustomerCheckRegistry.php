@@ -20,8 +20,7 @@ final class CustomerCheckRegistry extends AbstractCheckRegistry
 {
     /**
      * Registered in the order they are listed: who the customer is first, then how to reach
-     * them, then what they have been asked, and last the papers put to them that are not
-     * finished.
+     * them, and last the papers put to them that are not finished.
      *
      * @param bool $ignore_inactive Whether the checks keep to the customers with something
      *   running. What is on file about somebody we no longer serve is not worth chasing, and
@@ -43,7 +42,6 @@ final class CustomerCheckRegistry extends AbstractCheckRegistry
             'incomplete_identity' => fn() => new IncompleteIdentityCheck($customers, $this->scope),
             'missing_email' => fn() => new MissingEmailCheck($customers, $this->scope),
             'missing_phone' => fn() => new MissingPhoneCheck($customers, $this->scope),
-            'missing_gdpr_consent' => fn() => new MissingGdprConsentCheck($customers, $this->scope),
             'unsent_customer_proposal' => fn() => new UnsentCustomerProposalCheck($proposals, $this->scope),
             'unsigned_customer_proposal' => fn() => new UnsignedCustomerProposalCheck($proposals, $this->scope),
             'unfiled_customer_proposal' => fn() => new UnfiledCustomerProposalCheck($proposals, $this->scope),

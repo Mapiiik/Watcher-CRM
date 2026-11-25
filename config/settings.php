@@ -383,10 +383,6 @@ return [
                     default: ['Ne email'],
                     hint: __('Labels that say the missing e-mail address is known about and accepted.'),
                 ),
-                'missing_gdpr_consent_excused_by' => ListType::ofStrings(
-                    default: ['GDPR-NE'],
-                    hint: __('Labels that say the missing consent is known about and accepted.'),
-                ),
             ],
         ],
 

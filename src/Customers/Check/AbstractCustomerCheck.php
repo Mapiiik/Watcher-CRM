@@ -16,7 +16,7 @@ use Settings\Utility\Settings;
  *
  * These are all about something that is not on file, and for most of them there is a way of
  * saying that it never will be: a label put on by hand meaning the customer has no e-mail
- * address, or will not give a date of birth, or has refused consent. Somebody has already
+ * address, or will not give a date of birth. Somebody has already
  * looked at those and decided, so a listing that kept reporting them would be asking the same
  * question again every week.
  *
