@@ -262,6 +262,17 @@ class Canvas
     }
 
     /**
+     * Colours the text drawn after it on this page.
+     *
+     * @param string $color A CSS colour
+     * @return void
+     */
+    public function SetTextColor(string $color): void
+    {
+        $this->pdf()->page->addContent($this->pdf()->color->getPdfFillColor($color));
+    }
+
+    /**
      * Scales the following text horizontally, as a percentage of its natural width.
      *
      * @param float $stretching Percentage, where a hundred leaves the text alone

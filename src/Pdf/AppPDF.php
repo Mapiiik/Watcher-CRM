@@ -147,6 +147,11 @@ class AppPDF extends Canvas
     protected const FOOTER_RESERVE = 9.0;
 
     /**
+     * Grey, so that the footer reads as a note on the paper rather than part of what it says.
+     */
+    protected const FOOTER_COLOR = '#666666';
+
+    /**
      * What stands between the parts of the footer that say which paper this is.
      */
     private const FOOTER_SEPARATOR = ' · ';
@@ -357,6 +362,7 @@ class AppPDF extends Canvas
         for ($page = 1; $page <= $pages; $page++) {
             $this->turnToPage($page);
             $this->SetFont(static::FONT_FAMILY, '', static::NOTE_FONT_SIZE);
+            $this->SetTextColor(static::FOOTER_COLOR);
 
             $pageText = strtr($pageOf, ['{page}' => (string)$page, '{pages}' => (string)$pages]);
             $pageWidth = $this->GetStringWidth($pageText) + (2 * $this->paddingX);
@@ -366,6 +372,7 @@ class AppPDF extends Canvas
             $this->SetXY(static::FRAME_LEFT, $this->getPageHeight() - static::FOOTER_RESERVE);
             $this->Cell(static::PAGE_WIDTH - $pageWidth, 0, $reference);
             $this->Cell($pageWidth, 0, $pageText, align: 'R');
+            $this->SetTextColor('black');
         }
 
         $this->autoPageBreak = $breaks;
