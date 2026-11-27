@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-10 14:44+0100\n"
+"POT-Creation-Date: 2026-11-27 19:31+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -346,34 +346,58 @@ msgstr ""
 msgid "An active RADIUS account cannot be deleted. Deactivate it first."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccessListCleaner.php:50
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:60
 msgid "No RADIUS session for {0} found."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccessListCleaner.php:60
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:70
 msgid "The last RADIUS session of {0} carries no MAC address."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccessListCleaner.php:72
-msgid "Problem connecting to an access point: {0}"
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:81
+msgid "The active account {1} has connected from the MAC address {0} since, so it has been left on the access points."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccessListCleaner.php:75
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:113
 #: ./plugins/Radius/src/Updater/RadiusRequestSender.php:77
 msgid "Watcher Agent is not configured."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccessListCleaner.php:83
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:116
+msgid "Problem connecting to the access point {0}: {1}"
+msgstr ""
+
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:125
+msgid "Problem connecting to an access point: {0}"
+msgstr ""
+
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:135
 msgid "Removed MAC address entry {0} on interface {1} from router {2}."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccessListCleaner.php:93
-msgid "Access point updated."
-msgstr ""
-
-#: ./plugins/Radius/src/Updater/AccessListCleaner.php:94
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:160
 msgid "Nothing has changed."
 msgstr ""
+
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:216
+msgid "Watcher NMS does not place the access point {0} on any site, so only that one is cleaned."
+msgstr ""
+
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:267
+msgid "Watcher NMS did not answer, so only the access point {0} is cleaned."
+msgstr ""
+
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:151
+msgid "Access point updated."
+msgid_plural "Access points updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./plugins/Radius/src/Updater/AccessListCleaner.php:152
+msgid "{0} access point of the site {1} checked."
+msgid_plural "{0} access points of the site {1} checked."
+msgstr[0] ""
+msgstr[1] ""
 
 #: ./plugins/Radius/src/Updater/AccountsUpdater.php:98
 msgid "The RADIUS account has been updated."
@@ -627,7 +651,7 @@ msgid "Edit RADIUS Account"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/edit.php:67
-msgid "Remove the MAC address from the access point"
+msgid "Remove the MAC address from the access points of the site"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:11
@@ -765,7 +789,7 @@ msgid "Remove MAC address"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:67
-msgid "Are you sure you want to remove the last active MAC address from the access list on the access point for account {0}?"
+msgid "Are you sure you want to remove the last active MAC address from the access lists on the access points of the site for account {0}?"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:77

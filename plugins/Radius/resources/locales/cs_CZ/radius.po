@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-10 14:44+0100\n"
+"POT-Creation-Date: 2026-11-27 19:31+0100\n"
 "PO-Revision-Date: 2026-08-22 17:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -348,34 +348,70 @@ msgstr "PPPoE"
 msgid "An active RADIUS account cannot be deleted. Deactivate it first."
 msgstr "Aktivní účet RADIUS nelze odstranit. Nejprve ho deaktivujte."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:50
+#: plugins/Radius/src/Updater/AccessListCleaner.php:60
 msgid "No RADIUS session for {0} found."
 msgstr "Nebyla nalezena žádná relace RADIUS pro {0}."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:60
+#: plugins/Radius/src/Updater/AccessListCleaner.php:70
 msgid "The last RADIUS session of {0} carries no MAC address."
 msgstr "Poslední relace RADIUS pro {0} neobsahuje adresu MAC."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:72
-msgid "Problem connecting to an access point: {0}"
-msgstr "Problém s připojením k přístupovému bodu: {0}"
+#: plugins/Radius/src/Updater/AccessListCleaner.php:81
+msgid ""
+"The active account {1} has connected from the MAC address {0} since, so it "
+"has been left on the access points."
+msgstr ""
+"Z adresy MAC {0} se od té doby připojil aktivní účet {1}, proto na "
+"přístupových bodech zůstala."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:75
+#: plugins/Radius/src/Updater/AccessListCleaner.php:113
 #: plugins/Radius/src/Updater/RadiusRequestSender.php:77
 msgid "Watcher Agent is not configured."
 msgstr "Watcher Agent není nakonfigurován."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:83
+#: plugins/Radius/src/Updater/AccessListCleaner.php:116
+msgid "Problem connecting to the access point {0}: {1}"
+msgstr "Problém s připojením k přístupovému bodu {0}: {1}"
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:125
+msgid "Problem connecting to an access point: {0}"
+msgstr "Problém s připojením k přístupovému bodu: {0}"
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:135
 msgid "Removed MAC address entry {0} on interface {1} from router {2}."
 msgstr "Odstraněn záznam adresy MAC {0} na rozhraní {1} ze směrovače {2}."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:93
-msgid "Access point updated."
-msgstr "Přístupový bod aktualizován."
-
-#: plugins/Radius/src/Updater/AccessListCleaner.php:94
+#: plugins/Radius/src/Updater/AccessListCleaner.php:160
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:216
+msgid ""
+"Watcher NMS does not place the access point {0} on any site, so only that "
+"one is cleaned."
+msgstr ""
+"Watcher NMS nezařazuje přístupový bod {0} k žádnému stanovišti, proto se "
+"adresa MAC odstraňuje jen z něj."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:267
+msgid "Watcher NMS did not answer, so only the access point {0} is cleaned."
+msgstr ""
+"Watcher NMS neodpověděl, proto se adresa MAC odstraňuje jen z přístupového "
+"bodu {0}."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:151
+msgid "Access point updated."
+msgid_plural "Access points updated."
+msgstr[0] "Přístupový bod aktualizován."
+msgstr[1] "Přístupové body aktualizovány."
+msgstr[2] "Přístupové body aktualizovány."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:152
+msgid "{0} access point of the site {1} checked."
+msgid_plural "{0} access points of the site {1} checked."
+msgstr[0] "Zkontrolován {0} přístupový bod stanoviště {1}."
+msgstr[1] "Zkontrolovány {0} přístupové body stanoviště {1}."
+msgstr[2] "Zkontrolováno {0} přístupových bodů stanoviště {1}."
 
 #: plugins/Radius/src/Updater/AccountsUpdater.php:98
 msgid "The RADIUS account has been updated."
@@ -647,8 +683,8 @@ msgid "Edit RADIUS Account"
 msgstr "Upravit účet RADIUS"
 
 #: plugins/Radius/templates/Accounts/edit.php:67
-msgid "Remove the MAC address from the access point"
-msgstr "Odstranit adresu MAC z přístupového bodu"
+msgid "Remove the MAC address from the access points of the site"
+msgstr "Odstranit adresu MAC z přístupových bodů stanoviště"
 
 #: plugins/Radius/templates/Accounts/index.php:11
 msgid "Search"
@@ -787,10 +823,10 @@ msgstr "Odstranění adresy MAC"
 #: plugins/Radius/templates/Accounts/monitoring.php:67
 msgid ""
 "Are you sure you want to remove the last active MAC address from the access "
-"list on the access point for account {0}?"
+"lists on the access points of the site for account {0}?"
 msgstr ""
-"Jste si jisti, že chcete odstranit poslední aktivní adresu MAC ze seznamu "
-"přístupových adres přístupového bodu pro účet {0}?"
+"Jste si jisti, že chcete odstranit poslední aktivní adresu MAC ze seznamů "
+"přístupových adres na přístupových bodech stanoviště pro účet {0}?"
 
 #: plugins/Radius/templates/Accounts/monitoring.php:77
 msgid "RADIUS Disconnect Request"
@@ -1534,6 +1570,16 @@ msgid ""
 msgstr ""
 "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
 "počtu {{count}}"
+
+#~ msgid "Remove the MAC address from the access point"
+#~ msgstr "Odstranit adresu MAC z přístupového bodu"
+
+#~ msgid ""
+#~ "Are you sure you want to remove the last active MAC address from the "
+#~ "access list on the access point for account {0}?"
+#~ msgstr ""
+#~ "Jste si jisti, že chcete odstranit poslední aktivní adresu MAC ze seznamu "
+#~ "přístupových adres přístupového bodu pro účet {0}?"
 
 #~ msgid "Invalid RADIUS session for {0}."
 #~ msgstr "Neplatná relace RADIUS pro {0}."

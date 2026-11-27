@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-20 04:00+0100\n"
+"POT-Creation-Date: 2026-11-27 19:31+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: ./src/Pdf/ContractPaperPDF.php:89
-#: ./src/Pdf/CustomerPDF.php:232
+#: ./src/Pdf/CustomerPDF.php:234
 msgid "Billing Address"
 msgstr ""
 
@@ -31,45 +31,45 @@ msgstr ""
 msgid "Permanent Address"
 msgstr ""
 
-#: ./src/Pdf/HandoverProtocolPDF.php:363
+#: ./src/Pdf/HandoverProtocolPDF.php:364
 msgid "Username"
 msgstr ""
 
-#: ./src/Pdf/HandoverProtocolPDF.php:363
+#: ./src/Pdf/HandoverProtocolPDF.php:364
 msgid "Password"
 msgstr ""
 
-#: ./src/Pdf/HandoverProtocolPDF.php:404
+#: ./src/Pdf/HandoverProtocolPDF.php:405
 msgid "Assigned IP Addresses"
 msgstr ""
 
-#: ./src/Pdf/HandoverProtocolPDF.php:408
-msgid "IP Address"
-msgstr ""
-
 #: ./src/Pdf/HandoverProtocolPDF.php:409
-#: ./src/Pdf/HandoverProtocolPDF.php:481
-msgid "IP Network"
+msgid "IP Address"
 msgstr ""
 
 #: ./src/Pdf/HandoverProtocolPDF.php:410
 #: ./src/Pdf/HandoverProtocolPDF.php:482
+msgid "IP Network"
+msgstr ""
+
+#: ./src/Pdf/HandoverProtocolPDF.php:411
+#: ./src/Pdf/HandoverProtocolPDF.php:483
 msgid "IP Gateway"
 msgstr ""
 
-#: ./src/Pdf/HandoverProtocolPDF.php:455
+#: ./src/Pdf/HandoverProtocolPDF.php:456
 msgid "Assigned IP Networks"
 msgstr ""
 
-#: ./src/Pdf/HandoverProtocolPDF.php:483
+#: ./src/Pdf/HandoverProtocolPDF.php:484
 msgid "DNS Servers"
 msgstr ""
 
-#: ./src/Pdf/HandoverProtocolPDF.php:502
+#: ./src/Pdf/HandoverProtocolPDF.php:503
 msgid "WiFi - SSID"
 msgstr ""
 
-#: ./src/Pdf/HandoverProtocolPDF.php:502
+#: ./src/Pdf/HandoverProtocolPDF.php:503
 msgid "WiFi - Password"
 msgstr ""
 

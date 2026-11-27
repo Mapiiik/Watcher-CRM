@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-20 04:00+0100\n"
+"POT-Creation-Date: 2026-11-27 19:31+0100\n"
 "PO-Revision-Date: 2026-08-18 15:10+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: src/Pdf/ContractPaperPDF.php:89 src/Pdf/CustomerPDF.php:232
+#: src/Pdf/ContractPaperPDF.php:89 src/Pdf/CustomerPDF.php:234
 msgid "Billing Address"
 msgstr "Fakturační adresa"
 
@@ -31,42 +31,42 @@ msgstr "Doručovací adresa"
 msgid "Permanent Address"
 msgstr "Adresa trvalého bydliště"
 
-#: src/Pdf/HandoverProtocolPDF.php:363
+#: src/Pdf/HandoverProtocolPDF.php:364
 msgid "Username"
 msgstr "Uživatelské jméno"
 
-#: src/Pdf/HandoverProtocolPDF.php:363
+#: src/Pdf/HandoverProtocolPDF.php:364
 msgid "Password"
 msgstr "Heslo"
 
-#: src/Pdf/HandoverProtocolPDF.php:404
+#: src/Pdf/HandoverProtocolPDF.php:405
 msgid "Assigned IP Addresses"
 msgstr "Přidělené IP adresy"
 
-#: src/Pdf/HandoverProtocolPDF.php:408
+#: src/Pdf/HandoverProtocolPDF.php:409
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: src/Pdf/HandoverProtocolPDF.php:409 src/Pdf/HandoverProtocolPDF.php:481
+#: src/Pdf/HandoverProtocolPDF.php:410 src/Pdf/HandoverProtocolPDF.php:482
 msgid "IP Network"
 msgstr "IP síť"
 
-#: src/Pdf/HandoverProtocolPDF.php:410 src/Pdf/HandoverProtocolPDF.php:482
+#: src/Pdf/HandoverProtocolPDF.php:411 src/Pdf/HandoverProtocolPDF.php:483
 msgid "IP Gateway"
 msgstr "IP brána"
 
-#: src/Pdf/HandoverProtocolPDF.php:455
+#: src/Pdf/HandoverProtocolPDF.php:456
 msgid "Assigned IP Networks"
 msgstr "Přidělené IP sítě"
 
-#: src/Pdf/HandoverProtocolPDF.php:483
+#: src/Pdf/HandoverProtocolPDF.php:484
 msgid "DNS Servers"
 msgstr "DNS servery"
 
-#: src/Pdf/HandoverProtocolPDF.php:502
+#: src/Pdf/HandoverProtocolPDF.php:503
 msgid "WiFi - SSID"
 msgstr "WiFi - SSID"
 
-#: src/Pdf/HandoverProtocolPDF.php:502
+#: src/Pdf/HandoverProtocolPDF.php:503
 msgid "WiFi - Password"
 msgstr "WiFi - Heslo"

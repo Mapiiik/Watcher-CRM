@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-23 11:10+0100\n"
+"POT-Creation-Date: 2026-11-27 19:31+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -189,15 +189,11 @@ msgstr "Štítky, které říkají, že o chybějících údajích víme a je to
 msgid "Labels that say the missing e-mail address is known about and accepted."
 msgstr "Štítky, které říkají, že o chybějícím e-mailu víme a je to v pořádku."
 
-#: config/settings.php:388
-msgid "Labels that say the missing consent is known about and accepted."
-msgstr "Štítky, které říkají, že o chybějícím souhlasu víme a je to v pořádku."
-
-#: config/settings.php:398
+#: config/settings.php:394
 msgid "How long a customer stays signed in to the customer portal."
 msgstr "Jak dlouho zůstává zákazník přihlášený do zákaznického portálu."
 
-#: config/settings.php:402
+#: config/settings.php:398
 msgid ""
 "Failed sign-ins of one login from one address before more are refused for a "
 "while."
@@ -205,7 +201,7 @@ msgstr ""
 "Počet neúspěšných přihlášení jednoho loginu z jedné adresy, po kterém se "
 "další na čas odmítají."
 
-#: config/settings.php:406
+#: config/settings.php:402
 msgid ""
 "Failed sign-ins from one address, whatever the login, before more are "
 "refused."
@@ -213,23 +209,23 @@ msgstr ""
 "Počet neúspěšných přihlášení z jedné adresy k jakýmkoli loginům, po kterém "
 "se další odmítají."
 
-#: config/settings.php:410
+#: config/settings.php:406
 msgid "Failed sign-ins of one login, from anywhere, before more are refused."
 msgstr ""
 "Počet neúspěšných přihlášení jednoho loginu odkudkoli, po kterém se další "
 "odmítají."
 
-#: config/settings.php:414
+#: config/settings.php:410
 msgid "How long failed sign-ins are remembered and refusals last."
 msgstr ""
 "Jak dlouho se neúspěšná přihlášení pamatují a jak dlouho odmítání trvá."
 
-#: config/settings.php:418
+#: config/settings.php:414
 msgid "The shortest password a customer may set in the customer portal."
 msgstr ""
 "Nejkratší heslo, které si zákazník může nastavit v zákaznickém portálu."
 
-#: config/settings.php:422
+#: config/settings.php:418
 msgid ""
 "Links for a new password or a new login one customer number may ask for in "
 "an hour."
@@ -237,7 +233,7 @@ msgstr ""
 "Kolik odkazů pro nové heslo nebo nový přístup si může jedno číslo zákazníka "
 "vyžádat za hodinu."
 
-#: config/settings.php:426
+#: config/settings.php:422
 msgid ""
 "Links for a new password or a new login one address may ask for in an hour, "
 "whatever the customer."
@@ -245,32 +241,32 @@ msgstr ""
 "Kolik odkazů pro nové heslo nebo nový přístup si může jedna adresa vyžádat "
 "za hodinu, ať je zákazník kdokoli."
 
-#: config/settings.php:430
+#: config/settings.php:426
 msgid "Addresses a service may look up in a minute before more are refused."
 msgstr ""
 "Počet adres, které služba může vyhledat za minutu, než se další odmítnou."
 
-#: config/settings.php:437
+#: config/settings.php:433
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 "Kolik řádků karta uvádí, než se zobrazí pouze informace o tom, kolik dalších "
 "zbývá."
 
-#: config/settings.php:443
+#: config/settings.php:439
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr "Jak dlouho před termínem řešení úkolu se již považuje za naléhavé."
 
-#: config/settings.php:447
+#: config/settings.php:443
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 "Jak dlouho může nedokončený úkol zůstat bez povšimnutí, než se na něj "
 "upozorní."
 
-#: config/settings.php:454
+#: config/settings.php:450
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr "Jak dlouho před koncem závazku se na něj upozorňuje."
 
-#: config/settings.php:458
+#: config/settings.php:454
 msgid ""
 "Which dates the statistics count contracts and customers by. A contract "
 "without them is left out."
@@ -278,7 +274,7 @@ msgstr ""
 "Podle kterých dat statistiky počítají smlouvy a zákazníky. Smlouva bez nich "
 "se nezapočítá."
 
-#: config/settings.php:724
+#: config/settings.php:722
 msgid ""
 "Print the withdrawal texts for a natural person, and for a customer whose "
 "legal status is not filled in."
@@ -286,15 +282,15 @@ msgstr ""
 "Tisknout texty o odstoupení od smlouvy pro nepodnikající fyzickou osobu a "
 "pro zákazníka, který nemá vyplněné právní postavení."
 
-#: config/settings.php:729
+#: config/settings.php:727
 msgid "Print the withdrawal texts for a sole trader."
 msgstr "Tisknout texty o odstoupení od smlouvy pro podnikající fyzickou osobu."
 
-#: config/settings.php:733
+#: config/settings.php:731
 msgid "Print the withdrawal texts for a legal entity."
 msgstr "Tisknout texty o odstoupení od smlouvy pro právnickou osobu."
 
-#: config/settings.php:936
+#: config/settings.php:934
 msgid ""
 "Prints a line for the customer to sign the summary on, where the law "
 "concludes the contract by signing it, as in Croatia."
@@ -302,20 +298,20 @@ msgstr ""
 "Vytiskne řádek pro podpis shrnutí smlouvy zákazníkem tam, kde zákon smlouvu "
 "uzavírá až tímto podpisem, jako v Chorvatsku."
 
-#: config/settings.php:946
+#: config/settings.php:944
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr "Tři úvodní odrážky předepsané šablonou shrnutí smlouvy."
 
-#: config/settings.php:997
+#: config/settings.php:995
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 "Podíl inzerované rychlosti, který se bere jako běžně dostupná rychlost."
 
-#: config/settings.php:1002
+#: config/settings.php:1000
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
 
-#: config/settings.php:1081
+#: config/settings.php:1079
 msgid "Documents the summary points the customer to."
 msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
 
@@ -1293,11 +1289,11 @@ msgstr "Bez přístupového bodu"
 msgid "Every contract that is served from an access point names one."
 msgstr "Každá smlouva obsluhovaná z přístupového bodu ho má uvedený."
 
-#: src/Contracts/Check/MissingInstallationDateCheck.php:71
+#: src/Contracts/Check/MissingInstallationDateCheck.php:74
 msgid "Installed With No Installation Date"
 msgstr "Instalace bez data instalace"
 
-#: src/Contracts/Check/MissingInstallationDateCheck.php:80
+#: src/Contracts/Check/MissingInstallationDateCheck.php:83
 msgid "Every contract that is installed somewhere says when it was."
 msgstr "Každá smlouva, která je někde nainstalovaná, uvádí kdy."
 
@@ -2986,14 +2982,6 @@ msgstr "Bez e-mailové adresy"
 #: src/Customers/Check/MissingEmailCheck.php:44
 msgid "Every customer has an e-mail address on file."
 msgstr "Každý zákazník má vedenou e-mailovou adresu."
-
-#: src/Customers/Check/MissingGdprConsentCheck.php:45
-msgid "Consent Neither Given Nor Refused"
-msgstr "Souhlas ani daný, ani odmítnutý"
-
-#: src/Customers/Check/MissingGdprConsentCheck.php:54
-msgid "Every customer has been asked for their consent."
-msgstr "Každý zákazník byl na souhlas dotázaný."
 
 #: src/Customers/Check/MissingPhoneCheck.php:33
 msgid "No Telephone Number"
@@ -9987,6 +9975,16 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:293
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Labels that say the missing consent is known about and accepted."
+#~ msgstr ""
+#~ "Štítky, které říkají, že o chybějícím souhlasu víme a je to v pořádku."
+
+#~ msgid "Consent Neither Given Nor Refused"
+#~ msgstr "Souhlas ani daný, ani odmítnutý"
+
+#~ msgid "Every customer has been asked for their consent."
+#~ msgstr "Každý zákazník byl na souhlas dotázaný."
 
 #~ msgid "Untouched for a While Only"
 #~ msgstr "Pouze ty které jsou chvíli bez zásahu"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-23 11:10+0100\n"
+"POT-Creation-Date: 2026-11-27 19:31+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -132,95 +132,91 @@ msgstr ""
 msgid "Labels that say the missing e-mail address is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:388
-msgid "Labels that say the missing consent is known about and accepted."
-msgstr ""
-
-#: ./config/settings.php:398
+#: ./config/settings.php:394
 msgid "How long a customer stays signed in to the customer portal."
 msgstr ""
 
-#: ./config/settings.php:402
+#: ./config/settings.php:398
 msgid "Failed sign-ins of one login from one address before more are refused for a while."
 msgstr ""
 
-#: ./config/settings.php:406
+#: ./config/settings.php:402
 msgid "Failed sign-ins from one address, whatever the login, before more are refused."
 msgstr ""
 
-#: ./config/settings.php:410
+#: ./config/settings.php:406
 msgid "Failed sign-ins of one login, from anywhere, before more are refused."
 msgstr ""
 
-#: ./config/settings.php:414
+#: ./config/settings.php:410
 msgid "How long failed sign-ins are remembered and refusals last."
 msgstr ""
 
-#: ./config/settings.php:418
+#: ./config/settings.php:414
 msgid "The shortest password a customer may set in the customer portal."
 msgstr ""
 
-#: ./config/settings.php:422
+#: ./config/settings.php:418
 msgid "Links for a new password or a new login one customer number may ask for in an hour."
 msgstr ""
 
-#: ./config/settings.php:426
+#: ./config/settings.php:422
 msgid "Links for a new password or a new login one address may ask for in an hour, whatever the customer."
 msgstr ""
 
-#: ./config/settings.php:430
+#: ./config/settings.php:426
 msgid "Addresses a service may look up in a minute before more are refused."
 msgstr ""
 
-#: ./config/settings.php:437
+#: ./config/settings.php:433
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 
-#: ./config/settings.php:443
+#: ./config/settings.php:439
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr ""
 
-#: ./config/settings.php:447
+#: ./config/settings.php:443
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 
-#: ./config/settings.php:454
+#: ./config/settings.php:450
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:458
+#: ./config/settings.php:454
 msgid "Which dates the statistics count contracts and customers by. A contract without them is left out."
 msgstr ""
 
-#: ./config/settings.php:724
+#: ./config/settings.php:722
 msgid "Print the withdrawal texts for a natural person, and for a customer whose legal status is not filled in."
 msgstr ""
 
-#: ./config/settings.php:729
+#: ./config/settings.php:727
 msgid "Print the withdrawal texts for a sole trader."
 msgstr ""
 
-#: ./config/settings.php:733
+#: ./config/settings.php:731
 msgid "Print the withdrawal texts for a legal entity."
 msgstr ""
 
-#: ./config/settings.php:936
+#: ./config/settings.php:934
 msgid "Prints a line for the customer to sign the summary on, where the law concludes the contract by signing it, as in Croatia."
 msgstr ""
 
-#: ./config/settings.php:946
+#: ./config/settings.php:944
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:997
+#: ./config/settings.php:995
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:1002
+#: ./config/settings.php:1000
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:1081
+#: ./config/settings.php:1079
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -1187,11 +1183,11 @@ msgstr ""
 msgid "Every contract that is served from an access point names one."
 msgstr ""
 
-#: ./src/Contracts/Check/MissingInstallationDateCheck.php:71
+#: ./src/Contracts/Check/MissingInstallationDateCheck.php:74
 msgid "Installed With No Installation Date"
 msgstr ""
 
-#: ./src/Contracts/Check/MissingInstallationDateCheck.php:80
+#: ./src/Contracts/Check/MissingInstallationDateCheck.php:83
 msgid "Every contract that is installed somewhere says when it was."
 msgstr ""
 
@@ -2746,14 +2742,6 @@ msgstr ""
 
 #: ./src/Customers/Check/MissingEmailCheck.php:44
 msgid "Every customer has an e-mail address on file."
-msgstr ""
-
-#: ./src/Customers/Check/MissingGdprConsentCheck.php:45
-msgid "Consent Neither Given Nor Refused"
-msgstr ""
-
-#: ./src/Customers/Check/MissingGdprConsentCheck.php:54
-msgid "Every customer has been asked for their consent."
 msgstr ""
 
 #: ./src/Customers/Check/MissingPhoneCheck.php:33
