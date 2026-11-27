@@ -222,6 +222,7 @@ final class NmsPayloadNormalizer
             id: $id,
             name: self::stringOrNull($entry['name'] ?? null),
             systemDescription: self::stringOrNull($entry['system_description'] ?? null),
+            ipAddress: self::stringOrNull($entry['ip_address'] ?? null),
             accessPointId: self::stringOrNull($entry['access_point_id'] ?? null),
             accessPoint: self::nestedAccessPoint($entry),
             raw: $entry,

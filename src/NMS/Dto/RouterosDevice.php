@@ -15,6 +15,7 @@ final readonly class RouterosDevice
      * @param string $id The number the network management system keeps the device under.
      * @param string|null $name What the device is called there.
      * @param string|null $systemDescription What the device calls itself.
+     * @param string|null $ipAddress The address the device is managed at.
      * @param string|null $accessPointId The point the device serves from.
      * @param \App\NMS\Dto\AccessPoint|null $accessPoint The same point, where the reading named it.
      * @param array<string, mixed> $raw The device as it arrived.
@@ -23,6 +24,7 @@ final readonly class RouterosDevice
         public string $id,
         public ?string $name = null,
         public ?string $systemDescription = null,
+        public ?string $ipAddress = null,
         public ?string $accessPointId = null,
         public ?AccessPoint $accessPoint = null,
         public array $raw = [],

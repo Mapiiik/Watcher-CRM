@@ -67,7 +67,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                     'confirm' => __d(
                         'radius',
                         'Are you sure you want to remove the last active MAC address'
-                            . ' from the access list on the access point for account {0}?',
+                            . ' from the access lists on the access points of the site for account {0}?',
                         $account->username,
                     ),
                     'class' => 'button float-right',

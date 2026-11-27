@@ -211,9 +211,10 @@ class ApiClient
     /**
      * The devices matching what is asked about them.
      *
+     * Not kept: whoever asks is about to act on the devices and wants them as they are now.
+     *
      * @param array<string, mixed> $search What to match the devices on.
      * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\RouterosDevice>>
-     * @psalm-suppress PossiblyUnusedMethod
      */
     public static function searchRouterosDevices(array $search): Answer
     {

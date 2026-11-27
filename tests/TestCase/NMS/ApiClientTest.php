@@ -362,6 +362,7 @@ class ApiClientTest extends TestCase
             $this->jsonResponse(['routerosDevices' => [[
                 'id' => '7',
                 'system_description' => 'RB5009',
+                'ip_address' => '10.0.0.2',
                 'access_point' => ['id' => '1', 'name' => 'Hilltop'],
             ]]]),
             ['some_ip_address' => '10.0.0.1'],
@@ -370,6 +371,7 @@ class ApiClientTest extends TestCase
         $device = ApiClient::getRouterosDevicesForIp('10.0.0.1')->orFail()->first();
 
         $this->assertSame('RB5009', $device?->systemDescription);
+        $this->assertSame('10.0.0.2', $device->ipAddress);
         $this->assertSame('Hilltop', $device->accessPoint?->name);
     }
 

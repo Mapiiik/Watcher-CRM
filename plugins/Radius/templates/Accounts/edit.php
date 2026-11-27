@@ -64,7 +64,7 @@
                 ]);
                 if ($deactivating) {
                     echo $this->Form->control('remove_mac_address', [
-                        'label' => __d('radius', 'Remove the MAC address from the access point'),
+                        'label' => __d('radius', 'Remove the MAC address from the access points of the site'),
                         'type' => 'checkbox',
                         'default' => true,
                     ]);
